@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+    <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mifta Motor Sport</title>
@@ -10,8 +10,8 @@
     <style>
         
     </style>
-</head>
-<body>
+    </head>
+    <body>
     <header>
         <div class="header-left">
             <div class="logo">
@@ -32,6 +32,7 @@
         </div>
     </header>
     <section class="hero">
+        <img class="hero-bg-img" src="/images/Main%20Picture.jpg" alt="Hero Image">
         <div class="hero-left">
             <div class="hero-title">
                 <h1>Professional Care and Sales for Every Ride</h1>
@@ -59,10 +60,8 @@
                        
                     </p>
                      <a class="link" href="#services">Explore Our Services</a>
-                </div>
-                
+                </div>  
             </div>
-            
         </div>
     </section>
     <section class="services-section" id="services">
@@ -158,13 +157,22 @@
             <div class="label">Rental Locations</div>
         </div>
     </section>
+    <div class="help-title-container">
+        <div class="help-title">Need Help from Mifta Motor Sport?</div>
+        <div class="help-underline"></div>
+    </div>
     <section class="contact-section" id="help">
-        <form class="contact-form">
-            <input type="text" placeholder="Your Name*" required>
-            <input type="text" placeholder="Your Phone Number*" required>
-            <textarea placeholder="Your Message" required></textarea>
-            <button class="btn" type="submit">Send A Message</button>
-        </form>
+        <div class="contact-container">
+            <form class="contact-form">
+                <input type="text" placeholder="Your Name*" required>
+                <input type="text" placeholder="Your Phone Number*" required>
+                <textarea placeholder="Your Message" required></textarea>
+                <button class="btn" type="submit">Send A Message</button>
+            </form>
+            <div class="contact-image">
+                <img src="/images/contact.jpg" alt="Contact" />
+            </div>
+        </div>
     </section>
     <footer>
         <div class="footer-row">
@@ -178,5 +186,5 @@
             <a href="#"><span style="font-family:Arial;">&#xf0e1;</span></a>
         </div>
     </footer>
-</body>
+    </body>
 </html>
