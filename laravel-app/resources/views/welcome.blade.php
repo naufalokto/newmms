@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+    <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mifta Motor Sport</title>
@@ -25,25 +25,23 @@
             line-height: 1.6;
         }
         header {
-            background: none;
-            color: var(--black2);
             display: flex;
             flex-direction: row;
-            height: 72px;
-            min-height: 72px;
+            width: 100vw;
+            min-width: 0;
             border: none;
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
         }
         .header-left {
+            width: 38.3125rem;
             background: #141414;
             display: flex;
             align-items: center;
             justify-content: flex-start;
             height: 72px;
-            flex-basis: 44%;
             flex-shrink: 0;
-            flex-grow: 0;
             padding-left: 32px;
         }
         .header-right {
@@ -52,9 +50,8 @@
             align-items: center;
             justify-content: flex-end;
             height: 72px;
-            flex-basis: 56%;
-            flex-shrink: 1;
-            flex-grow: 1;
+            flex: 1 1 auto;
+            min-width: 0;
             padding-right: 32px;
         }
         .logo {
@@ -105,20 +102,40 @@
             background: #eee;
         }
         .hero {
+            position: relative;
             display: flex;
-            min-height: 440px;
-            align-items: stretch;
+            align-items: center;
+            height: 46.375rem;
+        }
+        .hero-bg-img {
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 56.8125rem;
+            height: 34.0625rem;
+            object-fit: cover;
+            z-index: 1;
+            transform: none;
+            border-radius: 0;
+            pointer-events: none;
         }
         .hero-left {
-            flex: 0 0 44%;
+            position: relative;
+            width: 38.3125rem;
+            height: 46.375rem;
+            background: #141414;
+            z-index: 2;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            background: #141414;
             padding: 56px 0 56px 56px;
         }
+        .hero-content {
+            position: relative;
+            z-index: 3;
+        }
         .hero-title {
-            font-size: 2.7rem;
+            font-size: 3rem;
             font-weight: 700;
             color: var(--white);
             margin-bottom: 18px;
@@ -151,13 +168,16 @@
             background: #d96f00;
         }
         .hero-right {
-            flex: 1 1 56%;
+            width: 56.8125rem;
+            height: 34.0625rem;
+            flex-shrink: 0;
             display: flex;
             align-items: stretch;
             justify-content: flex-end;
-            overflow: hidden;
+            background: url('/images/Main%20Picture.jpg') lightgray 50% / cover no-repeat;
+            position: relative;
             border-bottom-left-radius: 40px;
-            background: none;
+            overflow: hidden;
         }
         .hero-right img {
             width: 100%;
@@ -175,6 +195,22 @@
             .hero-title { font-size: 2rem; }
             .hero-left, .hero-right { padding: 24px 4vw; }
             .hero { min-height: 320px; }
+            .hero-left {
+                width: 100%;
+                height: auto;
+                padding: 24px 4vw;
+            }
+            .header-left, .header-right {
+                width: 100%;
+                min-width: 0;
+                padding-left: 12px;
+                padding-right: 12px;
+                height: 56px;
+            }
+            header {
+                flex-direction: column;
+                height: auto;
+            }
         }
         .section {
             padding: 56px 8vw;
@@ -411,12 +447,15 @@
             color: var(--gray);
         }
         .stats-section {
-            background: var(--peach);
-            padding: 32px 8vw;
+            background: #FFE4C6;
             display: flex;
             justify-content: center;
-            gap: 64px;
-            flex-wrap: wrap;
+            align-items: center;
+            padding: 4rem 10rem;
+            gap: 10rem;
+            height: 5.81rem;
+            border-radius: 5px;
+            align-self: stretch;
         }
         .stat {
             text-align: center;
@@ -434,18 +473,30 @@
             background: var(--offwhite);
             padding: 56px 8vw 32px 8vw;
             display: flex;
-            gap: 40px;
             justify-content: center;
             align-items: center;
-            flex-wrap: wrap;
+        }
+        .contact-container {
+            display: flex;
+            max-width: 65.9375rem;
+            min-height: 33.875rem;
+            width: 100%;
+            padding: 3.5rem;
+            justify-content: center;
+            align-items: center;
+            gap: 5.44rem;
+            background: #fff;
+            border-radius: 0.25rem;
+            box-shadow: 0px 0px 40px 0px rgba(0,0,0,0.04);
+            align-self: stretch;
         }
         .contact-form {
-            background: var(--white);
-            border-radius: 12px;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.04);
-            padding: 32px 24px;
-            min-width: 320px;
-            max-width: 340px;
+            display: flex;
+            flex-direction: column;
+            flex: 1 1 0;
+            min-width: 260px;
+            max-width: 58.9rem;
+            padding: 0;
         }
         .contact-form input,
         .contact-form textarea {
@@ -455,22 +506,54 @@
             border-radius: 6px;
             font-size: 1rem;
             margin-bottom: 16px;
-            background: var(--offwhite);
+            background: #fff;
+        }
+        .contact-form textarea {
+            min-height: 80px;
         }
         .contact-form .btn {
             background: var(--orange);
             color: var(--white);
             border: none;
-            padding: 12px 24px;
+            padding: 18px 40px;
             border-radius: 6px;
-            font-size: 1rem;
+            font-size: 1.25rem;
             font-weight: 600;
             cursor: pointer;
             transition: background 0.2s;
-            width: 100%;
+            width: fit-content;
+            align-self: flex-start;
+            margin-top: 12px;
         }
         .contact-form .btn:hover {
             background: #d96f00;
+        }
+        .contact-image {
+            flex: 0 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .contact-image img {
+            width: 28.9rem;
+            height: 28.9rem;
+            max-width: 100%;
+            border-radius: 0.25rem;
+            object-fit: cover;
+        }
+        @media (max-width: 900px) {
+            .contact-container {
+                flex-direction: column;
+                gap: 2rem;
+                padding: 2rem 1rem;
+                min-height: unset;
+                max-width: 100%;
+            }
+            .contact-image img {
+                width: 100%;
+                height: auto;
+                max-width: 100%;
+            }
         }
         footer {
             background: var(--black);
@@ -525,9 +608,34 @@
                 width: 100%;
             }
         }
+        .help-title-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+        .help-title {
+            color: #141414;
+            text-align: center;
+            font-family: 'Montserrat', Arial, sans-serif;
+            font-size: 2rem;
+            font-style: normal;
+            font-weight: 500;
+            line-height: normal;
+            margin: 2.5rem 0 1.5rem 0;
+        }
+        .help-underline {
+            width: 50%;
+            max-width: 500px;
+            min-width: 3.5rem;
+            height: 2px;
+            background: #FE8400;
+            margin: 0.2rem 0 0 0;
+            border-radius: 1px;
+        }
     </style>
-</head>
-<body>
+    </head>
+    <body>
     <header>
         <div class="header-left">
             <div class="logo">
@@ -548,13 +656,13 @@
         </div>
     </header>
     <section class="hero">
+        <img class="hero-bg-img" src="/images/Main%20Picture.jpg" alt="Hero Image">
         <div class="hero-left">
-            <div class="hero-title">Professional Care and Sales for Every Ride</div>
-            <div class="hero-desc">Mifta Motor Sport offers everything your ride needs, in one place.</div>
-            <button class="hero-btn">Book Now</button>
-        </div>
-        <div class="hero-right">
-            <img src="/images/Main%20Picture.jpg" alt="Hero Image">
+            <div class="hero-content">
+                <div class="hero-title">Professional Care and Sales for Every Ride</div>
+                <div class="hero-desc">Mifta Motor Sport offers everything your ride needs, in one place.</div>
+                <button class="hero-btn">Book Now</button>
+            </div>
         </div>
     </section>
     <section class="section about" id="about">
@@ -656,13 +764,22 @@
             <div class="label">Rental Locations</div>
         </div>
     </section>
+    <div class="help-title-container">
+        <div class="help-title">Need Help from Mifta Motor Sport?</div>
+        <div class="help-underline"></div>
+    </div>
     <section class="contact-section" id="help">
-        <form class="contact-form">
-            <input type="text" placeholder="Your Name*" required>
-            <input type="text" placeholder="Your Phone Number*" required>
-            <textarea placeholder="Your Message" required></textarea>
-            <button class="btn" type="submit">Send A Message</button>
-        </form>
+        <div class="contact-container">
+            <form class="contact-form">
+                <input type="text" placeholder="Your Name*" required>
+                <input type="text" placeholder="Your Phone Number*" required>
+                <textarea placeholder="Your Message" required></textarea>
+                <button class="btn" type="submit">Send A Message</button>
+            </form>
+            <div class="contact-image">
+                <img src="/images/contact.jpg" alt="Contact" />
+            </div>
+        </div>
     </section>
     <footer>
         <div class="footer-row">
@@ -676,5 +793,5 @@
             <a href="#"><span style="font-family:Arial;">&#xf0e1;</span></a>
         </div>
     </footer>
-</body>
+    </body>
 </html>
