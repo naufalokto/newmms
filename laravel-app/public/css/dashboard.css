@@ -216,10 +216,9 @@ nav a:hover {
     text-align: center;
 }
 .section-divider {
-    width: 251px;
+    width: 259px;
     height: 3px;
     background: var(--orange);
-    color: var(--orange);
     margin: 6px auto 24px auto;
     border-radius: 2px;
     margin-bottom: 3em;
@@ -297,7 +296,6 @@ nav a:hover {
     text-align: center;
     font-size: 1.5rem;
     font-weight: 700;
-    margin-bottom: 32px;
 }
 .services {
     display: flex;
@@ -305,13 +303,33 @@ nav a:hover {
     justify-content: center;
     flex-wrap: wrap;
 }
+.services-description {
+    text-align: center;
+    font-size: 1.1rem;
+    color: #ffffff;
+    font-weight: 200;
+    margin-bottom: 32px;
+}
+.services-description p {
+    max-width: 450px;
+    margin: 0 auto;
+}
+.services-whiteground {
+    background: #fbfbfb;
+    color: var(--black2);
+    padding: 32px 24px;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+    margin-bottom: 32px;
+    width: 100%;
+}
 .service-card {
     background: var(--white);
     color: var(--black2);
     border-radius: 6px;
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
     padding: 32px 24px;
-    width: 260px;
+    width: 277px;
     height: 322px;
     text-align: center;
 }
