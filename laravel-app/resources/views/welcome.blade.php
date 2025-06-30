@@ -67,6 +67,7 @@
     </section>
     <section class="services-section" id="services">
         <h2 class="services-title">Our Premium Services</h2>
+        <hr class="section-divider">
         <div class="services">
             <div class="service-card">
                 <div><svg width="32" height="32" fill="currentColor" viewBox="0 0 24 24"><path d="M19.07 4.93a10 10 0 1 0 0 14.14a10 10 0 0 0 0-14.14zm-7.07 13a8 8 0 1 1 8-8a8 8 0 0 1-8 8zm1-13h-2v2h2zm0 14h-2v2h2zm7-7h-2v2h2zm-14 0H3v2h2zm9.07-5.07l-1.41 1.41l1.41 1.41l1.41-1.41zm-8.48 8.48l-1.41 1.41l1.41 1.41l1.41-1.41zm8.48 1.41l1.41-1.41l-1.41-1.41l-1.41 1.41zm-8.48-8.48l1.41-1.41l-1.41-1.41l-1.41 1.41z"/></svg></div>

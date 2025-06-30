@@ -308,10 +308,11 @@ nav a:hover {
 .service-card {
     background: var(--white);
     color: var(--black2);
-    border-radius: 12px;
+    border-radius: 6px;
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
     padding: 32px 24px;
     width: 260px;
+    height: 322px;
     text-align: center;
 }
 .service-card svg {
