@@ -4,11 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mifta Motor Sport</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Montserrat:wght@500;700&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
     <style>
-        
+        .appointment-title-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 6rem;
+        }
+        .appointment-title {
+            margin-bottom: 2px;
+        }
+        .appointment-title-underline-svg {
+            margin-top: 0;
+        }
     </style>
     </head>
     <body>
@@ -32,7 +43,6 @@
         </div>
     </header>
     <section class="hero">
-        <img class="hero-bg-img" src="/images/Main%20Picture.jpg" alt="Hero Image">
         <div class="hero-left">
             <div class="hero-title">
                 <h1>Professional Care and Sales for Every Ride</h1>
@@ -67,36 +77,53 @@
     <section class="services-section" id="services">
         <h2 class="services-title">Our Premium Services</h2>
         <hr class="section-divider">
-        <div class="services">
-            <div class="service-card">
-                <div><svg width="32" height="32" fill="currentColor" viewBox="0 0 24 24"><path d="M19.07 4.93a10 10 0 1 0 0 14.14a10 10 0 0 0 0-14.14zm-7.07 13a8 8 0 1 1 8-8a8 8 0 0 1-8 8zm1-13h-2v2h2zm0 14h-2v2h2zm7-7h-2v2h2zm-14 0H3v2h2zm9.07-5.07l-1.41 1.41l1.41 1.41l1.41-1.41zm-8.48 8.48l-1.41 1.41l1.41 1.41l1.41-1.41zm8.48 1.41l1.41-1.41l-1.41-1.41l-1.41 1.41zm-8.48-8.48l1.41-1.41l-1.41-1.41l-1.41 1.41z"/></svg></div>
-                <h3>Expert Bike Care</h3>
-                <p>Pro maintenance for peak performance.</p>
+        <div class="services" style="display: flex; gap: 1.5rem; justify-content: center; align-items: flex-start;">
+            <div class="service-card" style="background: #FFF; border-radius: 0.25rem; box-shadow: 0px 5px 20px 0px rgba(0,0,0,0.07); width: 17.3125rem; height: 20.125rem; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.125rem; text-align: center;">
+                <img src="/images/fluent-mdl2_repair.jpg" alt="Expert Bike Care" style="width:56px; height:56px; object-fit:contain; margin-bottom:0.5rem;" />
+                <h3 style="font-size: 1.12rem; font-weight: 600; margin-bottom: 0.25rem;">Expert Bike Care</h3>
+                <p style="font-size: 0.97rem; color: #575757;">Pro maintenance for peak performance.</p>
             </div>
-            <div class="service-card">
-                <div><svg width="32" height="32" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm1 17.93V20h-2v-.07A8.12 8.12 0 0 1 4.07 13H6v-2H4.07A8.12 8.12 0 0 1 11 4.07V6h2V4.07A8.12 8.12 0 0 1 19.93 11H18v2h1.93A8.12 8.12 0 0 1 13 19.93z"/></svg></div>
-                <h3>Quality Parts</h3>
-                <p>Reliable components for lasting performance.</p>
+            <div class="service-card" style="background: #FFF; border-radius: 0.25rem; box-shadow: 0px 5px 20px 0px rgba(0,0,0,0.07); width: 17.3125rem; height: 20.125rem; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.125rem; text-align: center;">
+                <img src="/images/mdi_motor-outline.png" alt="Quality Parts" style="width:56px; height:56px; object-fit:contain; margin-bottom:0.5rem;" />
+                <h3 style="font-size: 1.12rem; font-weight: 600; margin-bottom: 0.25rem;">Quality Parts</h3>
+                <p style="font-size: 0.97rem; color: #575757;">Reliable components for lasting performance.</p>
             </div>
-            <div class="service-card">
-                <div><svg width="32" height="32" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm1 17.93V20h-2v-.07A8.12 8.12 0 0 1 4.07 13H6v-2H4.07A8.12 8.12 0 0 1 11 4.07V6h2V4.07A8.12 8.12 0 0 1 19.93 11H18v2h1.93A8.12 8.12 0 0 1 13 19.93z"/></svg></div>
-                <h3>Showroom</h3>
-                <p>Discover premium bikes, ready to ride.</p>
+            <div class="service-card" style="background: #FFF; border-radius: 0.25rem; box-shadow: 0px 5px 20px 0px rgba(0,0,0,0.07); width: 17.3125rem; height: 20.125rem; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.125rem; text-align: center;">
+                <img src="/images/fluent-mdl2_repair.jpg" alt="Showroom" style="width:56px; height:56px; object-fit:contain; margin-bottom:0.5rem;" />
+                <h3 style="font-size: 1.12rem; font-weight: 600; margin-bottom: 0.25rem;">Service</h3>
+                <p style="font-size: 0.97rem; color: #575757;">Service premium bikes and other motorbikes for ready to ride.</p>
             </div>
         </div>
     </section>
-    <section class="appointment-section" id="appointment">
+    <!-- Book Your Appointment Title and Underline OUTSIDE the peach background -->
+    <div class="appointment-title-container">
         <h2 class="appointment-title">Book Your Appointment</h2>
+        <span class="appointment-title-underline-svg" style="height:0rem;align-self:stretch;display:block;">
+            <svg width="398" height="2" viewBox="0 0 398 2" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M1 1L397 0.999965" stroke="#FE8400" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+        </span>
+    </div>
+    <section class="appointment-section" id="appointment" style="background: #FFE4C6;">
         <form class="appointment-form">
-            <input type="date" placeholder="Service Date" required>
-            <input type="text" placeholder="Service Location" required>
-            <select required>
-                <option value="">Service Type</option>
-                <option>Maintenance</option>
-                <option>Repair</option>
-                <option>Upgrade</option>
-            </select>
-            <textarea placeholder="Describe Your Issue" required></textarea>
+            <div class="input-group">
+                <input type="date" placeholder="Service Date" required>
+            </div>
+            <div class="input-group">
+                <input type="text" placeholder="Service Location" required>
+            </div>
+            <div class="input-group">
+                <select required>
+                    <option value="">Service Type</option>
+                    <option>Maintenance</option>
+                    <option>Repair</option>
+                    <option>Upgrade</option>
+                </select>
+                <img src="/images/chevron.png" alt="Dropdown Icon" class="dropdown-icon">
+            </div>
+            <div class="input-group input-group-textarea">
+                <textarea placeholder="Describe Your Issue" required></textarea>
+            </div>
             <button class="btn" type="submit">Book Now</button>
         </form>
     </section>
