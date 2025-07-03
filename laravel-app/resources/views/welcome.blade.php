@@ -43,7 +43,7 @@
             <button class="hero-btn">Book Now</button>
         </div>
         <div class="hero-right">    
-         <img src="/images/Main%20Picture.jpg" alt="Hero Image">
+         <img src="/images/tampilan1.png" alt="Hero Image">
         </div>
        
     </section>
@@ -53,7 +53,7 @@
             <hr class="section-divider">
             <div class="about-text">
                 <div class="about-image">
-                    <img src="{{asset('images/Gambar-Peralatan-Bengkel.jpg')}}" alt="About Us Image">
+                    <img src="{{asset('images/tampilan2.png')}}" alt="About Us Image">
                 </div>
                 <div class="about-description">
                     <p>Mifta Motor Sport is your one-stop destination for premium motorbike service and trusted sales. We combine expert care with a curated selection of high-performance motorcycles to keep every ride smooth, powerful, and reliable.
@@ -88,20 +88,40 @@
     <section class="appointment-section" id="appointment">
         <h2 class="appointment-title">Book Your Appointment</h2>
         <form class="appointment-form">
-            <input type="date" placeholder="Service Date" required>
-            <input type="text" placeholder="Service Location" required>
-            <select required>
-                <option value="">Service Type</option>
-                <option>Maintenance</option>
-                <option>Repair</option>
-                <option>Upgrade</option>
-            </select>
-            <textarea placeholder="Describe Your Issue" required></textarea>
+            <div class="input-group">
+                <input type="date" placeholder="Service Date" required>
+            </div>
+            <div class="input-group">
+                <select required>
+                    <option value="">Service Location</option>
+                    <option>Pakis</option>
+                    <option>Sulfat</option>
+                </select>
+                <img src="/images/chevron.png" alt="Dropdown Icon" class="dropdown-icon">
+            </div>
+            <div class="input-group">
+                <select required>
+                    <option value="">Service Type</option>
+                    <option>Service Daily</option>
+                    <option>Other</option>
+                </select>
+                <img src="/images/chevron.png" alt="Dropdown Icon" class="dropdown-icon">
+            </div>
+            <div class="input-group input-group-textarea">
+                <textarea placeholder="Describe Your Issue" required></textarea>
+            </div>
             <button class="btn" type="submit">Book Now</button>
         </form>
     </section>
     <section class="collection-section" id="product">
-        <h2 class="collection-title">Our Exclusive Collection</h2>
+        <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 2.5rem;">
+            <h2 class="collection-title-custom">Our Exclusive Collection</h2>
+            <span class="collection-underline">
+                <svg width="100%" height="2" viewBox="0 0 352 2" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="352" height="2" rx="1" fill="#FE8400"/>
+                </svg>
+            </span>
+        </div>
         <div class="collections">
             <div class="collection-card">
                 <div class="info">
@@ -130,17 +150,31 @@
         </div>
         <button class="see-more-btn">See More</button>
     </section>
+    <!-- Testimonial Section sesuai Figma -->
     <section class="testimonial-section" id="testimonial">
-        <h2 class="testimonial-title">What Our Clients Say?</h2>
-        <div class="testimonials">
-            <div class="testimonial-card">
-                <h4>Sophia Lane</h4>
-                <p>The service at Mifta Motor Sport was quick and professional. My bike feels smoother than ever.</p>
+        <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 2.5rem;">
+            <h2 class="testimonial-title-custom">What Our Clients Say?</h2>
+            <span class="testimonial-underline">
+                <svg width="100%" height="2" viewBox="0 0 352 2" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="352" height="2" rx="1" fill="#FE8400"/>
+                </svg>
+            </span>
+        </div>
+        <div class="testimonial-cards-row">
+            <button class="testimonial-nav-btn">&#8592;</button>
+            <div style="display: flex; gap: 2rem;">
+                <div class="testimonial-card-custom">
+                    <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Sophia Lane" class="testimonial-avatar">
+                    <h4 style="font-family: 'Montserrat', sans-serif; font-size: 1.1rem; font-weight: 600; color: #141414; margin-bottom: 0.5rem;">Sophia Lane</h4>
+                    <p style="font-size: 1rem; color: #575757; text-align: center;">The service at Mifta Motor Sport was quick and professional. My bike feels smoother than ever.</p>
+                </div>
+                <div class="testimonial-card-custom">
+                    <img src="https://randomuser.me/api/portraits/men/46.jpg" alt="Dylan Scott" class="testimonial-avatar">
+                    <h4 style="font-family: 'Montserrat', sans-serif; font-size: 1.1rem; font-weight: 600; color: #141414; margin-bottom: 0.5rem;">Dylan Scott</h4>
+                    <p style="font-size: 1rem; color: #575757; text-align: center;">I found my dream bike at Mifta Motor Sport. The staff were helpful, and the whole process was easy.</p>
+                </div>
             </div>
-            <div class="testimonial-card">
-                <h4>Dylan Scott</h4>
-                <p>I found my dream bike at Mifta Motor Sport. The staff were helpful, and the whole process was easy.</p>
-            </div>
+            <button class="testimonial-nav-btn">&#8594;</button>
         </div>
     </section>
     <section class="stats-section">
@@ -157,27 +191,35 @@
             <div class="label">Rental Locations</div>
         </div>
     </section>
-    <div class="help-title-container">
-        <div class="help-title">Need Help from Mifta Motor Sport?</div>
-        <div class="help-underline"></div>
-    </div>
-    <section class="contact-section" id="help">
-        <div class="contact-container">
-            <form class="contact-form">
+    <!-- Help Section sesuai Figma -->
+    <section class="help-section-bg" id="help">
+        <div class="help-bg-half"></div>
+        <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 2.5rem; position: relative; z-index:2;">
+            <h2 class="help-title-custom">Need Help from Mifta Motor Sport?</h2>
+            <span class="help-underline">
+                <svg width="100%" height="2" viewBox="0 0 352 2" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="352" height="2" rx="1" fill="#FE8400"/>
+                </svg>
+            </span>
+        </div>
+        <div class="help-container-custom">
+            <form class="contact-form" style="box-shadow:none; border-radius:1.5rem;">
                 <input type="text" placeholder="Your Name*" required>
                 <input type="text" placeholder="Your Phone Number*" required>
                 <textarea placeholder="Your Message" required></textarea>
                 <button class="btn" type="submit">Send A Message</button>
             </form>
             <div class="contact-image">
-                <img src="/images/contact.jpg" alt="Contact" />
+                <img src="/images/contact.jpg" alt="Contact" style="border-radius:1.5rem; width:320px; max-width:100%; object-fit:cover;">
             </div>
         </div>
     </section>
     <footer>
         <div class="footer-row">
-            <div class="footer-logo">Mifta Motor Sport</div>
-            <div class="footer-contact">Need help renting a car? Please call <span style="color:var(--orange);">+1-333-444-5555</span></div>
+            <div class="footer-logo">
+                <img src="/images/logo.png" alt="Logo" />
+            </div>
+            <div class="footer-contact">Need help? Please call <span style="color:var(--orange);">+62 812-3456-7890</span></div>
         </div>
         <div class="footer-social">
             <a href="#"><span style="font-family:Arial;">&#xf09a;</span></a>
