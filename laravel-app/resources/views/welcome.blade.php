@@ -32,7 +32,6 @@
         </div>
     </header>
     <section class="hero">
-        <img class="hero-bg-img" src="/images/Main%20Picture.jpg" alt="Hero Image">
         <div class="hero-left">
             <div class="hero-title">
                 <h1>Professional Care and Sales for Every Ride</h1>
