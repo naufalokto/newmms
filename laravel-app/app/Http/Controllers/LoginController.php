@@ -29,9 +29,8 @@ class LoginController extends Controller
         }
 
         \Log::info('Login berhasil', ['username' => $user->username, 'peran' => $user->peran]);
-        \Auth::login($user); // untuk session login biasa
-
-        // Redirect sesuai peran
+        \Auth::login($user); 
+        
         if ($user->peran === 'cust') {
             return redirect('/customer/dashboard');
         } elseif ($user->peran === 'admin') {

@@ -21,19 +21,18 @@ class RoleMiddleware
     {
         $user = Auth::user();
 
-        // Lewatkan jika sedang menuju route tertentu seperti /login atau /register
+        
         if (in_array($request->path(), ['login', 'register'])) {
             return $next($request);
         }
 
         if (!$user) {
-            // Jika belum login, redirect ke login
+
             return redirect('/login')->withErrors(['username' => 'Silakan login terlebih dahulu.']);
         }
 
         if (!in_array($user->peran, $roles)) {
-            // Jika peran tidak sesuai, tampilkan error 403
-            abort(403, 'Akses tidak diizinkan.');
+            return abort(403, 'Akses tidak diizinkan.');
         }
 
         return $next($request);
