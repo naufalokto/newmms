@@ -60,7 +60,7 @@
     <div class="section about" id="about">
         <div class="about-content">
             <h2 class="section-title" style="text-align:center; ">Get to Know Us</h2>
-            <div class="section-divider"></div> 
+            <div class="section-divider"></div>
             <div class="about-text">
                 <div class="about-image">
                     <img src="{{asset('images/tampilan2.png')}}" alt="About Us Image">
