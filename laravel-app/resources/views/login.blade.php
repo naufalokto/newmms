@@ -16,9 +16,10 @@
     </a>
     <div class="login-container">
         <div class="login-form-section">
-            <h2>Welcome Back</h2>
-            <p>Back on track and ready for more adventures, always with Mifta Motor Sport by your side.</p>
-            <form class="login-form">
+            <h2>Login to Your Account</h2>
+            <p>Enter your username and password to access your account.</p>
+            <form class="login-form" method="POST" action="{{ url('/login') }}">
+                @csrf
                 <div>
                     <label for="username">Username</label>
                     <div class="input-wrapper">
@@ -44,8 +45,7 @@
             <svg class="ellipse-bg-large" width="47" height="45" viewBox="0 0 47 45" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M23.5 0.5C36.2233 0.5 46.5 10.37 46.5 22.5C46.5 34.63 36.2233 44.5 23.5 44.5C10.7767 44.5 0.5 34.63 0.5 22.5C0.5 10.37 10.7767 0.5 23.5 0.5Z" stroke="white" stroke-opacity="0.5" stroke-width="1"/>
             </svg>
-            <!-- persiapan untuk gambar -->
         </div>
     </div>
 </body>
-</html> 
+</html>
