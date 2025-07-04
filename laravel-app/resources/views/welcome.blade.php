@@ -42,7 +42,7 @@
             </div>
         </div>
     </header>
-    <section class="hero">
+    <div class="hero">
         <div class="hero-left">
             <div class="hero-title">
                 <h1>Professional Care and Sales for Every Ride</h1>
@@ -56,11 +56,11 @@
          <img src="/images/tampilan1.png" alt="Hero Image">
         </div>
        
-    </section>
-    <section class="section about" id="about">
+    </div>
+    <div class="section about" id="about">
         <div class="about-content">
             <h2 class="section-title" style="text-align:center; ">Get to Know Us</h2>
-            <hr class="section-divider">
+            <div class="section-divider"></div> 
             <div class="about-text">
                 <div class="about-image">
                     <img src="{{asset('images/tampilan2.png')}}" alt="About Us Image">
@@ -73,10 +73,10 @@
                 </div>  
             </div>
         </div>
-    </section>
-    <section class="services-section" id="services">
+    </div>
+    <div class="services-section" id="services">
         <h2 class="services-title">Our Premium Services</h2>
-        <hr class="section-divider">
+        <div class="section-divider"></div>
         <div class="services" style="display: flex; gap: 1.5rem; justify-content: center; align-items: flex-start;">
             <div class="service-card" style="background: #FFF; border-radius: 0.25rem; box-shadow: 0px 5px 20px 0px rgba(0,0,0,0.07); width: 17.3125rem; height: 20.125rem; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.125rem; text-align: center;">
                 <img src="/images/fluent-mdl2_repair.jpg" alt="Expert Bike Care" style="width:56px; height:56px; object-fit:contain; margin-bottom:0.5rem;" />
@@ -94,7 +94,7 @@
                 <p style="font-size: 0.97rem; color: #575757;">Service premium bikes and other motorbikes for ready to ride.</p>
             </div>
         </div>
-    </section>
+    </div>
     <!-- Book Your Appointment Title and Underline OUTSIDE the peach background -->
     <div class="appointment-title-container">
         <h2 class="appointment-title">Book Your Appointment</h2>
@@ -104,7 +104,7 @@
             </svg>
         </span>
     </div>
-    <section class="appointment-section" id="appointment" style="background: #FFE4C6;">
+    <div class="appointment-section" id="appointment" style="background: #FFE4C6;">
         <form class="appointment-form">
             <div class="input-group">
                 <input type="date" placeholder="Service Date" required>
@@ -130,8 +130,8 @@
             </div>
             <button class="btn" type="submit">Book Now</button>
         </form>
-    </section>
-    <section class="collection-section" id="product">
+    </div>
+    <div class="collection-section" id="product">
         <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 2.5rem;">
             <h2 class="collection-title-custom">Our Exclusive Collection</h2>
             <span class="collection-underline">
@@ -167,9 +167,9 @@
             </div>
         </div>
         <button class="see-more-btn">See More</button>
-    </section>
+    </div>
     <!-- Testimonial Section sesuai Figma -->
-    <section class="testimonial-section" id="testimonial">
+    <div class="testimonial-section" id="testimonial">
         <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 2.5rem;">
             <h2 class="testimonial-title-custom">What Our Clients Say?</h2>
             <span class="testimonial-underline">
@@ -194,8 +194,8 @@
             </div>
             <button class="testimonial-nav-btn">&#8594;</button>
         </div>
-    </section>
-    <section class="stats-section">
+    </div>
+    <div class="stats-section">
         <div class="stat">
             <div class="number">450+</div>
             <div class="label">Bikes Under Service</div>
@@ -208,9 +208,9 @@
             <div class="number">750+</div>
             <div class="label">Rental Locations</div>
         </div>
-    </section>
+    </div>
     <!-- Help Section sesuai Figma -->
-    <section class="help-section-bg" id="help">
+    <div class="help-section-bg" id="help">
         <div class="help-bg-half"></div>
         <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 2.5rem; position: relative; z-index:2;">
             <h2 class="help-title-custom">Need Help from Mifta Motor Sport?</h2>
@@ -231,7 +231,7 @@
                 <img src="/images/contact.jpg" alt="Contact" style="border-radius:1.5rem; width:320px; max-width:100%; object-fit:cover;">
             </div>
         </div>
-    </section>
+    </div>
     <footer>
         <div class="footer-row">
             <div class="footer-logo">
