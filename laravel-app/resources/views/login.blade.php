@@ -16,8 +16,8 @@
     </a>
     <div class="login-container">
         <div class="login-form-section">
-            <h2>Login to Your Account</h2>
-            <p>Enter your username and password to access your account.</p>
+            <h2>Welcome Back</h2>
+            <p>Back on track and ready for more adventures, always with Mifta Motor Sport by your side.</p>
             <form class="login-form">
                 <div>
                     <label for="username">Username</label>
