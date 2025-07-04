@@ -27,7 +27,7 @@
             </nav>
             <div style="display: flex; gap: 0.5rem;">
                 <a href="/login" class="btn-login">Login</a>
-                <a href="/signup" class="btn-register">Register</a>
+                <a href="/register" class="btn-register">Register</a>
             </div>
         </div>
     </header>
