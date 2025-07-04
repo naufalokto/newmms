@@ -18,7 +18,8 @@
         <div class="login-form-section">
             <h2>Login to Your Account</h2>
             <p>Enter your username and password to access your account.</p>
-            <form class="login-form">
+            <form class="login-form" method="POST" action="{{ url('/login') }}">
+                @csrf
                 <div>
                     <label for="username">Username</label>
                     <div class="input-wrapper">
