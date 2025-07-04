@@ -5,7 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mifta Motor Sport</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
+    <style>
+        
+    </style>
     </head>
     <body>
     <header>
@@ -28,6 +32,7 @@
         </div>
     </header>
     <section class="hero">
+        <img class="hero-bg-img" src="/images/Main%20Picture.jpg" alt="Hero Image">
         <div class="hero-left">
             <div class="hero-title">
                 <h1>Professional Care and Sales for Every Ride</h1>
@@ -45,7 +50,7 @@
     <section class="section about" id="about">
         <div class="about-content">
             <h2 class="section-title" style="text-align:center; ">Get to Know Us</h2>
-            <div class="section-divider"></div>
+            <hr class="section-divider">
             <div class="about-text">
                 <div class="about-image">
                     <img src="{{asset('images/Gambar-Peralatan-Bengkel.jpg')}}" alt="About Us Image">
@@ -60,15 +65,9 @@
         </div>
     </section>
     <section class="services-section" id="services">
-        <div class="services-blackground">
-            <h2 class="services-title">Our Premium Services</h2>
-            <div class="section-divider"></div>
-            <div class="services-description">
-                <p>Mifta Motor Sport offers trusted service, quality spare parts, and a complete showroom for every rider.</p>
-            </div>
-        </div>
-        <div class="services-whiteground">
-            <div class="services">
+        <h2 class="services-title">Our Premium Services</h2>
+        <hr class="section-divider">
+        <div class="services">
             <div class="service-card">
                 <div><svg width="32" height="32" fill="currentColor" viewBox="0 0 24 24"><path d="M19.07 4.93a10 10 0 1 0 0 14.14a10 10 0 0 0 0-14.14zm-7.07 13a8 8 0 1 1 8-8a8 8 0 0 1-8 8zm1-13h-2v2h2zm0 14h-2v2h2zm7-7h-2v2h2zm-14 0H3v2h2zm9.07-5.07l-1.41 1.41l1.41 1.41l1.41-1.41zm-8.48 8.48l-1.41 1.41l1.41 1.41l1.41-1.41zm8.48 1.41l1.41-1.41l-1.41-1.41l-1.41 1.41zm-8.48-8.48l1.41-1.41l-1.41-1.41l-1.41 1.41z"/></svg></div>
                 <h3>Expert Bike Care</h3>
@@ -85,9 +84,6 @@
                 <p>Discover premium bikes, ready to ride.</p>
             </div>
         </div>
-        </div>
-        
-        
     </section>
     <section class="appointment-section" id="appointment">
         <h2 class="appointment-title">Book Your Appointment</h2>
