@@ -61,7 +61,7 @@ header {
     gap: 0;
 }
 .logo img {
-    height: 70px;
+    height: 40px;
     width: auto;
     display: block;
 }
@@ -347,163 +347,52 @@ nav a:hover {
     font-size: 0.97rem;
     color: var(--gray);
 }
-.appointment-title-underline {
-    width: max-content;
-    min-width: 60px;
-    height: 4px;
-    background: var(--orange);
-    margin: 0.3rem auto 1.2rem auto;
-    border-radius: 2px;
-    display: block;
-}
-.appointment-title {
-    display: inline-block;
-    position: relative;
-}
-.appointment-title-underline-svg {
-    align-self: stretch;
-    display: block;
-    height: 0rem;
-    margin-top: 0.5rem;
-    margin-bottom: 5;
-    margin-left: auto;
-    margin-right: auto;
-}
 .appointment-section {
-    background: var(--peach) !important;
-    padding-top: 4rem;
-    padding-bottom: 5rem;
-    padding-left: 6vw;
-    padding-right: 6vw;
+    background: #fafafa;
+    padding: 48px 8vw;
 }
 .appointment-title {
-    color: #141414;
     text-align: center;
-    font-family: 'Montserrat', Arial, sans-serif;
-    font-size: 2rem;
-    font-weight: 500;
-    line-height: normal;
-    margin-bottom: 2rem;
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 24px;
 }
 .appointment-form {
     display: flex;
     flex-wrap: wrap;
-    gap: 18px;
+    gap: 16px;
     justify-content: center;
-    align-items: flex-start;
-    background: none;
-    max-width: 1200px;
+    align-items: center;
+    max-width: 900px;
     margin: 0 auto;
 }
-.input-group {
-    display: flex;
-    align-items: center;
+.appointment-form input,
+.appointment-form select,
+.appointment-form textarea {
+    padding: 12px 14px;
+    border: 1px solid var(--light-gray);
+    border-radius: 6px;
+    font-size: 1rem;
+    min-width: 180px;
     background: var(--white);
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-    padding: 0 12px;
-    min-width: 240px;
-    max-width: 320px;
-    position: relative;
-    height: 56px;
-    flex: 1 1 260px;
 }
-.input-group input,
-.input-group select {
-    border: none;
-    outline: none;
-    background: transparent;
-    font-size: 1.08rem;
-    padding: 16px 8px 16px 40px;
-    flex: 1;
-    min-width: 0;
-    height: 56px;
-    color: var(--black2);
-}
-.input-group select {
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    cursor: pointer;
-}
-.input-group .input-icon {
-    position: absolute;
-    left: 14px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 20px;
-    height: 20px;
-    opacity: 0.7;
-    pointer-events: none;
-}
-.input-group .dropdown-icon {
-    position: absolute;
-    right: 14px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 18px;
-    height: 18px;
-    pointer-events: none;
-    opacity: 0.7;
-}
-.input-group-textarea {
-    align-items: flex-start;
-    min-width: 100%;
-    max-width: 100%;
-    height: auto;
-    margin-top: 8px;
-    margin-bottom: 8px;
-    position: relative;
-}
-.input-group-textarea .input-icon {
-    top: 18px;
-    left: 14px;
-    transform: none;
-}
-.input-group-textarea textarea {
-    border: none;
-    outline: none;
-    background: transparent;
-    font-size: 1.08rem;
-    padding: 16px 8px 16px 40px;
-    min-width: 100%;
-    min-height: 56px;
-    resize: vertical;
-    color: var(--black2);
+.appointment-form textarea {
+    min-width: 260px;
+    min-height: 40px;
 }
 .appointment-form .btn {
     background: var(--orange);
     color: var(--white);
     border: none;
-    padding: 16px 40px;
-    border-radius: 8px;
-    font-size: 1.1rem;
+    padding: 14px 32px;
+    border-radius: 6px;
+    font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
     transition: background 0.2s;
-    margin-left: 12px;
-    margin-top: 8px;
-    height: 56px;
-    align-self: flex-end;
 }
 .appointment-form .btn:hover {
     background: #d96f00;
-}
-@media (max-width: 900px) {
-    .appointment-form {
-        flex-direction: column;
-        gap: 12px;
-        align-items: stretch;
-    }
-    .input-group, .input-group-textarea {
-        min-width: 100%;
-        max-width: 100%;
-    }
-    .appointment-form .btn {
-        width: 100%;
-        margin-left: 0;
-        align-self: stretch;
-    }
 }
 .collection-section {
     padding: 56px 8vw 32px 8vw;
@@ -621,31 +510,24 @@ nav a:hover {
     color: var(--gray);
 }
 .stats-section {
-    background: #FFE4C6;
-    padding: 4rem 10rem;
+    background: var(--peach);
+    padding: 32px 8vw;
     display: flex;
     justify-content: center;
-    align-items: center;
-    gap: 5rem;
-    align-self: stretch;
+    gap: 64px;
     flex-wrap: wrap;
-    margin-top: 5rem;
-    margin-bottom: 5rem;
 }
 .stat {
     text-align: center;
 }
 .stat .number {
-    font-size: 2.5rem;
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 500;
-    color: #141414;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--orange);
 }
 .stat .label {
-    font-size: 1.5rem;
-    font-family: 'Poppins', sans-serif;
-    font-weight: 400;
-    color: #575757;
+    font-size: 1rem;
+    color: var(--black2);
 }
 .contact-section {
     background: var(--offwhite);
@@ -690,7 +572,7 @@ nav a:hover {
     background: #d96f00;
 }
 footer {
-    background: #141414;
+    background: var(--black);
     color: var(--white);
     padding: 24px 8vw 12px 8vw;
     text-align: center;
@@ -703,20 +585,10 @@ footer {
     align-items: center;
     flex-wrap: wrap;
     gap: 16px;
-    background: #141414;
-    padding: 0 0 0 0;
 }
 .footer-logo {
     font-weight: 700;
     font-size: 1.1rem;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-.footer-logo img {
-    height: 70px;
-    width: auto;
-    display: block;
 }
 .footer-contact {
     color: var(--orange);
@@ -765,247 +637,4 @@ footer {
     .hero-img {
         width: 100%;
     }
-    .appointment-form {
-        flex-direction: column;
-        gap: 12px;
-    }
-    .input-group {
-        width: 100%;
-        min-width: unset;
-    }
-}
-.appointment-title-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 3rem;
-    margin-bottom: 0.5rem;
-}
-.help-title {
-    color: #141414;
-    text-align: center;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 2rem;
-    font-weight: 500;
-    line-height: normal;
-}
-
-/* Testimonial Section Figma Style */
-.testimonial-title-custom {
-    color: #141414;
-    text-align: center;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 2rem;
-    font-weight: 500;
-    margin-bottom: 0.5rem;
-}
-
-.testimonial-underline {
-    display: block;
-    margin: 0 auto 2.5rem auto;
-    width: 22rem;
-    max-width: 100%;
-    height: 2px;
-    background: none;
-    position: relative;
-}
-
-.testimonial-cards-row {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 2rem;
-}
-
-.testimonial-card-custom {
-    background: #fff;
-    border: 1px solid #E0E0E0;
-    border-radius: 1rem;
-    padding: 2rem 2.5rem;
-    min-width: 18rem;
-    max-width: 22rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-}
-
-.testimonial-avatar {
-    width: 72px;
-    height: 72px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin-bottom: 1rem;
-    border: 3px solid #fff;
-    box-shadow: 0 0 0 2px #FE8400;
-}
-
-.testimonial-nav-btn {
-    background: none;
-    border: none;
-    font-size: 2rem;
-    color: #FE8400;
-    cursor: pointer;
-    transition: color 0.2s;
-}
-.testimonial-nav-btn:hover {
-    color: #d96f00;
-}
-
-/* Our Exclusive Collection Section Figma Style */
-.collection-title-custom {
-    color: #141414;
-    text-align: center;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 2rem;
-    font-weight: 500;
-    margin-bottom: 0.5rem;
-}
-
-.collection-underline {
-    display: block;
-    margin: 0 auto 2.5rem auto;
-    width: 22rem;
-    max-width: 100%;
-    height: 2px;
-    background: none;
-    position: relative;
-}
-
-/* Help Section Figma Style */
-.help-title-custom {
-    color: #141414;
-    text-align: center;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 2rem;
-    font-weight: 500;
-    margin-bottom: 0.5rem;
-}
-.help-underline {
-    display: block;
-    margin: 0 auto 2.5rem auto;
-    width: 28rem;
-    max-width: 100%;
-    height: 2px;
-    background: none;
-    position: relative;
-}
-.help-section-bg {
-    background: transparent;
-    position: relative;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-.help-section-bg .help-bg-half {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    height: 60%;
-    background: #141414;
-    z-index: 1;
-}
-.help-section-bg .help-container-custom {
-    position: relative;
-    z-index: 2;
-    margin: 0 0 4rem 0;
-    box-shadow: 0px 0px 40px 0px rgba(0, 0, 0, 0.05);
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    gap: 5.4375rem;
-    padding: 2.5rem 2rem;
-    background: #fff;
-    border-radius: 0.25rem;
-    max-width: 900px;
-    width: 100%;
-    min-width: 320px;
-    top: 0;
-}
-.help-logo {
-    position: absolute;
-    left: 2.5rem;
-    bottom: 2.5rem;
-    width: 70px;
-    height: auto;
-    z-index: 3;
-}
-@media (max-width: 900px) {
-    .help-section-bg .help-container-custom {
-        flex-direction: column;
-        gap: 2rem;
-        padding: 2rem 1rem;
-        max-width: 98vw;
-    }
-    .help-logo {
-        left: 1rem;
-        bottom: 1rem;
-        width: 50px;
-    }
-    .help-underline {
-        width: 90%;
-    }
-}
-.help-container-custom .contact-form {
-    display: flex;
-    flex-direction: column;
-    gap: 0.625rem;
-    width: 23.3125rem;
-    min-width: 220px;
-    max-width: 100%;
-    background: transparent;
-    box-shadow: none;
-    border-radius: 0.25rem;
-    padding: 0;
-    align-items: flex-start;
-    margin: 0;
-}
-.help-container-custom .contact-form input,
-.help-container-custom .contact-form textarea {
-    width: 100%;
-    margin-left: 0;
-}
-.help-container-custom .contact-form .btn {
-    align-self: flex-start;
-    width: 15.5rem;
-    margin-top: 0.5rem;
-}
-.btn-login {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0.5rem 1rem;
-    border-radius: 0.25rem;
-    background: #FE8400;
-    color: #fff;
-    border: 2px solid #FE8400;
-    font-weight: 600;
-    font-size: 1rem;
-    text-decoration: none;
-    transition: background 0.2s, color 0.2s;
-    margin-right: 0.5rem;
-}
-.btn-login:hover {
-    background: #d96f00;
-    color: #fff;
-}
-.btn-register {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0.5rem 1rem;
-    border-radius: 0.25rem;
-    background: #FE8400;
-    color: #fff;
-    border: 2px solid #FE8400;
-    font-weight: 600;
-    font-size: 1rem;
-    text-decoration: none;
-    transition: background 0.2s, color 0.2s;
-}
-.btn-register:hover {
-    background: #d96f00;
-    border-color: #d96f00;
 }
