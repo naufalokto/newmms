@@ -24,5 +24,4 @@ class PenggunaSeeder extends Seeder
             'peran' => 'cust',
         ]);
     }
-}
-
+} 
