@@ -29,6 +29,14 @@ Route::get('/customer/dashboard', function () {
     return view('customer-dashboard');
 })->name('customer.dashboard');
 
+// Route untuk halaman produk customer
+Route::get('/customer/product', [App\Http\Controllers\ProdukController::class, 'index'])->name('customer.product');
+
+// Route untuk halaman product-customer (frontend only)
+Route::get('/product-customer', function () {
+    return view('product-customer');
+})->name('product.customer');
+
 // Route original dengan middleware (untuk nanti)
 // Route::get('/customer/dashboard', [CustomerDashboardController::class, 'index'])
 //     ->middleware(['auth', 'role:cust']);
