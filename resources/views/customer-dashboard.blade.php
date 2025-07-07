@@ -26,6 +26,24 @@
             </div>
         </div>
     </header>
+    <div class="hero-section">
+        <img src="/images/Main Picture.jpg" alt="Main Hero" class="hero-image">
+        <img src="/images/logo.png" alt="Logo Tengah" class="hero-logo-center">
+        <div class="hero-title">Service</div>
+        <div class="hero-breadcrumb">
+            <span class="breadcrumb-home">Home</span>
+            <span class="breadcrumb-separator">&gt;</span>
+            <span class="breadcrumb-current">Service</span>
+        </div>
+    </div>
+    <div class="hero-bar">
+        <span class="bar-col">Time</span>
+        <span class="bar-col">Service</span>
+        <span class="bar-col">Location</span>
+        <span class="bar-col">Status</span>
+        <span class="bar-col">Issue Detail</span>
+        <span class="bar-col">Action</span>
+    </div>
     <script>
         // Toggle dropdown on click user/profile
         const headerUser = document.getElementById('headerUser');
