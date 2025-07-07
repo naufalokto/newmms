@@ -524,4 +524,80 @@ body {
 .bar-col:nth-child(2) {
     margin-left: 0;
     margin-right: 0;
+}
+
+.status-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem 1rem;
+    gap: 0.625rem;
+    border-radius: 0.25rem;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    font-size: 1rem;
+    line-height: 1.5rem;
+    text-align: center;
+}
+.status-finished {
+    background: #28A745;
+    color: #fff;
+}
+
+.footer-bar {
+    background: #141414;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 2rem 0;
+    gap: 0.625rem;
+}
+.footer-content {
+    width: 90rem;
+    max-width: 100vw;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: flex-start;
+    gap: 2rem;
+    padding-left: 3rem;
+}
+.footer-logo {
+    width: 120px;
+    height: auto;
+    margin-right: 2rem;
+}
+.footer-text {
+    color: #fff;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    font-weight: 400;
+    margin-bottom: 0.5rem;
+}
+.footer-phone {
+    color: #FE8400;
+    font-weight: 600;
+}
+.footer-socials {
+    display: flex;
+    gap: 1rem;
+    margin-left: auto;
+}
+.footer-social {
+    color: #fff;
+    font-size: 1.5rem;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+.footer-social:hover {
+    color: #FE8400;
+}
+
+.pre-footer-bar {
+    width: 100%;
+    height: 4.94rem;
+    background: #141414;
+    margin-bottom: 0;
 } 
