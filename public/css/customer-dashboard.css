@@ -544,6 +544,40 @@ body {
     color: #fff;
 }
 
+.status-badge.status-pending {
+    background: #FFC107;
+    color: #fff;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    font-weight: 500;
+    border-radius: 0.25rem;
+    padding: 0.5rem 1rem;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 0;
+    width: auto;
+    height: 2.5rem;
+}
+
+.status-badge.status-ongoing {
+    background: #0D6EFD;
+    color: #fff;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    font-weight: 500;
+    border-radius: 0.25rem;
+    padding: 0.5rem 1rem;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 0;
+    width: auto;
+    height: 2.5rem;
+}
+
 .footer-bar {
     background: #141414;
     width: 100%;
@@ -600,4 +634,49 @@ body {
     height: 4.94rem;
     background: #141414;
     margin-bottom: 0;
+}
+
+.cancel-btn-blue {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: 'Poppins', sans-serif;
+    background: #fff;
+    color: #007AFF;
+    border: 1px solid #007AFF;
+    border-radius: 0.25rem;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s, border 0.2s;
+}
+.cancel-btn-blue:hover {
+    background: #f0f8ff;
+    border-color: #005bb5;
+    color: #005bb5;
+}
+.cancel-btn-red {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.6rem;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    text-align: center;
+    background: #DC3545;
+    color: #fff;
+    border: none;
+    border-radius: 0.25rem;
+    padding: 0.5rem 1.5rem;
+    cursor: pointer;
+    height: 2.5rem;
+    min-width: 0;
+    width: auto;
+    transition: background 0.2s;
+}
+.cancel-btn-red:hover {
+    background: #b52a37;
 } 
