@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\CustomerDashboardController;
 use App\Http\Controllers\ProdukController;
+use App\Http\Controllers\UserController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -16,6 +17,8 @@ Route::post('/login', [LoginController::class, 'login']);
 Route::get('/register', function () {
     return view('signup');
 })->name('register');
+
+Route::post('/register', [UserController::class, 'register']);
 
 Route::get('/admin/dashboard', function () {
     return "Welcome Admin";
