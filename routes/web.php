@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\CustomerDashboardController;
 use App\Http\Controllers\ProdukController;
+use App\Http\Controllers\TestimoniController;
 use App\Http\Controllers\UserController;
 
 Route::get('/', function () {
@@ -43,3 +44,6 @@ Route::get('/product-customer', function () {
 
 // route sementara belum diberikan middleware
 Route::resource('produk', ProdukController::class)->only(['index', 'store', 'create']);
+
+// Route untuk halaman testimoni
+Route::post('/testimoni', [TestimoniController::class, 'store']);

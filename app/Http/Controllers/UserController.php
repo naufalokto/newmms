@@ -15,7 +15,6 @@ class UserController extends Controller
             'phone' => 'required',
             'username' => 'required',
             'password' => 'required|min:8',
-
         ]);
 
         $incomingFields['password'] = bcrypt($incomingFields['password']);
