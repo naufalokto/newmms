@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BeritaController;
 use PHPUnit\Event\Code\Test;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
@@ -50,3 +51,5 @@ Route::resource('produk', ProdukController::class)->only(['index', 'store', 'cre
 // Route untuk halaman testimoni
 Route::get('/testimoni', [TestimoniController::class, 'getTestimoni']);
 Route::post('/testimoni', [TestimoniController::class, 'store']);
+Route::get('/berita', [BeritaController::class, 'getBerita']);
+Route::post('/berita', [BeritaController::class, 'postBerita']);
