@@ -26,7 +26,7 @@ return new class extends Migration
             $table->foreign('id_tipe_service')->references('id_tipe_service')->on('type_service')->onDelete('cascade');
         });
     
-        DB::statement("ALTER TABLE service ADD CONSTRAINT service_status_check CHECK (status IN ('pend', 'pros', 'fin'))");
+        DB::statement("ALTER TABLE service ADD CONSTRAINT service_status_check CHECK (status IN ('pend', 'pros', 'fin', 'cancel'))");
     }
 
     /**
