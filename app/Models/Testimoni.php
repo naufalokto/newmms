@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class testimoni extends Model
+class Testimoni extends Model
 {
     protected $table = 'testimoni';
     protected $primaryKey = 'id_testimoni';
@@ -24,8 +24,8 @@ class testimoni extends Model
     }
 
 
-    // public function service()
-    // {
-    //     return $this->belongsTo(Service::class, 'id_service', 'id_service');
-    // }
+    public function service()
+    {
+        return $this->belongsTo(Service::class, 'id_service', 'id_service');
+    }
 }

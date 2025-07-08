@@ -1,11 +1,13 @@
 <?php
 
+use PHPUnit\Event\Code\Test;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\LoginController;
-use App\Http\Controllers\CustomerDashboardController;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\TestimoniController;
-use App\Http\Controllers\UserController;
+use Illuminate\Foundation\Configuration\Middleware;
+use App\Http\Controllers\CustomerDashboardController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -46,4 +48,5 @@ Route::get('/product-customer', function () {
 Route::resource('produk', ProdukController::class)->only(['index', 'store', 'create']);
 
 // Route untuk halaman testimoni
+Route::get('/testimoni', [TestimoniController::class, 'getTestimoni']);
 Route::post('/testimoni', [TestimoniController::class, 'store']);
