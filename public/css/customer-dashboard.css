@@ -494,7 +494,7 @@ body {
 
 .hero-bar {
     display: grid;
-    grid-template-columns: 1.1fr 1.3fr 1.3fr 1fr 2fr 1.2fr;
+    grid-template-columns: 1.1fr 1.3fr 1.3fr 1fr 1fr 1.2fr;
     align-items: center;
     justify-items: center;
     width: 100%;

@@ -4,11 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mifta Motor Sport</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Montserrat:wght@500;700&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
     <style>
-        
+        .appointment-title-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 6rem;
+        }
+        .appointment-title {
+            margin-bottom: 2px;
+        }
+        .appointment-title-underline-svg {
+            margin-top: 0;
+        }
     </style>
     </head>
     <body>
@@ -27,7 +38,7 @@
             </nav>
             <div style="display: flex; gap: 0.5rem;">
                 <a href="/login" class="btn-login">Login</a>
-                <a href="/register" class="btn-register">Register</a>
+                <a href="/signup" class="btn-register">Register</a>
             </div>
         </div>
     </header>
