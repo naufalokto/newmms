@@ -19,6 +19,7 @@
             <h2>Login to Your Account</h2>
             <p>Enter your username and password to access your account.</p>
             <form class="login-form" onsubmit="handleLogin(event)">
+                @csrf
                 <div>
                     <label for="username">Username</label>
                     <div class="input-wrapper">

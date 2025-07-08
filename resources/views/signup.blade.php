@@ -18,30 +18,31 @@
         <div class="signup-form-section">
             <h2>Create Your Account</h2>
             <p>Create your profile and explore all that Mifta Motor Sport has to offer.</p>
-            <form class="signup-form" action="#" method="POST" onsubmit="handleSignup(event)">
+            <form class="signup-form" action="/register" method="POST" >
+                @csrf
                 <div style="display: flex; gap: 1.1875rem; width: 25.0625rem;">
                     <div>
                         <label for="name">Name</label>
                         <div class="input-wrapper input-short">
-                            <input type="text" id="name" name="name" class="input-underline" placeholder="Name" required style="width:11.875rem;height:4.375rem;">
+                            <input name="name" type="text" id="name" name="name" class="input-underline" placeholder="Name" required style="width:11.875rem;height:4.375rem;">
                         </div>
                     </div>
                     <div>
                         <label for="phone">Phone Number</label>
                         <div class="input-wrapper input-short">
-                            <input type="text" id="phone" name="phone" class="input-underline" placeholder="Phone Number" required style="width:11.875rem;height:4.375rem;">
+                            <input name="phone" type="text" id="phone" name="phone" class="input-underline" placeholder="Phone Number" required style="width:11.875rem;height:4.375rem;">
                         </div>
                     </div>
                 </div>
                 <div>
                     <label for="username">Username</label>
                     <div class="input-wrapper">
-                        <input type="text" id="username" name="username" class="input-underline" placeholder="Type your username here" required>
+                        <input name="username" type="text" id="username" name="username" class="input-underline" placeholder="Type your username here" required>
                     </div>
                 </div>
                 <div>
                     <label for="password">Enter your Password</label>
-                    <input type="password" id="password" name="password" placeholder="Type your password here" required>
+                    <input name="password" type="password" id="password" name="password" placeholder="Type your password here" required>
                 </div>
                 <button type="submit" class="signup-btn">Sign Up</button>
                 <p class="register-link">Already have an account? <a href="/login" class="login-link">Log in here!</a></p>

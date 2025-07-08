@@ -10,7 +10,7 @@ class Pengguna extends Authenticatable
     protected $primaryKey = 'id_pengguna';
     public $timestamps = false;
     protected $fillable = [
-        'nama', 'username', 'password', 'peran'
+        'nama', 'username', 'no_hp', 'password', 'peran'
     ];
 
     protected $hidden = [
