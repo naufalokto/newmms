@@ -13,7 +13,7 @@ class TestimoniController extends Controller
             
             return response()->json([
                 'message' => 'Testimoni retrieved successfully',
-                'testimoni' => [$testimoni] // Replace with actual testimonials data
+                'testimoni' => $testimoni // Replace with actual testimonials data
             ]);
             
         } catch (\Exception $e) {
@@ -25,13 +25,13 @@ class TestimoniController extends Controller
         
     }
     
-/*************  ✨ Windsurf Command ⭐  *************/
-/*******  2bb01527-e6cf-486d-9db9-e54b78974ba0  *******/
     public function store(Request $request) {
         try {
             $testimoni = new Testimoni();
             $testimoni->id_pengguna = $request->id_pengguna;
-            $testimoni->testimoni = $request->testimoni;
+            $testimoni->id_service = $request->id_service; 
+            $testimoni->isi_testimoni = $request->isi_testimoni; 
+            $testimoni->menyoroti = $request->menyoroti; 
             $testimoni->save();
             
             return response()->json([
