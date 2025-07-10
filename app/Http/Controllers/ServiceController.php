@@ -151,4 +151,30 @@ class ServiceController extends Controller
         return redirect()->route('service.history')->with('success', 'Booking berhasil dibatalkan.');
     }
 
+    public function indexBycabang()
+    {
+        $cabang = auth()->user()->adminDetail?->id_cabang;
+
+        $services = Service::where('id_cabang', $cabang)
+            ->orderBy('tanggal', 'desc')
+            ->get();
+
+        return view('service.index', compact('services'));
+    }
+
+    public function startService($id)
+{
+    $service = Service::findOrFail($id);
+
+    if ($service->status !== 'pend') {
+        return back()->with('error', 'Hanya booking dengan status pending yang bisa diproses.');
+    }
+
+    $service->status = 'pros';
+    $service->started_at = now();
+    $service->save();
+
+    return back()->with('success', 'Status berhasil diubah ke process.');
+}
+
 }

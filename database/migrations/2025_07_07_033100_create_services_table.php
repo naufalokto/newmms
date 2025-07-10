@@ -20,6 +20,8 @@ return new class extends Migration
             $table->integer('id_cabang');
             $table->text('keluhan')->nullable();
             $table->time('jadwal');
+            $table->timestamp('started_at')->nullable();
+            $table->timestamp('finished_at')->nullable();
             $table->string('status', 10);
 
             $table->foreign('id_cabang')->references('id_cabang')->on('cabang')->onDelete('cascade');

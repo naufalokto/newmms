@@ -17,6 +17,8 @@ class Service extends Model
         'keluhan',
         'id_tipe_service',
         'jadwal',
+        "started_at",
+        "finished_at",
         'status',
     ];
 

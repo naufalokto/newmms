@@ -16,4 +16,10 @@ class Pengguna extends Authenticatable
     protected $hidden = [
         'password',
     ];
+
+    public function adminDetail()
+    {
+        return $this->hasOne(PenggunaAdmin::class, 'id_pengguna', 'id_pengguna');
+    }
+
 } 
