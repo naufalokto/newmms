@@ -18,6 +18,13 @@ class PenggunaSeeder extends Seeder
         ]);
 
         Pengguna::create([
+            'nama' => 'Admin Dua',
+            'username' => 'admin22',
+            'password' => Hash::make('admin2123'),
+            'peran' => 'admin',
+        ]);
+
+        Pengguna::create([
             'nama' => 'Customer Satu',
             'username' => 'cust1',
             'password' => Hash::make('cust123'),

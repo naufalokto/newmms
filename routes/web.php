@@ -48,6 +48,8 @@ Route::get('/validate-slot', [ServiceController::class, 'validateslot']);
 Route::get('/service-types', [ServiceController::class, 'getServiceTypes']);
 Route::get('/service/history', [ServiceController::class, 'indexByUser'])->name('service.history');
 Route::post('/service/{id}/cancel', [ServiceController::class, 'cancel'])->name('service.cancel');
+Route::get('/service/all', [ServiceController::class, 'indexBycabang'])->name('service.all');
+Route::post('/service/{id}/start', [ServiceController::class, 'startService'])->name('service.start');
 
 // Testimoni
 Route::get('/testimoni', [TestimoniController::class, 'getTestimoni']);
