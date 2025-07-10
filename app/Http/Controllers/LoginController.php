@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Pengguna;
+use App\Models\PenggunaAdmin;
 
 class LoginController extends Controller
 {
@@ -30,10 +31,14 @@ class LoginController extends Controller
 
         \Log::info('Login berhasil', ['username' => $user->username, 'peran' => $user->peran]);
         \Auth::login($user); 
+        $user = Pengguna::with('adminDetail')->find($user->id_pengguna); 
         
         if ($user->peran === 'cust') {
-            return redirect('/customer/dashboard');
+            return redirect('/customerdashboard');
         } elseif ($user->peran === 'admin') {
+            $idCabang = $user->adminDetail?->id_cabang;
+            \Log::info('Login berhasil', ['id_cabang' => $idCabang]);
+            \Log::info('Admin detail:', [$user->adminDetail]);
             return redirect('/admin/dashboard');
         } else {
             \Auth::logout();
