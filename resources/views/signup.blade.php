@@ -63,28 +63,7 @@
     </div>
 
     <script>
-        function handleSignup(event) {
-            event.preventDefault();
-            
-            // Get form data
-            const formData = new FormData(event.target);
-            const name = formData.get('name');
-            const phone = formData.get('phone');
-            const username = formData.get('username');
-            const password = formData.get('password');
-            
-            // Simple validation
-            if (!name || !phone || !username || !password) {
-                alert('Please fill in all fields');
-                return;
-            }
-            
-            // Show success message (since we're not implementing backend yet)
-            alert('Registration successful! You can now login with your credentials.');
-            
-            // Redirect to login page
-            window.location.href = '/login';
-        }
+       
     </script>
 </body>
 </html> 
