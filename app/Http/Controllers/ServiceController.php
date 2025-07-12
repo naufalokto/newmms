@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Auth;
+use Exception;
 use Carbon\Carbon;
+use App\Models\Cabang;
 use App\Models\Service;
 use App\Models\TypeService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 
 
 class ServiceController extends Controller
@@ -26,7 +28,7 @@ class ServiceController extends Controller
 
         try {
             $bookingDate = Carbon::parse($date)->startOfDay();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response()->json(['error' => 'Invalid date format'], 400);
         }
 
@@ -127,8 +129,8 @@ class ServiceController extends Controller
     public function create()
     {
         // Ambil data cabang dan tipe service untuk dropdown
-        $cabangs = \App\Models\Cabang::all();
-        $types = \App\Models\TypeService::all();
+        $cabangs = Cabang::all();
+        $types = TypeService::all();
         return view('service.create', compact('cabangs', 'types'));
     }
 
