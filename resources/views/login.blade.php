@@ -18,12 +18,13 @@
         <div class="login-form-section">
             <h2>Login to Your Account</h2>
             <p>Enter your username and password to access your account.</p>
-            <form class="login-form" onsubmit="handleLogin(event)">
+            <form class="login-form" action="/login" method="POST" onsubmit="handleLogin(event)">
                 @csrf
                 <div>
                     <label for="username">Username</label>
                     <div class="input-wrapper">
-                        <input type="text" id="username" name="username" class="input-underline" placeholder="Type your username here" required>
+                        <input type="text" id="username" name="username" class="input-underline" placeholder="Type your username here" 
+                        value="{{ old('username') }}" required>
                     </div>
                 </div>
                 <div>
@@ -50,19 +51,12 @@
 
     <script>
         function handleLogin(event) {
-            event.preventDefault();
             
             // Simulate loading
             const loginBtn = document.querySelector('.login-btn');
             const originalText = loginBtn.textContent;
             loginBtn.textContent = 'Logging in...';
             loginBtn.disabled = true;
-            
-            // Simulate API call delay
-            setTimeout(() => {
-                // Redirect to customer dashboard
-                window.location.href = '/customer/dashboard';
-            }, 1000);
         }
     </script>
 </body>
