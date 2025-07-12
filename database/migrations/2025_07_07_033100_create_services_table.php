@@ -20,13 +20,15 @@ return new class extends Migration
             $table->integer('id_cabang');
             $table->text('keluhan')->nullable();
             $table->time('jadwal');
+            $table->timestamp('started_at')->nullable();
+            $table->timestamp('finished_at')->nullable();
             $table->string('status', 10);
 
             $table->foreign('id_cabang')->references('id_cabang')->on('cabang')->onDelete('cascade');
             $table->foreign('id_tipe_service')->references('id_tipe_service')->on('type_service')->onDelete('cascade');
         });
     
-        DB::statement("ALTER TABLE service ADD CONSTRAINT service_status_check CHECK (status IN ('pend', 'pros', 'fin'))");
+        DB::statement("ALTER TABLE service ADD CONSTRAINT service_status_check CHECK (status IN ('pend', 'pros', 'fin', 'cancel'))");
     }
 
     /**
