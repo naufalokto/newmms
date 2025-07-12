@@ -14,7 +14,6 @@ class ProdukController extends Controller
         return view('produk'); 
     }
 
-
     public function store(Request $request)
     {
         $request->validate([
