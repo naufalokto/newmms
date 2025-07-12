@@ -2,15 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
-use App\Models\TypeService;
 use App\Models\Service;
+use App\Models\TypeService;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 
 class ServiceController extends Controller
 {
+
     public function validateslot(Request $request)
     {
         $date = $request->query('date');
@@ -58,7 +61,7 @@ class ServiceController extends Controller
             $availableSlots[] = $slotData;
         }
         
-        \Log::info('Validating slot', $request->all());
+        Log::info('Validating slot', $request->all());
 
         return response()->json($availableSlots);
     }
@@ -93,9 +96,9 @@ class ServiceController extends Controller
         $service->keluhan = $request->keluhan;
         $service->jadwal = $request->jadwal;
         $service->status = 'pend';
-        \Log::info('Service to be saved', $service->toArray());
+        Log::info('Service to be saved', $service->toArray());
         $saved = $service->save();
-        \Log::info('Service save result', ['saved' => $saved]);
+        Log::info('Service save result', ['saved' => $saved]);
 
 
         //route sementara
@@ -111,7 +114,7 @@ class ServiceController extends Controller
 
     public function indexByUser()
     {
-        $userId = auth()->user()->id_pengguna;
+        $userId = Auth::user()->id_pengguna;
 
         $services = Service::where('id_pengguna', $userId)
             ->orderBy('tanggal', 'desc')
@@ -131,7 +134,7 @@ class ServiceController extends Controller
 
     public function cancel($id)
     {
-        $userId = auth()->user()->id_pengguna;
+        $userId = Auth::user()->id_pengguna;
 
         $service = Service::where('id_service', $id)
             ->where('id_pengguna', $userId)
@@ -153,7 +156,7 @@ class ServiceController extends Controller
 
     public function indexBycabang()
     {
-        $cabang = auth()->user()->adminDetail?->id_cabang;
+        $cabang = Auth::user()->adminDetail?->id_cabang;
 
         $services = Service::where('id_cabang', $cabang)
             ->orderBy('tanggal', 'desc')
