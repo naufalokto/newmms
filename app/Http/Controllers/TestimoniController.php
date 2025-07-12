@@ -42,10 +42,9 @@ class TestimoniController extends Controller
             
         } catch (Exception $e) {
             return response()->json([
-                'message' => 'Failed to create testimoni',
+                'message' => 'Gagal membuat testimoni',
                 'error' => $e->getMessage()
             ], 500);
         }
-        
     }
 }
