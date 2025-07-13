@@ -17,7 +17,7 @@ class BeritaController extends Controller
             ]);
         } catch (Exception $e) {
             return response()->json([
-                'message' => 'Failed to retrieve berita',
+                'message' => 'Gagal mengambil berita',
                 'error' => $e->getMessage()
             ])->setStatusCode(500);
         }
@@ -32,12 +32,12 @@ class BeritaController extends Controller
             $berita->save();
 
             return response()->json([
-                'message' => 'Berita created successfully',
+                'message' => 'Berita sukses dibuat',
                 'berita' => $berita
             ]);
         } catch (Exception $e) {
             return response()->json([
-                'message' => 'Failed to create berita',
+                'message' => 'Gagal membuat berita',
                 'error' => $e->getMessage()
             ])->setStatusCode(500);
         }
@@ -52,12 +52,12 @@ class BeritaController extends Controller
             $berita->save();
 
             return response()->json([
-                'message' => 'Berita updated successfully',
+                'message' => 'Berita sukses diperbarui',
                 'berita' => $berita
             ]);
         } catch (Exception $e) {
             return response()->json([
-                'message' => 'Failed to update berita',
+                'message' => 'Gagal memperbarui berita',
                 'error' => $e->getMessage()
             ])->setStatusCode(500);
         }
@@ -69,16 +69,16 @@ class BeritaController extends Controller
             if ($berita) {
                 $berita->delete();
                 return response()->json([
-                    'message' => 'Berita deleted successfully'
+                    'message' => 'Berita sukses dihapus'
                 ]);
             } else {
                 return response()->json([
-                    'message' => 'Berita not found'
+                    'message' => 'Berita tidak ditemukan'
                 ])->setStatusCode(404);
             }
         } catch (Exception $e) {
             return response()->json([
-                'message' => 'Failed to delete berita',
+                'message' => 'Gagal menghapus berita',
                 'error' => $e->getMessage()
             ])->setStatusCode(500);
         }
