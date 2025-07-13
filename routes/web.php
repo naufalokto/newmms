@@ -53,7 +53,8 @@ Route::post('/service/{id}/start', [ServiceController::class, 'startService'])->
 
 // Testimoni
 Route::get('/testimoni', [TestimoniController::class, 'getTestimoni']);
-Route::post('/testimoni', [TestimoniController::class, 'store']);
+Route::post('/testimoni', [TestimoniController::class, 'postTestimoni']);
+Route::delete('/testimoni/{id}', [TestimoniController::class, 'deleteTestimoni']);
 
 // Berita
 Route::get('/berita', [BeritaController::class, 'getBerita']);

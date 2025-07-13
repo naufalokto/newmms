@@ -19,14 +19,14 @@ class TestimoniController extends Controller
             
         } catch (Exception $e) {
             return response()->json([
-                'message' => 'Failed to retrieve testimoni',
+                'message' => 'Gagal mengambil testimoni',
                 'error' => $e->getMessage()
             ], 500);
         }
         
     }
     
-    public function store(Request $request) {
+    public function postTestimoni(Request $request) {
         try {
             $testimoni = new Testimoni();
             $testimoni->id_pengguna = $request->id_pengguna;
@@ -45,6 +45,27 @@ class TestimoniController extends Controller
                 'message' => 'Gagal membuat testimoni',
                 'error' => $e->getMessage()
             ], 500);
+        }
+    }
+
+    public function deleteTestimoni($id) {
+        try {
+            $testimoni = Testimoni::find($id);
+            if ($testimoni) {
+                $testimoni->delete();
+                return response()->json([
+                    'message' => 'Testimoni sukses dihapus'
+                ]);
+            } else {
+                return response()->json([
+                    'message' => 'Testimoni tidak ditemukan'
+                ])->setStatusCode(404);
+            }
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => 'Gagal menghapus testimoni',
+                'error' => $e->getMessage()
+            ])->setStatusCode(500);
         }
     }
 }
