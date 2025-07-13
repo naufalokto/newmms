@@ -58,3 +58,5 @@ Route::post('/testimoni', [TestimoniController::class, 'store']);
 // Berita
 Route::get('/berita', [BeritaController::class, 'getBerita']);
 Route::post('/berita', [BeritaController::class, 'postBerita']);
+Route::put('/berita/{id}', [BeritaController::class, 'editBerita']);
+Route::delete('/berita/{id}', [BeritaController::class, 'deleteBerita']);
