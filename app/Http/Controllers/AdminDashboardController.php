@@ -19,23 +19,19 @@ class AdminDashboardController extends Controller
 
         $recentTestimoni = Testimoni::with(['pengguna', 'service'])
             ->orderBy('id_testimoni', 'desc')
-            ->take(5)
             ->get();
         
         // Get recent products
         $recentProduk = Produk::orderBy('id_produk', 'desc')
-            ->take(5)
             ->get();
         
         // Get recent services/bookings
         $recentServices = Service::with('pengguna')
             ->orderBy('id_service', 'desc')
-            ->take(5)
             ->get();
         
         // Get recent news
         $recentBerita = Berita::orderBy('id_berita', 'desc')
-            ->take(5)
             ->get();
         
         return view('admin-dashboard', compact(

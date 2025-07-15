@@ -19,7 +19,6 @@ Route::get('/', function () {
 // Login & Register
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
-
 Route::get('/register', function () {
     return view('signup');
 })->name('register');
@@ -53,7 +52,7 @@ Route::get('/customer/dashboard', function () {
 })->name('customer.dashboard')->middleware('auth','role:cust');
 
 // Admin Dashboard routes
-Route::get('/admin/dashboard', [App\Http\Controllers\AdminDashboardController::class, 'index'])
+Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])
     ->middleware(['auth', 'role:admin']);
 
 // Produk
@@ -79,6 +78,7 @@ Route::post('/service/{id}/start', [ServiceController::class, 'startService'])->
 Route::get('/testimoni', [TestimoniController::class, 'getTestimoni']);
 Route::post('/testimoni', [TestimoniController::class, 'postTestimoni']);
 Route::delete('/testimoni/{id}', [TestimoniController::class, 'deleteTestimoni']);
+Route::get('/admin/testimoni', [AdminDashboardController::class, 'index']);
 
 // Berita
 Route::get('/berita', [BeritaController::class, 'getBerita']);
