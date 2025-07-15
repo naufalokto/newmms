@@ -19,8 +19,8 @@
             <a href="#" class="header-link">Help</a>
         </nav>
         <div class="header-user" id="headerUser">
-            <span class="header-username">Ethan Maxwell</span>
-            <img src="https://ui-avatars.com/api/?name=Ethan+Maxwell&background=eeeeee&color=141414&size=128" alt="Profile" class="header-profile">
+            <span class="header-username">{{ Auth::user()->nama }}</span>
+            <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->nama) }}&background=eeeeee&color=141414&size=128" alt="Profile" class="header-profile">
             <div class="dropdown-menu" id="dropdownMenu" style="display:none;">
                 <a href="/" class="dropdown-item">Logout</a>
             </div>
