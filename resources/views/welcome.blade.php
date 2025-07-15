@@ -98,11 +98,7 @@
     <!-- Book Your Appointment Title and Underline OUTSIDE the peach background -->
     <div class="appointment-title-container">
         <h2 class="appointment-title">Book Your Appointment</h2>
-        <span class="appointment-title-underline-svg" style="height:0rem;align-self:stretch;display:block;">
-            <svg width="398" height="2" viewBox="0 0 398 2" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M1 1L397 0.999965" stroke="#FE8400" stroke-width="2" stroke-linecap="round"/>
-            </svg>
-        </span>
+        <div class="section-divider"></div>
     </div>
     <div class="appointment-section" id="appointment" style="background: #FFE4C6;">
         <form class="appointment-form">

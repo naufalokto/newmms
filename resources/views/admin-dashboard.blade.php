@@ -14,7 +14,7 @@
         <div class="sidebar">
             <div class="logo-section">
                 <div class="logo">
-                    <span>Dashboard</span>
+                    <span>MMS - Admin Dashboard</span>
                 </div>
             </div>
             
@@ -57,6 +57,8 @@
                 </div>
             </header>
 
+
+        <div>
             <!-- Stats Cards -->
             <div class="stats-section">
                 <div class="stat-card">
@@ -110,7 +112,6 @@
                         @endforelse
                     </div>
                 </div>
-
                 <!-- Product Inventory -->
                 <div class="content-section">
                     <div class="section-header">
@@ -198,19 +199,9 @@
     </div>
 
     <script>
-        function toggleNotifications() {
-            const dropdown = document.getElementById('notificationDropdown');
-            dropdown.classList.toggle('show');
-        }
-
         // Close dropdown when clicking outside
         document.addEventListener('click', function(event) {
-            const notificationBadge = document.querySelector('.notification-badge');
-            const dropdown = document.getElementById('notificationDropdown');
             
-            if (!notificationBadge.contains(event.target)) {
-                dropdown.classList.remove('show');
-            }
         });
 
         // Auto-refresh notifications every 30 seconds
