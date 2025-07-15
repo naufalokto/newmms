@@ -15,12 +15,11 @@
         <nav class="header-menu">
             <a href="/customer/dashboard" class="header-link">Service</a>
             <a href="/product-customer" class="header-link active">Product</a>
-            <a href="#" class="header-link">Testimonial</a>
-            <a href="#" class="header-link">Help</a>
+            <a href="#" class="header-link" onclick="openTestimoniModal(); return false;">Testimonial</a>
         </nav>
         <div class="header-user" id="headerUser">
-            <span class="header-username">{{ Auth::user()->nama }}</span>
-            <img src="https://ui-avatars.com/api/?name={{ Auth::user()->nama }}&background=eeeeee&color=141414&size=128" alt="Profile" class="header-profile">
+            <span class="header-username">Ethan Maxwell</span>
+            <img src="https://ui-avatars.com/api/?name=Ethan+Maxwell&background=eeeeee&color=141414&size=128" alt="Profile" class="header-profile">
             <div class="dropdown-menu" id="dropdownMenu" style="display:none;">
                 <a href="/" class="dropdown-item">Logout</a>
             </div>
@@ -64,7 +63,7 @@
                     <div class="product-title">Ohlins Suspension Shocks</div>
                     <div class="product-category">Motor Part</div>
                     <div class="product-price">Rp28.900.000</div>
-                    <button class="product-btn buy">Buy Now</button>
+                    <button class="product-btn buy">Contact</button>
                 </div>
             </div>
             <!-- Card 3 -->
@@ -74,9 +73,28 @@
                     <div class="product-title">Kawasaki H2R</div>
                     <div class="product-category">Motor Sport</div>
                     <div class="product-price">Rp760.000.000</div>
-                    <button class="product-btn buy">Buy Now</button>
+                    <button class="product-btn buy">Contact</button>
                 </div>
             </div>
+        </div>
+    </div>
+    <!-- Testimoni Modal Pop Up (copy dari dashboard, pastikan class dan id sama) -->
+    <div id="testimoniModal" class="modal" style="display:none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100vw; height: 100vh; overflow: auto; background: rgba(0,0,0,0.25);">
+        <div class="modal-content" style="width:30rem; height:auto; border-radius:1rem; background:#FFF; margin: 6% auto; padding:2.5rem 2.5rem 2rem 2.5rem; box-shadow:0 8px 32px rgba(0,0,0,0.18); position:relative; display:flex; flex-direction:column; align-items:center;">
+            <span class="close" onclick="closeTestimoniModal()" style="position:absolute; top:1.2rem; right:1.5rem; font-size:2rem; color:#FE8400; cursor:pointer;">&times;</span>
+            <h2 style="font-family:'Montserrat',sans-serif; font-size:2rem; font-weight:700; color:#141414; margin-bottom:0.5rem;">Rate Our Service</h2>
+            <div style="width:100%; display:flex; justify-content:center; margin-bottom:1.2rem;">
+                <div style="width:60%; height:4px; background:#FE8400; border-radius:2px;"></div>
+            </div>
+            <div class="star-rating" style="display:flex; gap:0.7rem; font-size:2.5rem; color:#FE8400; margin-bottom:1.5rem; cursor:pointer;">
+                <span class="star" data-value="1">&#9734;</span>
+                <span class="star" data-value="2">&#9734;</span>
+                <span class="star" data-value="3">&#9734;</span>
+                <span class="star" data-value="4">&#9734;</span>
+                <span class="star" data-value="5">&#9734;</span>
+            </div>
+            <textarea id="testimoniMessage" placeholder="Your Message" rows="5" style="width:100%; border:1px solid #ddd; border-radius:0.5rem; padding:1rem; font-size:1rem; font-family:'Inter',sans-serif; resize:none;"></textarea>
+            <button class="submit-testimoni-btn" style="margin-top:1.5rem; width:100%; background:#FE8400; color:#fff; border:none; border-radius:0.5rem; padding:0.9rem 0; font-size:1.1rem; font-weight:600; cursor:pointer; transition:background 0.2s;">Submit</button>
         </div>
     </div>
     <script>
@@ -98,6 +116,25 @@
             rect.addEventListener('click', function() {
                 rectangles.forEach(r => r.classList.remove('active'));
                 this.classList.add('active');
+            });
+        });
+
+        // Modal Testimoni
+        function openTestimoniModal() {
+            document.getElementById('testimoniModal').style.display = 'block';
+        }
+        function closeTestimoniModal() {
+            document.getElementById('testimoniModal').style.display = 'none';
+        }
+        // Star rating interaction
+        document.addEventListener('DOMContentLoaded', function() {
+            const stars = document.querySelectorAll('.star-rating .star');
+            stars.forEach((star, idx) => {
+                star.addEventListener('click', function() {
+                    stars.forEach((s, i) => {
+                        s.innerHTML = i <= idx ? '\u2605' : '\u2606';
+                    });
+                });
             });
         });
     </script>
@@ -147,4 +184,4 @@
         </div>
     </footer>
 </body>
-</html> 
+</html>
