@@ -6,6 +6,7 @@
     <title>Dashboard Admin - Mifta Motor Sport</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/admin-dashboard.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/sidebar.css') }}">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 <body>
@@ -21,6 +22,7 @@
             <nav class="nav-menu">
                 <a href="/admin/dashboard" class="nav-item active">
                     <span>Home</span>
+                    <img class="chevron-right" src="/images/chevron-right.png" alt="">
                 </a>
                 <a href="/admin/testimoni" class="nav-item">
                     <span>Testimonials</span>
@@ -56,9 +58,7 @@
                     </div>
                 </div>
             </header>
-
-
-        <div>
+        <div class="content-wrapper">
             <!-- Stats Cards -->
             <div class="stats-section">
                 <div class="stat-card">
@@ -153,11 +153,20 @@
                             <div class="booking-content">
                                 <div class="booking-name">{{ $service->pengguna->nama ?? 'Anonymous' }}</div>
                                 <div class="booking-service">{{ $service->type_service ?? 'Service' }} - {{ $service->tanggal_booking ?? 'No Date' }}</div>
-                                <span class="status-badge {{ strtolower($service->status ?? 'pending') }}">{{ $service->status ?? 'Pending' }}</span>
+                                @switch($service->status)
+                                    @case('fin')
+                                        <span class="status-badge finished">Finished</span>
+                                        @break
+                                    @case('pros')
+                                        <span class="status-badge ongoing">In Progress</span>
+                                        @break
+                                    @default
+                                        <span class="status-badge draft">Pending</span>
+                                @endswitch
                             </div>
                             <div class="booking-actions">
-                                <button class="btn-icon">✏️</button>
-                                <button class="btn-icon delete">🗑️</button>
+                                {{-- <button class="btn-icon">✏️</button>
+                                <button class="btn-icon delete">🗑️</button> --}}
                             </div>
                         </div>
                         @empty
