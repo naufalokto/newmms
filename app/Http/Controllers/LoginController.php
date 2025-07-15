@@ -50,8 +50,25 @@ class LoginController extends Controller
 
     public function logout(Request $request)
     {
+
+        $user = Auth::user();
+
         Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        // Log the logout
+        Log::info('User logged out', [
+        'user_id' => $user?->id_pengguna,
+        'username' => $user?->username
+    ]);
+    
+    // Return appropriate response
+    if ($request->expectsJson()) {
         return response()->json(['message' => 'Logout berhasil']);
+    }
+    
+    return redirect('/login')->with('success', 'Logout berhasil');
+
     }
 
     public function showLoginForm()
