@@ -1,19 +1,15 @@
 <?php
 
 use Illuminate\Contracts\View\View;
-use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\LoginController;
-use App\Http\Controllers\BeritaController;
 use App\Http\Controllers\BeritaController;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\TestimoniController;
 use App\Http\Controllers\AdminDashboardController;
-use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\CustomerDashboardController;
-use App\Models\Service;
 use App\Models\Service;
 
 Route::get('/', function () {
