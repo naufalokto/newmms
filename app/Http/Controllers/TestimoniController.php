@@ -8,13 +8,14 @@ use Illuminate\Http\Request;
 
 class TestimoniController extends Controller
 {
+    // For API endpoint
     public function getTestimoni() {
         try {
-            $testimoni = Testimoni::all();
+            $allTestimoni = Testimoni::with('pengguna', 'service')->get();
             
             return response()->json([
                 'message' => 'Testimoni sukses diambil',
-                'testimoni' => $testimoni 
+                'testimoni' => $allTestimoni 
             ]);
             
         } catch (Exception $e) {
@@ -23,16 +24,36 @@ class TestimoniController extends Controller
                 'error' => $e->getMessage()
             ], 500);
         }
-        
+    }
+
+    // For admin view page
+    public function index() {
+        try {
+            $testimoni = Testimoni::with('pengguna', 'service')
+                ->orderBy('id_testimoni', 'desc')
+                ->get();
+            
+            return view('admin-testimoni', compact('testimoni'));
+            
+        } catch (Exception $e) {
+            return back()->with('error', 'Gagal mengambil testimoni: ' . $e->getMessage());
+        }
     }
     
     public function postTestimoni(Request $request) {
         try {
+            $request->validate([
+                'id_pengguna' => 'required|exists:pengguna,id_pengguna',
+                'id_service' => 'required|exists:service,id_service',
+                'isi_testimoni' => 'required|string|max:1000',
+                'menyoroti' => 'required|string|in:true,false'
+            ]);
+
             $testimoni = new Testimoni();
             $testimoni->id_pengguna = $request->id_pengguna;
             $testimoni->id_service = $request->id_service; 
             $testimoni->isi_testimoni = $request->isi_testimoni; 
-            $testimoni->menyoroti = $request->menyoroti; 
+            $testimoni->menyoroti = $request->menyoroti == 'true' ?? 'false'; 
             $testimoni->save();
             
             return response()->json([
@@ -43,6 +64,34 @@ class TestimoniController extends Controller
         } catch (Exception $e) {
             return response()->json([
                 'message' => 'Gagal membuat testimoni',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function updateTestimoni(Request $request, $id) {
+        try {
+            $testimoni = Testimoni::find($id);
+            if (!$testimoni) {
+                return response()->json([
+                    'message' => 'Testimoni tidak ditemukan'
+                ], 404);
+            }
+
+            // Toggle highlight
+            if ($request->has('highlight')) {
+                $testimoni->menyoroti = $request->highlight === 'true' ? 'true' : 'false';
+                $testimoni->save();
+            }
+            
+            return response()->json([
+                'message' => 'Testimoni sukses diupdate',
+                'testimoni' => $testimoni
+            ]);
+            
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => 'Gagal mengupdate testimoni',
                 'error' => $e->getMessage()
             ], 500);
         }
@@ -59,13 +108,13 @@ class TestimoniController extends Controller
             } else {
                 return response()->json([
                     'message' => 'Testimoni tidak ditemukan'
-                ])->setStatusCode(404);
+                ], 404);
             }
         } catch (Exception $e) {
             return response()->json([
                 'message' => 'Gagal menghapus testimoni',
                 'error' => $e->getMessage()
-            ])->setStatusCode(500);
+            ], 500);
         }
     }
 }
