@@ -99,7 +99,6 @@
                             <div class="testimonial-content">
                                 <div class="testimonial-name">{{ $testimoni->pengguna->nama ?? 'Anonymous' }}</div>
                                 <div class="testimonial-text">"{{ Str::limit($testimoni->isi_testimoni, 50) }}"</div>
-                                <div class="testimonial-rating">⭐⭐⭐⭐⭐</div>
                             </div>
                             <div class="testimonial-actions">
                                 <button class="btn-icon delete" onclick="deleteTestimoni({{ $testimoni->id_testimoni }})">🗑️</button>
@@ -240,11 +239,6 @@
                     alert('Error deleting testimonial');
                 });
             }
-        }
-
-        function editTestimoni(id) {
-            // Redirect to edit page or open modal
-            window.location.href = `/admin/testimoni/${id}/edit`;
         }
 
         function editBerita(id) {
