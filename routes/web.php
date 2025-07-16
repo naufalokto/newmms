@@ -25,22 +25,7 @@ Route::get('/register', function () {
 Route::post('/register', [UserController::class, 'register']);
 
 // Admin Dashboard (dengan middleware)
-Route::get('/admin/dashboard', function () {
-    return View('admin-dashboard'); 
-})->middleware(['auth', 'role:admin']);
-Route::get('/admin/testimoni', function () {
-    return view('admin-testimoni'); 
-})->middleware(['auth', 'role:admin']);
-Route::get('/admin/berita', function () {
-    return view('admin-berita'); 
-})->middleware(['auth', 'role:admin']);
-Route::get('/admin/produk', function () {
-    return view('admin-produk'); 
-})->middleware(['auth', 'role:admin']);
-Route::get('/admin/booking', function () {
-    return view('admin-booking'); 
-    return View('admin-dashboard'); 
-})->middleware(['auth', 'role:admin']);
+
 Route::get('/admin/testimoni', function () {
     return view('admin-testimoni'); 
 })->middleware(['auth', 'role:admin']);
@@ -96,7 +81,8 @@ Route::post('/service/{id}/start', [ServiceController::class, 'startService'])->
 Route::get('/testimoni', [TestimoniController::class, 'getTestimoni']);
 Route::post('/testimoni', [TestimoniController::class, 'postTestimoni']);
 Route::delete('/testimoni/{id}', [TestimoniController::class, 'deleteTestimoni']);
-Route::get('/admin/testimoni', [AdminDashboardController::class, 'index']);
+Route::get('/admin/get/testimoni', [TestimoniController::class, 'getTestimoni'])->middleware(['auth', 'role:admin']);
+Route::post('/admin/post/testimoni', [TestimoniController::class, 'postTestimoni'])->middleware(['auth', 'role:admin']);
 
 // Berita
 Route::get('/berita', [BeritaController::class, 'getBerita']);
@@ -115,3 +101,14 @@ Route::get('/test', function () {
 })->name('test');
 
 Route::get('/test', [ServiceController::class, 'getServiceTypes']);
+
+// Admin Views
+Route::get('/admin/testimoni', [TestimoniController::class, 'index'])->middleware(['auth', 'role:admin']);
+
+// Admin API endpoints
+Route::prefix('/admin/api')->middleware(['auth', 'role:admin'])->group(function () {
+    Route::get('/testimoni', [TestimoniController::class, 'getTestimoni']);
+    Route::post('/testimoni', [TestimoniController::class, 'postTestimoni']);
+    Route::put('/testimoni/{id}', [TestimoniController::class, 'updateTestimoni']);
+    Route::delete('/testimoni/{id}', [TestimoniController::class, 'deleteTestimoni']);
+});
