@@ -24,45 +24,50 @@ Route::get('/register', function () {
 })->name('register');
 Route::post('/register', [UserController::class, 'register']);
 
-// Admin Dashboard (dengan middleware)
-
-Route::get('/admin/testimoni', function () {
-    return view('admin-testimoni'); 
-})->middleware(['auth', 'role:admin']);
-Route::get('/admin/berita', function () {
-    return view('admin-berita'); 
-})->middleware(['auth', 'role:admin']);
-Route::get('/admin/produk', function () {
-    return view('admin-produk'); 
-})->middleware(['auth', 'role:admin']);
-Route::get('/admin/booking', function () {
-    return view('admin-booking'); 
-})->middleware(['auth', 'role:admin']);
-
-Route::put('/admin/service/{id}', [ServiceController::class, 'updateService'])->middleware(['auth', 'role:admin']);
-Route::delete('/admin/testimoni/{id}',  [TestimoniController::class, 'deleteTestimoni'])->middleware(['auth', 'role:admin']);
-
-Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
-
-Route::put('/admin/service/{id}', [ServiceController::class, 'updateService'])->middleware(['auth', 'role:admin']);
-Route::delete('/admin/testimoni/{id}',  [TestimoniController::class, 'deleteTestimoni'])->middleware(['auth', 'role:admin']);
-
-Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
-
-// Customer Dashboard (tanpa middleware)
-Route::get('/customer/dashboard', function () {
-    return view('customer-dashboard');
-})->name('customer.dashboard')->middleware('auth','role:cust');
-
 // Admin Dashboard routes
 Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])
     ->middleware(['auth', 'role:admin']);
 
-// Produk
+// FIXED: Admin Views - Use controllers instead of closures
+Route::get('/admin/testimoni', [TestimoniController::class, 'index'])->middleware(['auth', 'role:admin']);
+Route::get('/admin/berita', function () {
+    return view('admin-berita'); 
+})->middleware(['auth', 'role:admin']);
+Route::get('/admin/produk', [ProdukController::class, 'index'])->middleware(['auth', 'role:admin']); 
+Route::get('/admin/booking', function () {
+    return view('admin-booking'); 
+})->middleware(['auth', 'role:admin']);
+
+// Admin API endpoints
+Route::prefix('/admin/api')->middleware(['auth', 'role:admin'])->group(function () {
+    // Testimoni API
+    Route::get('/testimoni', [TestimoniController::class, 'getTestimoni']);
+    Route::post('/testimoni', [TestimoniController::class, 'postTestimoni']);
+    Route::put('/testimoni/{id}', [TestimoniController::class, 'updateTestimoni']);
+    Route::delete('/testimoni/{id}', [TestimoniController::class, 'deleteTestimoni']);
+
+    // Produk API
+    Route::get('/produk', [ProdukController::class, 'getProduk']);
+    Route::post('/produk', [ProdukController::class, 'storeProduk']);
+    Route::put('/produk/{id}', [ProdukController::class, 'updateProduk']);
+    Route::delete('/produk/{id}', [ProdukController::class, 'deleteProduk']);
+    Route::get('/produk/{id}', [ProdukController::class, 'showProduk']);
+    
+    Route::put('/service/{id}', [ServiceController::class, 'updateService']);
+});
+
+Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
+
+// Customer Dashboard
+Route::get('/customer/dashboard', function () {
+    return view('customer-dashboard');
+})->name('customer.dashboard')->middleware('auth','role:cust');
+
+// Produk routes
 Route::resource('produk', ProdukController::class)->only(['index', 'store', 'create']);
 
 // Halaman produk customer
-Route::get('/customer/product', [ProdukController::class, 'index'])->name('customer.product')->middleware('auth')->middleware('auth');
+Route::get('/customer/product', [ProdukController::class, 'index'])->name('customer.product')->middleware('auth');
 Route::get('/product-customer', function () {
     return view('product-customer');
 })->name('product.customer');
@@ -81,34 +86,9 @@ Route::post('/service/{id}/start', [ServiceController::class, 'startService'])->
 Route::get('/testimoni', [TestimoniController::class, 'getTestimoni']);
 Route::post('/testimoni', [TestimoniController::class, 'postTestimoni']);
 Route::delete('/testimoni/{id}', [TestimoniController::class, 'deleteTestimoni']);
-Route::get('/admin/get/testimoni', [TestimoniController::class, 'getTestimoni'])->middleware(['auth', 'role:admin']);
-Route::post('/admin/post/testimoni', [TestimoniController::class, 'postTestimoni'])->middleware(['auth', 'role:admin']);
 
 // Berita
 Route::get('/berita', [BeritaController::class, 'getBerita']);
 Route::post('/berita', [BeritaController::class, 'postBerita']);
 Route::put('/berita/{id}', [BeritaController::class, 'editBerita']);
 Route::delete('/berita/{id}', [BeritaController::class, 'deleteBerita']);
-
-Route::get('/test', function () {
-    return view('create');
-})->name('test');
-
-Route::get('/test', [ServiceController::class, 'getServiceTypes']);
-
-Route::get('/test', function () {
-    return view('create');
-})->name('test');
-
-Route::get('/test', [ServiceController::class, 'getServiceTypes']);
-
-// Admin Views
-Route::get('/admin/testimoni', [TestimoniController::class, 'index'])->middleware(['auth', 'role:admin']);
-
-// Admin API endpoints
-Route::prefix('/admin/api')->middleware(['auth', 'role:admin'])->group(function () {
-    Route::get('/testimoni', [TestimoniController::class, 'getTestimoni']);
-    Route::post('/testimoni', [TestimoniController::class, 'postTestimoni']);
-    Route::put('/testimoni/{id}', [TestimoniController::class, 'updateTestimoni']);
-    Route::delete('/testimoni/{id}', [TestimoniController::class, 'deleteTestimoni']);
-});
