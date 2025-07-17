@@ -22,9 +22,11 @@
                 @csrf
                 <div>
                     <label for="username">Username</label>
-                    <div class="input-wrapper">
-                        <input type="text" id="username" name="username" class="input-underline" placeholder="Type your username here" 
-                        value="{{ old('username') }}" required>
+                    <div class="input-wrapper" style="position:relative;">
+                        <input type="text" id="username" name="username" class="input-underline @if($errors->any()) input-error @endif" placeholder="@if($errors->any()) Your username or password is incorrect. @else Type your username here @endif" value="{{ old('username') }}" required style="@if($errors->any()) border: 1.5px solid #d00; color: #d00; @endif">
+                        @if($errors->any())
+                        <span class="input-error-text">Your username or password is incorrect.</span>
+                        @endif
                     </div>
                 </div>
                 <div>
@@ -61,3 +63,38 @@
     </script>
 </body>
 </html>
+
+<style>
+.login-error-message {
+    margin-bottom: 1rem;
+    color: #d00;
+    background: #fff3f3;
+    border: 1.5px solid #d00;
+    border-radius: 0.5rem;
+    padding: 0.85rem 1.2rem;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 600;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(220,0,0,0.04);
+    width: 100%;
+    max-width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+}
+.input-error {
+    border: 1.5px solid #d00 !important;
+    color: #d00 !important;
+}
+.input-error-text {
+    position: absolute;
+    left: 0;
+    bottom: -1.6rem;
+    font-size: 0.98rem;
+    color: #d00;
+    background: transparent;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+    padding-left: 2px;
+}
+</style>

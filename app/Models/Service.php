@@ -13,13 +13,15 @@ class Service extends Model
     protected $fillable = [
         'tanggal',
         'id_cabang',
-        "id_pengguna",
+        'id_pengguna',
         'keluhan',
         'id_tipe_service',
         'jadwal',
-        "started_at",
-        "finished_at",
+        'started_at',
+        'finished_at',
         'status',
+        'lokasi',
+        'tipe_service',
     ];
 
     public function cabang()

@@ -42,8 +42,17 @@ class ProdukController extends Controller
 
     public function index()
     {
-        $produk = Produk::all(); 
-        return view('admin-produk', compact('produk')); 
+        $produk = Produk::all();
+        // Jika request ke /product-customer, tampilkan view customer
+        if (request()->is('product-customer')) {
+            return view('product-customer', compact('produk'));
+        }
+        // Jika request ke /customer/product, juga tampilkan view customer
+        if (request()->is('customer/product')) {
+            return view('product-customer', compact('produk'));
+        }
+        // Default ke admin
+        return view('admin-produk', compact('produk'));
     }
 
     public function getProduk()

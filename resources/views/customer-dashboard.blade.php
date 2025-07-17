@@ -22,7 +22,7 @@
             <span class="header-username">{{ Auth::user()->nama }}</span>
             <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->nama) }}&background=eeeeee&color=141414&size=128" alt="Profile" class="header-profile">
             <div class="dropdown-menu" id="dropdownMenu" style="display:none;">
-                <a href="/" class="dropdown-item">Logout</a>
+                <a href="/logout" class="dropdown-item">Logout</a>
             </div>
         </div>
     </header>
@@ -139,6 +139,10 @@
                 <span class="star" data-value="5">&#9734;</span>
             </div>
             <textarea id="testimoniMessage" placeholder="Your Message" rows="5" style="width:100%; border:1px solid #ddd; border-radius:0.5rem; padding:1rem; font-size:1rem; font-family:'Inter',sans-serif; resize:none;"></textarea>
+            <input type="hidden" id="testimoniIdPengguna" value="{{ Auth::user()->id_pengguna }}">
+            <input type="hidden" id="testimoniIdService" value="{{ Auth::user()->id_pengguna }}"><!-- Menggunakan id_pengguna sebagai fallback -->
+            <input type="hidden" id="testimoniMenyoroti" value="false">
+            <div id="testimoniMsg" style="margin-top:0.7rem; font-size:1rem;"></div>
             <button class="submit-testimoni-btn" style="margin-top:1.5rem; width:100%; background:#FE8400; color:#fff; border:none; border-radius:0.5rem; padding:0.9rem 0; font-size:1.1rem; font-weight:600; cursor:pointer; transition:background 0.2s;">Submit</button>
         </div>
     </div>
@@ -154,24 +158,101 @@
         document.addEventListener('click', function() {
             dropdownMenu.style.display = 'none';
         });
-        // Modal Testimoni
-        function openTestimoniModal() {
-            document.getElementById('testimoniModal').style.display = 'block';
-        }
-        function closeTestimoniModal() {
-            document.getElementById('testimoniModal').style.display = 'none';
-        }
         // Star rating interaction
+        let selectedRating = 0;
+        let validServiceId = 1; // Default service ID
+        let userHasService = true; // Flag untuk validasi
+        
         document.addEventListener('DOMContentLoaded', function() {
+            // Get valid service ID when modal opens
+            async function getValidService() {
+                try {
+                    const response = await fetch('/testimoni/valid-service', {
+                        method: 'GET',
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            'Accept': 'application/json'
+                        }
+                    });
+                    const result = await response.json();
+                    if (response.ok) {
+                        validServiceId = result.id_service;
+                        document.getElementById('testimoniIdService').value = validServiceId;
+                        userHasService = !(result.message && result.message.toLowerCase().includes('default'));
+                    }
+                } catch (err) {
+                    userHasService = false;
+                }
+            }
+            
             const stars = document.querySelectorAll('.star-rating .star');
             stars.forEach((star, idx) => {
                 star.addEventListener('click', function() {
+                    selectedRating = idx + 1;
                     stars.forEach((s, i) => {
                         s.innerHTML = i <= idx ? '\u2605' : '\u2606';
                     });
                 });
             });
+            // Submit Testimoni
+            document.querySelector('.submit-testimoni-btn').addEventListener('click', async function() {
+                const id_pengguna = document.getElementById('testimoniIdPengguna').value;
+                const id_service = validServiceId; // Use the dynamically obtained service ID
+                const isi_testimoni = document.getElementById('testimoniMessage').value;
+                const menyoroti = document.getElementById('testimoniMenyoroti').value;
+                const msgDiv = document.getElementById('testimoniMsg');
+                if (!userHasService) {
+                    msgDiv.innerHTML = '<span style="color:red;">You must do a service first.</span>';
+                    return;
+                }
+                if (!isi_testimoni.trim()) {
+                    msgDiv.innerHTML = '<span style="color:red;">Pesan testimoni tidak boleh kosong.</span>';
+                    return;
+                }
+                if (selectedRating === 0) {
+                    msgDiv.innerHTML = '<span style="color:red;">Silakan beri rating bintang.</span>';
+                    return;
+                }
+                try {
+                    const response = await fetch('/testimoni', {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            id_pengguna,
+                            id_service,
+                            isi_testimoni,
+                            menyoroti,
+                            rating_bintang: selectedRating
+                        })
+                    });
+                    const result = await response.json();
+                    if (response.ok) {
+                        msgDiv.innerHTML = '<span style="color:green;">' + result.message + '</span>';
+                        document.getElementById('testimoniMessage').value = '';
+                        selectedRating = 0;
+                        document.querySelectorAll('.star-rating .star').forEach(s => s.innerHTML = '\u2606');
+                    } else {
+                        msgDiv.innerHTML = '<span style="color:red;">' + (result.error || result.message) + '</span>';
+                    }
+                } catch (err) {
+                    msgDiv.innerHTML = '<span style="color:red;">Terjadi kesalahan saat mengirim testimoni.</span>';
+                }
+            });
         });
+        
+        // Modal Testimoni
+        function openTestimoniModal() {
+            document.getElementById('testimoniModal').style.display = 'block';
+            // Get valid service when modal opens
+            getValidService();
+        }
+        function closeTestimoniModal() {
+            document.getElementById('testimoniModal').style.display = 'none';
+        }
     </script>
     <!-- Spacer to make page longer -->
     <div style="min-height: 300px;"></div>
