@@ -39,6 +39,7 @@
             
             <div class="logout-section">
                 <a href="/logout" class="logout-btn">
+                    <span class="nav-icon">🚪</span>
                     <span>Log Out</span>
                 </a>
             </div>

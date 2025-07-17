@@ -15,6 +15,7 @@ class PenggunaSeeder extends Seeder
             'username' => 'admin',
             'password' => Hash::make('admin123'),
             'peran' => 'admin',
+            'no_hp' => '08123456789',
         ]);
 
         Pengguna::create([
@@ -22,6 +23,7 @@ class PenggunaSeeder extends Seeder
             'username' => 'admin22',
             'password' => Hash::make('admin2123'),
             'peran' => 'admin',
+            'no_hp' => '08123456788',
         ]);
 
         Pengguna::create([
@@ -29,6 +31,7 @@ class PenggunaSeeder extends Seeder
             'username' => 'cust1',
             'password' => Hash::make('cust123'),
             'peran' => 'cust',
+            'no_hp' => '08123456787',
         ]);
     }
 } 
