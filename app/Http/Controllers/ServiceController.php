@@ -81,10 +81,11 @@ class ServiceController extends Controller
         ]);
 
         $existing = Service::where('id_pengguna', $request->id_pengguna)
-        ->whereDate('tanggal', $request->tanggal)
-        ->exists();
+            ->whereDate('tanggal', $request->tanggal)
+            ->whereIn('status', ['pen', 'fin'])
+            ->exists();
 
-         if ($existing) {
+        if ($existing) {
             return redirect()->back()
                 ->withErrors(['tanggal' => 'Kamu sudah melakukan booking di tanggal tersebut.'])
                 ->withInput();
@@ -112,6 +113,12 @@ class ServiceController extends Controller
     {
         $types = TypeService::all();
         return response()->json($types);
+    }
+
+    public function getServiceCabang()
+    {
+        $cabangs = Cabang::all();
+        return response()->json($cabangs);
     }
 
     public function indexByUser()

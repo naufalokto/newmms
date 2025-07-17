@@ -20,6 +20,70 @@
         .appointment-title-underline-svg {
             margin-top: 0;
         }
+        .appointment-form-modern {
+            background: #FFE4C6;
+            padding: 2rem 1rem;
+            border-radius: 0.5rem;
+            max-width: 100%;
+            margin: 0 auto;
+        }
+        .appointment-row {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 1.2rem;
+            flex-wrap: wrap;
+        }
+        .appointment-input {
+            display: flex;
+            align-items: center;
+            background: #fff;
+            border-radius: 0.4rem;
+            padding: 0.5rem 1rem;
+            flex: 1 1 220px;
+            min-width: 220px;
+            position: relative;
+        }
+        .appointment-input .icon {
+            margin-right: 0.7rem;
+            display: flex;
+            align-items: center;
+        }
+        .appointment-input input,
+        .appointment-input select {
+            border: none;
+            outline: none;
+            background: transparent;
+            font-size: 1rem;
+            width: 100%;
+            padding: 0.4rem 0;
+        }
+        .btn-modern {
+            background: #FE8400;
+            color: #fff;
+            border: none;
+            border-radius: 0.4rem;
+            padding: 0.8rem 2.2rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            align-self: stretch;
+            margin-left: 1rem;
+            transition: background 0.2s;
+        }
+        .btn-modern:hover {
+            background: #ff9900;
+        }
+        @media (max-width: 900px) {
+            .appointment-row {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            .btn-modern {
+                width: 100%;
+                margin-left: 0;
+                margin-top: 1rem;
+            }
+        }
     </style>
     </head>
     <body>
@@ -101,30 +165,45 @@
         <div class="section-divider"></div>
     </div>
     <div class="appointment-section" id="appointment" style="background: #FFE4C6;">
-        <form class="appointment-form">
-            <div class="input-group">
-                <input type="date" placeholder="Service Date" required>
+        <form method="POST" action="{{ route('service.store') }}" class="appointment-form-modern">
+            @csrf
+            <div class="appointment-row">
+                <div class="appointment-input">
+                    <span class="icon">📅</span>
+                    <input type="date" id="tanggal" name="tanggal" placeholder="Service Date" required>
+                </div>
+                <div class="appointment-input">
+                    <span class="icon">📍</span>
+                    <select id="id_cabang" name="id_cabang" required>
+                        <option value="">Service Location</option>
+                        <!-- Option diisi JS -->
+                    </select>
+                </div>
+                <div class="appointment-input">
+                    <span class="icon">🛠️</span>
+                    <select id="id_tipe_service" name="id_tipe_service" required>
+                        <option value="">Service Type</option>
+                        <!-- Option diisi JS -->
+                    </select>
+                </div>
             </div>
-            <div class="input-group">
-                <select required>
-                    <option value="">Service Location</option>
-                    <option>Pakis</option>
-                    <option>Sulfat</option>
-                </select>
-                <img src="/images/chevron.png" alt="Dropdown Icon" class="dropdown-icon">
+            <div class="appointment-row">
+                <div class="appointment-input">
+                    <span class="icon">⏰</span>
+                    <select id="jadwal" name="jadwal" required>
+                        <option value="">Service Time</option>
+                    </select>
+                </div>
+                <div class="appointment-input">
+                    <span class="icon">ℹ️</span>
+                    <input type="text" id="keluhan" name="keluhan" placeholder="Describe Your Issue">
+                </div>
+                <button type="submit" class="btn-modern">Book Now</button>
             </div>
-            <div class="input-group">
-                <select required>
-                    <option value="">Service Type</option>
-                    <option>Service Daily</option>
-                    <option>Other</option>
-                </select>
-                <img src="/images/chevron.png" alt="Dropdown Icon" class="dropdown-icon">
-            </div>
-            <div class="input-group input-group-textarea">
-                <textarea placeholder="Describe Your Issue" required></textarea>
-            </div>
-            <button class="btn" type="submit">Book Now</button>
+            <div id="slot-error" style="color:#d00; margin-top:0.5rem; display:none;">Tidak ada slot tersedia untuk tanggal & cabang ini.</div>
+            @auth
+                <input type="hidden" name="id_pengguna" value="{{ Auth::user()->id_pengguna }}">
+            @endauth
         </form>
     </div>
     <div class="collection-section" id="product">
@@ -242,5 +321,66 @@
             <a href="#"><span style="font-family:Arial;">&#xf0e1;</span></a>
         </div>
     </footer>
+            <script>
+    document.addEventListener("DOMContentLoaded", function () {
+    const dateInput = document.getElementById('tanggal');
+    const cabangInput = document.getElementById('id_cabang');
+    const jadwalSelect = document.getElementById('jadwal');
+    const slotError = document.getElementById('slot-error');
+
+    // Fetch cabang
+    fetch('/service-cabang')
+        .then(res => res.json())
+        .then(data => {
+            const select = document.getElementById('id_cabang');
+            select.innerHTML = '<option value="">Service Location</option>';
+            data.forEach(cabang => {
+                const opt = document.createElement('option');
+                opt.value = cabang.id_cabang;
+                opt.textContent = cabang.nama_cabang;
+                select.appendChild(opt);
+            });
+        });
+
+    // Fetch tipe service
+    fetch('/service-types')
+        .then(res => res.json())
+        .then(data => {
+            const select = document.getElementById('id_tipe_service');
+            select.innerHTML = '<option value="">Service Type</option>';
+            data.forEach(type => {
+                const opt = document.createElement('option');
+                opt.value = type.id_tipe_service;
+                opt.textContent = type.nama_service;
+                select.appendChild(opt);
+            });
+        });
+
+    function updateSlot() {
+        const date = dateInput.value;
+        const cabang = cabangInput.value;
+        if (!date || !cabang) return;
+
+        fetch(`/validate-slot?date=${date}&id_cabang=${cabang}`)
+            .then(res => res.json())
+            .then(data => {
+                jadwalSelect.innerHTML = '<option value="">Service Time</option>';
+                let available = false;
+                data.forEach(slot => {
+                    const opt = document.createElement('option');
+                    opt.value = slot.time;
+                    opt.textContent = `${slot.time} ${!slot.available ? `(${slot.reason})` : ''}`;
+                    opt.disabled = !slot.available;
+                    if (slot.available) available = true;
+                    jadwalSelect.appendChild(opt);
+                });
+                slotError.style.display = available ? 'none' : 'block';
+            });
+    }
+
+    dateInput.addEventListener('change', updateSlot);
+    cabangInput.addEventListener('change', updateSlot);
+});
+</script>
     </body>
 </html>
