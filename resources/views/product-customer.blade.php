@@ -39,43 +39,33 @@
     <div class="product-content-container">
         <!-- Category Bar -->
         <div class="product-category-bar">
-            <div class="category-rectangle" id="cat-1"><span class="icon-check">&#10003;</span></div><span style="margin-right:2rem;">Oil</span>
-            <div class="category-rectangle" id="cat-2"><span class="icon-check">&#10003;</span></div><span style="margin-right:2rem;">Second Part</span>
-            <div class="category-rectangle" id="cat-3"><span class="icon-check">&#10003;</span></div><span style="margin-right:2rem;">New Part</span>
-            <div class="category-rectangle" id="cat-4"><span class="icon-check">&#10003;</span></div><span>Apparel</span>
+            <div class="category-rectangle active" id="cat-1"><span class="icon-check">&#10003;</span></div><span style="margin-right:2rem;">Oil</span>
+            <div class="category-rectangle active" id="cat-2"><span class="icon-check">&#10003;</span></div><span style="margin-right:2rem;">Second Part</span>
+            <div class="category-rectangle active" id="cat-3"><span class="icon-check">&#10003;</span></div><span style="margin-right:2rem;">New Part</span>
+            <div class="category-rectangle active" id="cat-4"><span class="icon-check">&#10003;</span></div><span>Apparel</span>
         </div>
         <!-- Product Card Grid -->
-        <div class="product-card-grid">
-            <!-- Card 1 -->
-            <div class="product-card">
-                <img src="/images/motul-oil.jpg" alt="Motul Oil" class="product-image">
-                <div class="product-info">
-                    <div class="product-title">Motul Oil</div>
-                    <div class="product-category">Sparepart</div>
-                    <div class="product-price">Rp350.000</div>
-                    <button class="product-btn contact">Contact</button>
+        <div class="product-card-grid" id="productCardGrid">
+            @forelse($produk as $item)
+                <div class="product-card" data-kategori="{{ strtolower(str_replace(' ', '-', $item->kategori)) }}">
+                    <img src="{{ $item->gambar_produk ? asset($item->gambar_produk) : 'https://ui-avatars.com/api/?name=' . urlencode($item->nama_produk) . '&background=eeeeee&color=141414&size=200' }}" alt="{{ $item->nama_produk }}" class="product-image">
+                    <div class="product-info">
+                        <div class="product-title">{{ $item->nama_produk }}</div>
+                        <div class="product-category">{{ $item->kategori }}</div>
+                        <div class="product-price">Rp{{ number_format($item->harga, 0, ',', '.') }}</div>
+                        <a class="product-btn contact" target="_blank" href="https://wa.me/6285708150434?text=Halo%2C%20saya%20tertarik%20dengan%20produk%20{{ urlencode($item->nama_produk) }}%20dari%20Mifta%20Motor%20Sport">Contact</a>
+                    </div>
                 </div>
-            </div>
-            <!-- Card 2 -->
-            <div class="product-card">
-                <img src="/images/ohlins-suspension.jpg" alt="Ohlins Suspension Shocks" class="product-image">
-                <div class="product-info">
-                    <div class="product-title">Ohlins Suspension Shocks</div>
-                    <div class="product-category">Motor Part</div>
-                    <div class="product-price">Rp28.900.000</div>
-                    <button class="product-btn buy">Contact</button>
+            @empty
+                <div class="product-card" style="opacity:0.5; pointer-events:none;">
+                    <img src="/images/logo.png" alt="Out of Stock" class="product-image">
+                    <div class="product-info">
+                        <div class="product-title">Out of Stock</div>
+                        <div class="product-category">-</div>
+                        <div class="product-price">-</div>
+                    </div>
                 </div>
-            </div>
-            <!-- Card 3 -->
-            <div class="product-card">
-                <img src="/images/kawasaki-h2r.jpg" alt="Kawasaki H2R" class="product-image">
-                <div class="product-info">
-                    <div class="product-title">Kawasaki H2R</div>
-                    <div class="product-category">Motor Sport</div>
-                    <div class="product-price">Rp760.000.000</div>
-                    <button class="product-btn buy">Contact</button>
-                </div>
-            </div>
+            @endforelse
         </div>
     </div>
     <!-- Testimoni Modal Pop Up (copy dari dashboard, pastikan class dan id sama) -->
@@ -110,14 +100,45 @@
             dropdownMenu.style.display = 'none';
         });
 
-        // Interaktif kategori: hanya satu yang aktif
+        // Interaktif kategori: multi-select (bisa centang semua, minimal satu harus aktif)
         const rectangles = document.querySelectorAll('.category-rectangle');
-        rectangles.forEach(rect => {
+        const productCards = document.querySelectorAll('.product-card[data-kategori]');
+        const kategoriMap = [
+            {id: 'cat-1', kategori: 'oil'},
+            {id: 'cat-2', kategori: 'second-part'},
+            {id: 'cat-3', kategori: 'new-part'},
+            {id: 'cat-4', kategori: 'apparel'}
+        ];
+        rectangles.forEach((rect, idx) => {
             rect.addEventListener('click', function() {
-                rectangles.forEach(r => r.classList.remove('active'));
-                this.classList.add('active');
+                const activeCount = Array.from(rectangles).filter(r => r.classList.contains('active')).length;
+                if (this.classList.contains('active') && activeCount === 1) {
+                    return;
+                }
+                this.classList.toggle('active');
+                filterProducts();
             });
         });
+        function filterProducts() {
+            // Ambil kategori yang aktif
+            const activeKategori = kategoriMap.filter((k, i) => rectangles[i].classList.contains('active')).map(k => k.kategori);
+            let anyVisible = false;
+            productCards.forEach(card => {
+                if (activeKategori.includes(card.getAttribute('data-kategori'))) {
+                    card.style.display = '';
+                    anyVisible = true;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+            // Tampilkan Out of Stock jika tidak ada produk yang tampil
+            const outOfStockCard = document.querySelector('.product-card:not([data-kategori])');
+            if (outOfStockCard) {
+                outOfStockCard.style.display = anyVisible ? 'none' : '';
+            }
+        }
+        // Jalankan filter pertama kali
+        filterProducts();
 
         // Modal Testimoni
         function openTestimoniModal() {

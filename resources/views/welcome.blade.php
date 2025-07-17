@@ -20,9 +20,84 @@
         .appointment-title-underline-svg {
             margin-top: 0;
         }
+        .modal-popup {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.18);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.2s;
+        }
+        .modal-popup-content {
+            background: #fff;
+            border-radius: 1rem;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+            padding: 2.2rem 2.5rem 1.7rem 2.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 320px;
+            max-width: 90vw;
+            position: relative;
+            border: 2px solid #FE8400;
+        }
+        .modal-popup-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: #141414;
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+        .modal-popup-close {
+            position: absolute;
+            top: 1.1rem;
+            right: 1.5rem;
+            font-size: 2rem;
+            color: #FE8400;
+            cursor: pointer;
+            font-weight: bold;
+            background: none;
+            border: none;
+            outline: none;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .wa-btn {
+            display: inline-block;
+            background: #25D366;
+            color: #fff;
+            font-weight: 600;
+            padding: 0.9rem 2rem;
+            border-radius: 0.5rem;
+            font-size: 1.1rem;
+            text-decoration: none;
+            transition: background 0.2s;
+            margin-top: 1.2rem;
+        }
+        .wa-btn:hover {
+            background: #128C7E;
+        }
     </style>
     </head>
     <body>
+    @if(session('success'))
+    <div id="loginSuccessModal" class="modal-popup" style="display:flex;">
+        <div class="modal-popup-content">
+            <div class="modal-popup-title">{{ session('success') }}</div>
+        </div>
+    </div>
+    <script>
+        function closeLoginSuccessModal() {
+            document.getElementById('loginSuccessModal').style.display = 'none';
+        }
+        setTimeout(closeLoginSuccessModal, 2500);
+    </script>
+    @endif
     <header>
         <div class="header-left">
             <div class="logo">
@@ -34,12 +109,26 @@
                 <a href="#services">Service</a>
                 <a href="#product">Product</a>
                 <a href="#testimonial">Testimonial</a>
-                <a href="#help">Help</a>
+                @auth
+                    <a href="/customer/dashboard" style="font-size:0.95rem;">Customer Dashboard</a>
+                @else
+                    <a href="/login" style="font-size:0.95rem;">Customer Dashboard</a>
+                @endauth
             </nav>
+            @auth
+            <div class="header-user" id="headerUser" style="margin-left: 1.5rem;">
+                <span class="header-username">{{ Auth::user()->nama }}</span>
+                <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->nama) }}&background=eeeeee&color=141414&size=128" alt="Profile" class="header-profile">
+                <div class="dropdown-menu" id="dropdownMenu" style="display:none;">
+                    <a href="/logout" class="dropdown-item">Logout</a>
+                </div>
+            </div>
+            @else
             <div style="display: flex; gap: 0.5rem;">
                 <a href="/login" class="btn-login">Login</a>
-                <a href="/signup" class="btn-register">Register</a>
+                <a href="/register" class="btn-register">Register</a>
             </div>
+            @endauth
         </div>
     </header>
     <div class="hero">
@@ -124,7 +213,11 @@
             <div class="input-group input-group-textarea">
                 <textarea placeholder="Describe Your Issue" required></textarea>
             </div>
-            <button class="btn" type="submit">Book Now</button>
+            @auth
+                <button class="btn" type="submit">Book Now</button>
+            @else
+                <a href="/login" class="btn" style="display:inline-block; text-align:center;">You must login/signup</a>
+            @endauth
         </form>
     </div>
     <div class="collection-section" id="product">
@@ -142,7 +235,7 @@
                     <h4>Motul Oil</h4>
                     <p>Sparepart</p>
                     <div class="price">Rp350.000</div>
-                    <button class="btn">Buy Now</button>
+                    <a href="https://wa.me/6285708150434?text=Hello%2C%20I%20am%20interested%20in%20Motul%20Oil%20from%20Mifta%20Motor%20Sport" target="_blank" class="btn wa-btn">Contact Now</a>
                 </div>
             </div>
             <div class="collection-card">
@@ -150,7 +243,7 @@
                     <h4>Ohlins Suspension Shocks</h4>
                     <p>Motor Part</p>
                     <div class="price">Rp28.900.000</div>
-                    <button class="btn">Buy Now</button>
+                    <a href="https://wa.me/6285708150434?text=Hello%2C%20I%20am%20interested%20in%20Ohlins%20Suspension%20Shocks%20from%20Mifta%20Motor%20Sport" target="_blank" class="btn wa-btn">Contact Now</a>
                 </div>
             </div>
             <div class="collection-card">
@@ -158,7 +251,7 @@
                     <h4>Kawasaki H2R</h4>
                     <p>Motor Sport</p>
                     <div class="price">Rp750.000.000</div>
-                    <button class="btn">Buy Now</button>
+                    <a href="https://wa.me/6285708150434?text=Hello%2C%20I%20am%20interested%20in%20Kawasaki%20H2R%20from%20Mifta%20Motor%20Sport" target="_blank" class="btn wa-btn">Contact Now</a>
                 </div>
             </div>
         </div>
@@ -242,5 +335,21 @@
             <a href="#"><span style="font-family:Arial;">&#xf0e1;</span></a>
         </div>
     </footer>
+    <script>
+    // Toggle dropdown on click user/profile (only if authenticated)
+    document.addEventListener('DOMContentLoaded', function() {
+        const headerUser = document.getElementById('headerUser');
+        const dropdownMenu = document.getElementById('dropdownMenu');
+        if(headerUser && dropdownMenu) {
+            headerUser.addEventListener('click', function(e) {
+                e.stopPropagation();
+                dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
+            });
+            document.addEventListener('click', function() {
+                dropdownMenu.style.display = 'none';
+            });
+        }
+    });
+</script>
     </body>
 </html>
