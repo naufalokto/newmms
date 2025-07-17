@@ -26,6 +26,42 @@ class TestimoniController extends Controller
         }
     }
 
+    // Get valid service for current user
+    public function getValidService() {
+        try {
+            $user = auth()->user();
+            if (!$user) {
+                return response()->json([
+                    'message' => 'User tidak ditemukan'
+                ], 401);
+            }
+
+            // Get the latest service for this user
+            $service = \App\Models\Service::where('id_pengguna', $user->id_pengguna)
+                ->orderBy('id_service', 'desc')
+                ->first();
+
+            if (!$service) {
+                // If no service found, return default service
+                return response()->json([
+                    'id_service' => 1,
+                    'message' => 'Menggunakan service default'
+                ]);
+            }
+
+            return response()->json([
+                'id_service' => $service->id_service,
+                'message' => 'Service ditemukan'
+            ]);
+            
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => 'Gagal mendapatkan service',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
     // For admin view page
     public function index() {
         try {
@@ -44,16 +80,32 @@ class TestimoniController extends Controller
         try {
             $request->validate([
                 'id_pengguna' => 'required|exists:pengguna,id_pengguna',
-                'id_service' => 'required|exists:service,id_service',
+                'id_service' => 'required|integer',
                 'isi_testimoni' => 'required|string|max:1000',
-                'menyoroti' => 'required|string|in:true,false'
+                'menyoroti' => 'required|string|in:true,false',
+                'rating_bintang' => 'required|integer|min:1|max:5'
             ]);
+
+            // Cek apakah user sudah pernah mengisi testimoni untuk service ini
+            $existing = Testimoni::where('id_pengguna', $request->id_pengguna)
+                ->where('id_service', $request->id_service)
+                ->first();
+            if ($existing) {
+                return response()->json([
+                    'message' => 'You have already submitted a testimonial for this service.'
+                ], 400);
+            }
+
+            // Check if service exists, if not use a default service
+            $serviceExists = \App\Models\Service::where('id_service', $request->id_service)->exists();
+            $id_service = $serviceExists ? $request->id_service : 1; // Default to service ID 1 if not found
 
             $testimoni = new Testimoni();
             $testimoni->id_pengguna = $request->id_pengguna;
-            $testimoni->id_service = $request->id_service; 
+            $testimoni->id_service = $id_service; 
             $testimoni->isi_testimoni = $request->isi_testimoni; 
-            $testimoni->menyoroti = $request->menyoroti == 'true' ?? 'false'; 
+            $testimoni->menyoroti = $request->menyoroti == 'true' ? 'true' : 'false';
+            $testimoni->rating_bintang = $request->rating_bintang;
             $testimoni->save();
             
             return response()->json([

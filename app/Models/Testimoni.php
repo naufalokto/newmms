@@ -14,7 +14,8 @@ class Testimoni extends Model
         'id_pengguna',
         'id_service',
         'isi_testimoni',
-        'menyoroti'
+        'menyoroti',
+        'rating_bintang'
     ];
 
     public function pengguna()
