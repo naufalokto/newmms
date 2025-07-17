@@ -22,7 +22,7 @@
             <span class="header-username">{{ Auth::user()->nama }}</span>
             <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->nama) }}&background=eeeeee&color=141414&size=128" alt="Profile" class="header-profile">
             <div class="dropdown-menu" id="dropdownMenu" style="display:none;">
-                <a href="/" class="dropdown-item">Logout</a>
+                <a href="/logout" class="dropdown-item">Logout</a>
             </div>
         </div>
     </header>
