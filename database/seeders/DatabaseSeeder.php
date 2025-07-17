@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -48,6 +49,20 @@ class DatabaseSeeder extends Seeder
             'stok' => 20,
             'gambar_produk' => null,
             'deskripsi' => 'Official MMS apparel.'
+        ]);
+        \App\Models\Pengguna::create([
+            'nama' => 'Admin Satu',
+            'username' => 'admin1',
+            'password' => Hash::make('admin1password'),
+            'no_hp' => '081234567890',
+            'peran' => 'admin',
+        ]);
+        \App\Models\Pengguna::create([
+            'nama' => 'Admin Dua',
+            'username' => 'admin2',
+            'password' => Hash::make('admin2password'),
+            'no_hp' => '081298765432',
+            'peran' => 'admin',
         ]);
     }
 } 
