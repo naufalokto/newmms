@@ -68,9 +68,7 @@ Route::resource('produk', ProdukController::class)->only(['index', 'store', 'cre
 
 // Halaman produk customer
 Route::get('/customer/product', [ProdukController::class, 'index'])->name('customer.product')->middleware('auth');
-Route::get('/product-customer', function () {
-    return view('product-customer');
-})->name('product.customer');
+Route::get('/product-customer', [ProdukController::class, 'index'])->name('product.customer');
 
 // Booking Service
 Route::get('/service', [ServiceController::class, 'create'])->name('service.create');
@@ -85,6 +83,7 @@ Route::post('/service/{id}/start', [ServiceController::class, 'startService'])->
 // Testimoni
 Route::get('/testimoni', [TestimoniController::class, 'getTestimoni']);
 Route::post('/testimoni', [TestimoniController::class, 'postTestimoni']);
+Route::get('/testimoni/valid-service', [TestimoniController::class, 'getValidService'])->middleware('auth');
 Route::delete('/testimoni/{id}', [TestimoniController::class, 'deleteTestimoni']);
 
 // Berita
