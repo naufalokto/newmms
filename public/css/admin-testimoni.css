@@ -248,10 +248,11 @@
 }
 
 .product-image {
-    width: 50px;
-    height: 50px;
+    width: 48px;
+    height: 48px;
     border-radius: 8px;
     object-fit: cover;
+    border: 1px solid #e5e7eb;
 }
 
 .testimonial-content,
@@ -289,12 +290,47 @@
     font-size: 14px;
 }
 
-.testimonial-actions,
-.product-actions,
-.booking-actions,
-.news-actions {
+.price-section {
     display: flex;
-    gap: 5px;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.price {
+    font-size: 18px;
+    font-weight: 600;
+    color: #059669;
+}
+
+.stock {
+    font-size: 14px;
+    color: #6b7280;
+}
+
+.available {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+.low-stock {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.out-of-stock {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.stat-icon.red {
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+}
+
+.stat-icon.orange {
+    background: rgba(249, 115, 22, 0.1);
+    color: #f97316;
 }
 
 /* Status Badges */

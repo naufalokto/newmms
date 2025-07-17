@@ -127,8 +127,8 @@
                                 <div class="product-price">Rp {{ number_format($produk->harga, 0, ',', '.') }}</div>
                             </div>
                             <div class="product-actions">
-                                <button class="btn-icon">✏️</button>
-                                <button class="btn-icon delete">🗑️</button>
+                                <button class="btn-icon" onclick="editProduct({{ $produk->id_produk }})">✏️</button>
+                                <button onclick="deleteProduct({{ $produk->id_produk }})" class="btn-icon delete">🗑️</button>
                             </div>
                         </div>
                         @empty
@@ -206,18 +206,119 @@
         </div>
     </div>
 
+    <!-- Add/Edit Modal -->
+    <div id="addModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Add New Product</h3>
+                <span class="close" onclick="closeModal()">&times;</span>
+            </div>
+            <form id="addProductForm">
+                <!-- Hidden field to track product ID for editing -->
+                <input type="hidden" id="productId" name="productId" value="">
+                
+                <div class="form-group">
+                    <label for="nama_produk">Product Name</label>
+                    <input type="text" id="nama_produk" name="nama_produk" required>
+                </div>
+                <div class="form-group">
+                    <label for="kategori">Category</label>
+                    <select id="kategori" name="kategori" required>
+                        <option value="">Select Category</option>
+                        <option value="electronics">Electronics</option>
+                        <option value="accessories">Accessories</option>
+                        <option value="services">Services</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="harga">Price</label>
+                    <input type="number" id="harga" name="harga" required min="0">
+                </div>
+                <div class="form-group">
+                    <label for="stok">Stock</label>
+                    <input type="number" id="stok" name="stok" required min="0">
+                </div>
+                <div class="form-group">
+                    <label for="deskripsi">Description</label>
+                    <textarea id="deskripsi" name="deskripsi" maxlength="1000"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="gambar">Product Image</label>
+                    <input type="file" id="gambar" name="gambar" accept="image/*">
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary" id="submitBtn">Save Product</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
     <script>
         // Close dropdown when clicking outside
         document.addEventListener('click', function(event) {
             
         });
 
-        // Auto-refresh notifications every 30 seconds
-        setInterval(function() {
-            // You can add AJAX call here to refresh notifications
-            console.log('Checking for new notifications...');
-        }, 30000);
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+         let isEditMode = false;
+        let currentProductId = null;
 
+        document.getElementById('addProductForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const formData = new FormData(this);
+        const submitBtn = document.getElementById('submitBtn');
+        
+        // Disable submit button during request
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Saving...';
+        
+        let url = '/admin/api/produk';
+        let method = 'POST';
+        
+        // If editing, use PUT method and include product ID in URL
+        if (isEditMode && currentProductId) {
+            url = `/admin/api/produk/${currentProductId}`;
+            method = 'PUT';
+            // For PUT requests with file uploads, we need to use POST with _method
+            formData.append('_method', 'PUT');
+        }
+        
+        fetch(url, {
+            method: method === 'PUT' ? 'POST' : method, // Laravel PUT with files workaround
+            headers: {
+                'X-CSRF-TOKEN': csrfToken,
+            },
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.message) {
+                alert(data.message);
+                closeModal();
+                location.reload(); // Refresh to show updated data
+            } else if (data.error) {
+                alert('Error: ' + data.error);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error saving product');
+        })
+        .finally(() => {
+            // Re-enable submit button
+            submitBtn.disabled = false;
+            submitBtn.textContent = isEditMode ? 'Update Product' : 'Save Product';
+        });
+    });
+
+        function closeModal() {
+        document.getElementById('addModal').style.display = 'none';
+        isEditMode = false;
+        currentProductId = null;
+    }       
         function deleteTestimoni(id) {
             if (confirm('Are you sure you want to delete this testimonial?')) {
                 fetch(`/admin/testimoni/${id}`, {
@@ -257,6 +358,73 @@
                     console.error('Error:', error);
                     alert('Error fetching berita data');
                 });
+        }
+        function editProduct(id) {
+            fetch(`/admin/api/produk/${id}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.produk) {
+                        const produk = data.produk;
+                        
+                        // Set edit mode
+                        isEditMode = true;
+                        currentProductId = id;
+                        
+                        // Update modal title and button
+                        document.getElementById('modalTitle').textContent = 'Edit Product';
+                        document.getElementById('submitBtn').textContent = 'Update Product';
+                        
+                        // Populate form fields
+                        document.getElementById('productId').value = id;
+                        document.getElementById('nama_produk').value = produk.nama_produk || '';
+                        document.getElementById('kategori').value = produk.kategori || '';
+                        document.getElementById('harga').value = produk.harga || '';
+                        document.getElementById('stok').value = produk.stok || '';
+                        document.getElementById('deskripsi').value = produk.deskripsi || '';
+                        
+                        // Show modal
+                        document.getElementById('addModal').style.display = 'block';
+                    } else {
+                        alert('Product not found');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Error loading product data');
+                });
+        }
+
+        document.addEventListener('click', function(event) {
+        // Close modal when clicking outside
+        const modal = document.getElementById('addModal');
+        if (event.target === modal) {
+            closeModal();
+        }
+    });
+
+        function deleteProduct(id) {
+            if (confirm('Are you sure you want to delete this product?')) {
+                fetch(`/admin/api/produk/${id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRF-TOKEN': csrfToken,
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.message) {
+                        alert(data.message);
+                        location.reload();
+                    } else if (data.error) {
+                        alert('Error: ' + data.error);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Error deleting product');
+                });
+            }
         }
     </script>
 </body>

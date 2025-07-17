@@ -119,9 +119,7 @@
                         </div>
 
                         <div class="testimonial-meta">
-                            <span class="product-service">
-                                <strong>{{ $item->service->type_service ?? 'Service' }}:</strong> {{ $item->service->deskripsi ?? 'Premium Service' }}
-                            </span>
+                            
                            
                         </div>
 
@@ -225,7 +223,14 @@
                 .then(data => {
                     if (data.message) {
                         alert(data.message);
-                        location.reload();
+                        // Remove the card from DOM instead of page reload
+                        const card = document.querySelector(`button[onclick="deleteTestimoni(${id})"]`).closest('.testimonial-card');
+                        if (card) {
+                            card.remove();
+                            updateStats();
+                            // ADDED: Reapply filters after deletion
+                            applyFilters();
+                        }
                     }
                 })
                 .catch(error => {
@@ -235,9 +240,13 @@
             }
         }
 
-
-        // Toggle highlight function
         function toggleHighlight(id, highlight) {
+            const button = document.querySelector(`button[onclick="toggleHighlight(${id}, '${highlight}')"]`);
+            const card = button.closest('.testimonial-card');
+            
+            button.disabled = true;
+            button.textContent = 'Updating...';
+            
             fetch(`/admin/api/testimoni/${id}`, {
                 method: 'PUT',
                 headers: {
@@ -249,21 +258,92 @@
             .then(response => response.json())
             .then(data => {
                 if (data.message) {
-                    alert(data.message);
-                    location.reload();
+                    // Update the card UI without page reload
+                    updateCardHighlight(card, id, highlight);
+                    // Update stats
+                    updateStats();
+                    // ADDED: Reapply filters after highlight toggle
+                    applyFilters();
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
                 alert('Error updating testimonial');
+            })
+            .finally(() => {
+                // Re-enable button
+                button.disabled = false;
             });
         }
 
-        // Combined search and filter function 
+        // ENHANCED: Function to update card highlight state
+        function updateCardHighlight(card, id, highlight) {
+            const badge = card.querySelector('.highlight-badge, .regular-badge');
+            const actionsDiv = card.querySelector('.card-actions');
+            
+            if (highlight === 'true') {
+                // Update badge
+                badge.className = 'highlight-badge';
+                badge.textContent = 'Highlighted';
+                
+                // Update button
+                actionsDiv.innerHTML = `
+                    <button class="action-btn remove-highlight" onclick="toggleHighlight(${id}, 'false')" title="Remove Highlight">
+                        Remove Highlight
+                    </button>
+                    <button class="action-btn delete" onclick="deleteTestimoni(${id})" title="Delete">
+                        Delete
+                    </button>
+                `;
+            } else {
+                // Update badge
+                badge.className = 'regular-badge';
+                badge.textContent = 'Regular';
+                
+                // Update button
+                actionsDiv.innerHTML = `
+                    <button class="action-btn highlight" onclick="toggleHighlight(${id}, 'true')" title="Highlight">
+                        Highlight
+                    </button>
+                    <button class="action-btn delete" onclick="deleteTestimoni(${id})" title="Delete">
+                        Delete
+                    </button>
+                `;
+            }
+            
+            // Add visual feedback
+            card.style.transform = 'scale(1.02)';
+            card.style.transition = 'transform 0.2s ease';
+            setTimeout(() => {
+                card.style.transform = 'scale(1)';
+            }, 200);
+        }
+
+        // ENHANCED: Function to update stats without page reload
+        function updateStats() {
+            const cards = document.querySelectorAll('.testimonial-card');
+            const totalCards = cards.length;
+            const highlightedCards = document.querySelectorAll('.highlight-badge').length;
+            
+            // Update total reviews stat
+            const totalStat = document.querySelector('.stat-card .stat-value');
+            if (totalStat) {
+                totalStat.textContent = totalCards;
+            }
+            
+            // Update highlighted stat
+            const highlightedStat = document.querySelectorAll('.stat-card .stat-value')[1];
+            if (highlightedStat) {
+                highlightedStat.textContent = highlightedCards;
+            }
+        }
+
         function applyFilters() {
             const searchTerm = document.getElementById('searchTestimoni').value.toLowerCase();
             const filterValue = document.getElementById('filterHighlight').value;
             const cards = document.querySelectorAll('.testimonial-card');
+            
+            let visibleCount = 0;
             
             cards.forEach(card => {
                 const text = card.textContent.toLowerCase();
@@ -271,18 +351,85 @@
                 
                 let matchesFilter = true;
                 if (filterValue === '1') {
+                    // Show only highlighted testimonials
                     matchesFilter = card.querySelector('.highlight-badge') !== null;
                 } else if (filterValue === '0') {
+                    // Show only regular testimonials
                     matchesFilter = card.querySelector('.regular-badge') !== null;
                 }
                 
-                card.style.display = (matchesSearch && matchesFilter) ? 'block' : 'none';
+                const shouldShow = matchesSearch && matchesFilter;
+                card.style.display = shouldShow ? 'block' : 'none';
+                
+                if (shouldShow) {
+                    visibleCount++;
+                }
             });
+            
+            // ADDED: Show/hide empty state based on visible cards
+            updateEmptyState(visibleCount);
         }
 
-        document.getElementById('searchTestimoni').addEventListener('input', applyFilters);
-        document.getElementById('filterHighlight').addEventListener('change', applyFilters);
+        // NEW: Function to handle empty state
+        function updateEmptyState(visibleCount) {
+            const testimonialGrid = document.querySelector('.testimonials-grid');
+            const existingEmptyState = testimonialGrid.querySelector('.filter-empty-state');
+            
+            if (visibleCount === 0) {
+                // Show empty state for filter results
+                if (!existingEmptyState) {
+                    const emptyState = document.createElement('div');
+                    emptyState.className = 'filter-empty-state';
+                    emptyState.innerHTML = `
+                        <div class="empty-icon">🔍</div>
+                        <h3>No testimonials match your criteria</h3>
+                        <p>Try adjusting your search terms or filter settings.</p>
+                        <button class="btn btn-secondary" onclick="clearFilters()">Clear Filters</button>
+                    `;
+                    emptyState.style.cssText = `
+                        text-align: center;
+                        padding: 40px 20px;
+                        background: #f9fafb;
+                        border-radius: 12px;
+                        border: 1px solid #e5e7eb;
+                        grid-column: 1 / -1;
+                    `;
+                    testimonialGrid.appendChild(emptyState);
+                }
+            } else {
+                // Remove empty state if cards are visible
+                if (existingEmptyState) {
+                    existingEmptyState.remove();
+                }
+            }
+        }
+
         
+
+        document.getElementById('searchTestimoni').addEventListener('input', function() {
+            applyFilters();
+        });
+
+        document.getElementById('filterHighlight').addEventListener('change', function() {
+            applyFilters();
+        });
+
+     
+        document.getElementById('searchTestimoni').addEventListener('input', function() {
+            applyFilters();
+            showFilterStatus();
+        });
+
+        document.getElementById('filterHighlight').addEventListener('change', function() {
+            applyFilters();
+            showFilterStatus();
+        });
+
+        // NEW: Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            applyFilters(); 
+            showFilterStatus(); 
+        });
     </script>
 </body>
 </html>
