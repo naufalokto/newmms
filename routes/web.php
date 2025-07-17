@@ -35,8 +35,10 @@ Route::get('/admin/berita', function () {
 })->middleware(['auth', 'role:admin']);
 Route::get('/admin/produk', [ProdukController::class, 'index'])->middleware(['auth', 'role:admin']); 
 Route::get('/admin/booking', function () {
-    return view('admin-booking'); 
+    return view('admin-booking-service'); 
 })->middleware(['auth', 'role:admin']);
+Route::get('/admin/produk', [ProdukController::class, 'index'])
+    ->middleware(['auth', 'role:admin']);
 
 // Admin API endpoints
 Route::prefix('/admin/api')->middleware(['auth', 'role:admin'])->group(function () {
@@ -54,6 +56,9 @@ Route::prefix('/admin/api')->middleware(['auth', 'role:admin'])->group(function 
     Route::get('/produk/{id}', [ProdukController::class, 'showProduk']);
     
     Route::put('/service/{id}', [ServiceController::class, 'updateService']);
+
+    // Service API
+    Route::get('/service', [ServiceController::class, 'getServices']);
 });
 
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
