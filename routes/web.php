@@ -61,12 +61,10 @@ Route::prefix('/admin/api')->middleware(['auth', 'role:admin'])->group(function 
     Route::get('/service', [ServiceController::class, 'getServices']);
 });
 
-Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 // Customer Dashboard
-Route::get('/customer/dashboard', function () {
-    return view('customer-dashboard');
-})->name('customer.dashboard')->middleware('auth','role:cust');
+Route::get('/customer/dashboard', [CustomerDashboardController::class, 'index'])->name('customer.dashboard')->middleware('auth','role:cust');
 
 // Produk routes
 Route::resource('produk', ProdukController::class)->only(['index', 'store', 'create']);
@@ -92,6 +90,11 @@ Route::get('/testimoni', [TestimoniController::class, 'getTestimoni']);
 Route::post('/testimoni', [TestimoniController::class, 'postTestimoni']);
 Route::get('/testimoni/valid-service', [TestimoniController::class, 'getValidService'])->middleware('auth');
 Route::delete('/testimoni/{id}', [TestimoniController::class, 'deleteTestimoni']);
+
+// Customer Testimoni Page
+Route::get('/customer/testimoni', function () {
+    return view('customer-testimoni');
+})->middleware(['auth', 'role:cust']);
 
 // Berita
 Route::get('/berita', [BeritaController::class, 'getBerita']);

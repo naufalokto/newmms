@@ -105,7 +105,7 @@ class ServiceController extends Controller
 
 
         //route sementara
-        return redirect()->route('service.history')->with('success', 'Service berhasil ditambahkan');
+        return redirect()->route('customer.dashboard')->with('success', 'Service successfully added');
 
     }
 
@@ -160,7 +160,7 @@ class ServiceController extends Controller
         $service->status = 'cancel';
         $service->save();
 
-        return redirect()->route('service.history')->with('success', 'Booking berhasil dibatalkan.');
+        return redirect()->route('customer.dashboard')->with('success', 'Booking berhasil dibatalkan.');
     }
 
     public function indexBycabang()

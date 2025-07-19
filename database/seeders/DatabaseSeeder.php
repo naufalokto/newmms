@@ -15,7 +15,9 @@ class DatabaseSeeder extends Seeder
         $this->call([
             CabangSeeder::class,
             TypeServiceSeeder::class,
-            PenggunaSeeder::class, // jika ada
+            PenggunaSeeder::class,
+            ServiceSeeder::class, // Tambahkan ServiceSeeder
+            TestimoniSeeder::class, // Tambahkan TestimoniSeeder
         ]);
         // Tambahkan dummy produk secara manual
         \App\Models\Produk::create([

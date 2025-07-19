@@ -36,22 +36,38 @@ class TestimoniController extends Controller
                 ], 401);
             }
 
-            // Get the latest service for this user
+            // Get the latest finished service for this user
             $service = \App\Models\Service::where('id_pengguna', $user->id_pengguna)
+                ->where('status', 'fin') // Hanya service yang sudah selesai
                 ->orderBy('id_service', 'desc')
                 ->first();
 
             if (!$service) {
-                // If no service found, return default service
                 return response()->json([
-                    'id_service' => 1,
-                    'message' => 'Menggunakan service default'
-                ]);
+                    'message' => 'Tidak ada service yang sudah selesai untuk user ini'
+                ], 404);
+            }
+
+            // Cek apakah sudah ada testimoni untuk service ini
+            $existingTestimoni = Testimoni::where('id_service', $service->id_service)
+                ->where('id_pengguna', $user->id_pengguna)
+                ->first();
+
+            if ($existingTestimoni) {
+                return response()->json([
+                    'message' => 'Anda sudah membuat testimoni untuk service ini'
+                ], 400);
             }
 
             return response()->json([
                 'id_service' => $service->id_service,
-                'message' => 'Service ditemukan'
+                'service_details' => [
+                    'tanggal' => $service->tanggal,
+                    'keluhan' => $service->keluhan,
+                    'status' => $service->status,
+                    'finished_at' => $service->finished_at
+                ],
+                'message' => 'Service yang valid ditemukan'
             ]);
             
         } catch (Exception $e) {
@@ -96,13 +112,31 @@ class TestimoniController extends Controller
                 ], 400);
             }
 
-            // Check if service exists, if not use a default service
-            $serviceExists = \App\Models\Service::where('id_service', $request->id_service)->exists();
-            $id_service = $serviceExists ? $request->id_service : 1; // Default to service ID 1 if not found
+            // Validasi service harus ada dan status harus finished
+            $service = \App\Models\Service::where('id_service', $request->id_service)->first();
+            if (!$service) {
+                return response()->json([
+                    'message' => 'Service tidak ditemukan.'
+                ], 404);
+            }
+
+            // Cek apakah service sudah selesai (status = 'fin')
+            if ($service->status !== 'fin') {
+                return response()->json([
+                    'message' => 'Testimoni hanya dapat dibuat untuk service yang sudah selesai (status finished).'
+                ], 400);
+            }
+
+            // Cek apakah service milik pengguna yang bersangkutan
+            if ($service->id_pengguna != $request->id_pengguna) {
+                return response()->json([
+                    'message' => 'Anda hanya dapat membuat testimoni untuk service Anda sendiri.'
+                ], 403);
+            }
 
             $testimoni = new Testimoni();
             $testimoni->id_pengguna = $request->id_pengguna;
-            $testimoni->id_service = $id_service; 
+            $testimoni->id_service = $service->id_service; 
             $testimoni->isi_testimoni = $request->isi_testimoni; 
             $testimoni->menyoroti = $request->menyoroti == 'true' ? 'true' : 'false';
             $testimoni->rating_bintang = $request->rating_bintang;

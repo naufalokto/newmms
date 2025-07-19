@@ -87,6 +87,12 @@
     </style>
     </head>
     <body>
+    @if(session('success'))
+        <div style="position: fixed; top: 20px; right: 20px; background: #10B981; color: white; padding: 1rem; border-radius: 8px; z-index: 10000; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
+            {{ session('success') }}
+            <button onclick="this.parentElement.remove()" style="background: none; border: none; color: white; margin-left: 10px; cursor: pointer;">×</button>
+        </div>
+    @endif
     <header>
         <div class="header-left">
             <div class="logo">
@@ -98,12 +104,58 @@
                 <a href="#services">Service</a>
                 <a href="#product">Product</a>
                 <a href="#testimonial">Testimonial</a>
-                <a href="#help">Help</a>
+                <a href="/customer/dashboard">Customer Page</a>
             </nav>
+            @auth
+            <div class="account-dropdown" style="position:relative;">
+                <button class="btn-login" style="background:#FE8400;color:#fff;border:none;padding:0.5em 1.2em;border-radius:0.4em;cursor:pointer;">
+                    {{ Auth::user()->nama ?? Auth::user()->username }} &#x25BC;
+                </button>
+                <div class="dropdown-content" style="display:none;position:absolute;right:0;top:2.8em;background:#fff;border:1px solid #eee;border-radius:0.4em;box-shadow:0 2px 8px rgba(0,0,0,0.08);min-width:120px;z-index:9999;margin-top:0.5em;">
+                    <button onclick="performLogout()" style="background:none;border:none;padding:0.7em 1.2em;width:100%;text-align:left;cursor:pointer;color:#333;">Logout</button>
+                </div>
+            </div>
+            <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                var btn = document.querySelector('.account-dropdown .btn-login');
+                var dropdown = document.querySelector('.account-dropdown .dropdown-content');
+                if(btn && dropdown) {
+                    btn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+                    });
+                    document.addEventListener('click', function(e) {
+                        if (!btn.contains(e.target) && !dropdown.contains(e.target)) {
+                            dropdown.style.display = 'none';
+                        }
+                    });
+                }
+            });
+
+            function performLogout() {
+                // Create a form dynamically
+                var form = document.createElement('form');
+                form.method = 'POST';
+                form.action = '{{ route("logout") }}';
+                
+                // Add CSRF token
+                var csrfToken = document.createElement('input');
+                csrfToken.type = 'hidden';
+                csrfToken.name = '_token';
+                csrfToken.value = '{{ csrf_token() }}';
+                form.appendChild(csrfToken);
+                
+                // Submit the form
+                document.body.appendChild(form);
+                form.submit();
+            }
+            </script>
+            @else
             <div style="display: flex; gap: 0.5rem;">
                 <a href="/login" class="btn-login">Login</a>
                 <a href="/signup" class="btn-register">Register</a>
             </div>
+            @endauth
         </div>
     </header>
     <div class="hero">
@@ -198,7 +250,14 @@
                     <span class="icon">ℹ️</span>
                     <input type="text" id="keluhan" name="keluhan" placeholder="Describe Your Issue">
                 </div>
-                <button type="submit" class="btn-modern">Book Now</button>
+                <button type="submit" class="btn-modern"
+                @guest disabled style="background:#ccc;cursor:not-allowed;" @endguest>
+                @guest
+                    You must login/signup
+                @else
+                    Book Now
+                @endguest
+                </button>
             </div>
             <div id="slot-error" style="color:#d00; margin-top:0.5rem; display:none;">Tidak ada slot tersedia untuk tanggal & cabang ini.</div>
             @auth
@@ -334,12 +393,22 @@
         .then(data => {
             const select = document.getElementById('id_cabang');
             select.innerHTML = '<option value="">Service Location</option>';
+            if (!data || data.length === 0) {
+                select.innerHTML += '<option value="">(Cabang tidak tersedia)</option>';
+                document.getElementById('jadwal').innerHTML = '<option value="">Service Time</option>';
+                document.getElementById('slot-error').style.display = 'block';
+                return;
+            }
             data.forEach(cabang => {
                 const opt = document.createElement('option');
                 opt.value = cabang.id_cabang;
                 opt.textContent = cabang.nama_cabang;
                 select.appendChild(opt);
             });
+        })
+        .catch(err => {
+            console.error('Gagal fetch cabang:', err);
+            document.getElementById('slot-error').style.display = 'block';
         });
 
     // Fetch tipe service
@@ -354,27 +423,42 @@
                 opt.textContent = type.nama_service;
                 select.appendChild(opt);
             });
-        });
+        })
+        .catch(err => console.error('Gagal fetch tipe service:', err));
 
     function updateSlot() {
         const date = dateInput.value;
         const cabang = cabangInput.value;
-        if (!date || !cabang) return;
+        if (!date || !cabang) {
+            jadwalSelect.innerHTML = '<option value="">Service Time</option>';
+            slotError.style.display = 'none';
+            return;
+        }
 
         fetch(`/validate-slot?date=${date}&id_cabang=${cabang}`)
             .then(res => res.json())
             .then(data => {
                 jadwalSelect.innerHTML = '<option value="">Service Time</option>';
                 let available = false;
+                const reasonMap = {
+                    'full': 'Penuh',
+                    'passed': 'Sudah Lewat'
+                };
                 data.forEach(slot => {
                     const opt = document.createElement('option');
+                    let reasonLabel = slot.reason ? (reasonMap[slot.reason] || slot.reason) : '';
                     opt.value = slot.time;
-                    opt.textContent = `${slot.time} ${!slot.available ? `(${slot.reason})` : ''}`;
+                    opt.textContent = `${slot.time}${reasonLabel ? ` (${reasonLabel})` : ''}`;
                     opt.disabled = !slot.available;
                     if (slot.available) available = true;
                     jadwalSelect.appendChild(opt);
                 });
                 slotError.style.display = available ? 'none' : 'block';
+            })
+            .catch(err => {
+                console.error('Gagal fetch slot:', err);
+                jadwalSelect.innerHTML = '<option value="">Service Time</option>';
+                slotError.style.display = 'block';
             });
     }
 
