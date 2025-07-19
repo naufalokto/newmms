@@ -1,8 +1,11 @@
 <?php
 
+use App\Models\Service;
 use Illuminate\Contracts\View\View;
+use App\Commands\AutoCompleteService;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Schedule;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\BeritaController;
 use App\Http\Controllers\ProdukController;
@@ -10,7 +13,6 @@ use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\TestimoniController;
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\CustomerDashboardController;
-use App\Models\Service;
 
 Route::get('/', function () {
     return view('welcome');
@@ -34,9 +36,7 @@ Route::get('/admin/berita', function () {
     return view('admin-berita'); 
 })->middleware(['auth', 'role:admin']);
 Route::get('/admin/produk', [ProdukController::class, 'index'])->middleware(['auth', 'role:admin']); 
-Route::get('/admin/booking', function () {
-    return view('admin-booking-service'); 
-})->middleware(['auth', 'role:admin']);
+Route::get('/admin/booking', [ServiceController::class, 'indexBycabang'])->middleware(['auth', 'role:admin']);
 Route::get('/admin/produk', [ProdukController::class, 'index'])
     ->middleware(['auth', 'role:admin']);
 
@@ -55,10 +55,20 @@ Route::prefix('/admin/api')->middleware(['auth', 'role:admin'])->group(function 
     Route::delete('/produk/{id}', [ProdukController::class, 'deleteProduk']);
     Route::get('/produk/{id}', [ProdukController::class, 'showProduk']);
     
-    Route::put('/service/{id}', [ServiceController::class, 'updateService']);
+    
+});
 
+// Service management
+Route::prefix('/admin/api')->middleware(['auth', 'role:admin'])->group(function () {
+    Route::POST('/service/start/{id}', [ServiceController::class, 'startService']);
     // Service API
     Route::get('/service', [ServiceController::class, 'getServices']);
+    Route::get('/service/{id}', [ServiceController::class, 'showService']);
+    Route::put('/service/{id}/complete', [ServiceController::class, 'completeService']);
+    Route::get('/service/start/{id}', [ServiceController::class, 'startService'])->name('admin.api.service.start');
+    Route::put('/service/{id}', [ServiceController::class, 'updateService']);
+    Route::post('/service/cancel/{id}/user/{id_pengguna}', [ServiceController::class, 'adminCancel'])->name('admin.api.service.cancel');
+    Route::post('/service/cancel/{id}', [ServiceController::class, 'customerCancel']);
 });
 
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
