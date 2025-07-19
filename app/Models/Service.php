@@ -31,7 +31,7 @@ class Service extends Model
 
     public function typeservice()
     {
-        return $this->belongsTo(Typeservice::class, 'id_tipe_service');
+        return $this->belongsTo(TypeService::class, 'id_tipe_service');
     }
 
     public function pengguna()
