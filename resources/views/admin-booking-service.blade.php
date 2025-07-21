@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="/css/admin-testimoni.css">
     <link rel="stylesheet" href="/css/admin-booking-service.css">
     <link rel="stylesheet" href="/css/sidebar.css">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 <body>
     <div class="dashboard-container">
@@ -40,9 +41,10 @@
             </nav>
             
             <div class="logout-section">
-                <a href="/logout" class="logout-btn">
+                <button onclick="performLogout()" class="logout-btn" style="background: none; border: none; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; color: inherit; text-decoration: none; width: 100%; padding: 0.75rem 1rem; border-radius: 0.5rem; transition: background-color 0.2s;">
+                    <span class="nav-icon">🚪</span>
                     <span>Log Out</span>
-                </a>
+                </button>
             </div>
         </div>
 
@@ -68,9 +70,10 @@
                     <div class="stat-card">
                         <div class="stat-content">
                             <div class="stat-label">Total Bookings</div>
+                            <div class="stat-label">Total Bookings</div>
                             <div class="stat-value">{{ $services->count() ?? 0 }}</div>
                         </div>
-                        <div class="stat-icon blue">📦</div>
+                        <div class="stat-icon blue">📅</div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-content">
@@ -91,7 +94,7 @@
                             <div class="stat-label">Completed</div>
                             <div class="stat-value">{{ $services->where('status', 'fin')->count() ?? 0 }}</div>
                         </div>
-                        <div class="stat-icon orange">⚠️</div>
+                        @endforelse
                     </div>
                 </div>
 
