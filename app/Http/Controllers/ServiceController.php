@@ -94,6 +94,7 @@ class ServiceController extends Controller
         $service = new Service();
         $service->id_pengguna = $request->id_pengguna;
         $service->id_tipe_service = $request->id_tipe_service;
+        $service->id_tipe_service = $request->id_tipe_service;
         $service->id_cabang = $request->id_cabang;
         $service->tanggal = $request->tanggal;
         $service->keluhan = $request->keluhan;
@@ -111,6 +112,7 @@ class ServiceController extends Controller
 
     public function getServiceTypes()
     {
+        $types = TypeService::all();
         $types = TypeService::all();
         return response()->json($types);
     }

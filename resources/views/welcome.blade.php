@@ -77,26 +77,29 @@
             font-size: 1.1rem;
             text-decoration: none;
             transition: background 0.2s;
-            margin-top: 1.2rem;
         }
-        .wa-btn:hover {
-            background: #128C7E;
+        .btn-modern:hover {
+            background: #ff9900;
+        }
+        @media (max-width: 900px) {
+            .appointment-row {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            .btn-modern {
+                width: 100%;
+                margin-left: 0;
+                margin-top: 1rem;
+            }
         }
     </style>
     </head>
     <body>
     @if(session('success'))
-    <div id="loginSuccessModal" class="modal-popup" style="display:flex;">
-        <div class="modal-popup-content">
-            <div class="modal-popup-title">{{ session('success') }}</div>
+        <div style="position: fixed; top: 20px; right: 20px; background: #10B981; color: white; padding: 1rem; border-radius: 8px; z-index: 10000; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
+            {{ session('success') }}
+            <button onclick="this.parentElement.remove()" style="background: none; border: none; color: white; margin-left: 10px; cursor: pointer;">×</button>
         </div>
-    </div>
-    <script>
-        function closeLoginSuccessModal() {
-            document.getElementById('loginSuccessModal').style.display = 'none';
-        }
-        setTimeout(closeLoginSuccessModal, 2500);
-    </script>
     @endif
     <header>
         <div class="header-left">
@@ -109,20 +112,52 @@
                 <a href="#services">Service</a>
                 <a href="#product">Product</a>
                 <a href="#testimonial">Testimonial</a>
-                @auth
-                    <a href="/customer/dashboard" style="font-size:0.95rem;">Customer Dashboard</a>
-                @else
-                    <a href="/login" style="font-size:0.95rem;">Customer Dashboard</a>
-                @endauth
+                <a href="/customer/dashboard">Customer Page</a>
             </nav>
             @auth
-            <div class="header-user" id="headerUser" style="margin-left: 1.5rem;">
-                <span class="header-username">{{ Auth::user()->nama }}</span>
-                <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->nama) }}&background=eeeeee&color=141414&size=128" alt="Profile" class="header-profile">
-                <div class="dropdown-menu" id="dropdownMenu" style="display:none;">
-                    <a href="/logout" class="dropdown-item">Logout</a>
+            <div class="account-dropdown" style="position:relative;">
+                <button class="btn-login" style="background:#FE8400;color:#fff;border:none;padding:0.5em 1.2em;border-radius:0.4em;cursor:pointer;">
+                    {{ Auth::user()->nama ?? Auth::user()->username }} &#x25BC;
+                </button>
+                <div class="dropdown-content" style="display:none;position:absolute;right:0;top:2.8em;background:#fff;border:1px solid #eee;border-radius:0.4em;box-shadow:0 2px 8px rgba(0,0,0,0.08);min-width:120px;z-index:9999;margin-top:0.5em;">
+                    <button onclick="performLogout()" style="background:none;border:none;padding:0.7em 1.2em;width:100%;text-align:left;cursor:pointer;color:#333;">Logout</button>
                 </div>
             </div>
+            <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                var btn = document.querySelector('.account-dropdown .btn-login');
+                var dropdown = document.querySelector('.account-dropdown .dropdown-content');
+                if(btn && dropdown) {
+                    btn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+                    });
+                    document.addEventListener('click', function(e) {
+                        if (!btn.contains(e.target) && !dropdown.contains(e.target)) {
+                            dropdown.style.display = 'none';
+                        }
+                    });
+                }
+            });
+
+            function performLogout() {
+                // Create a form dynamically
+                var form = document.createElement('form');
+                form.method = 'POST';
+                form.action = '{{ route("logout") }}';
+                
+                // Add CSRF token
+                var csrfToken = document.createElement('input');
+                csrfToken.type = 'hidden';
+                csrfToken.name = '_token';
+                csrfToken.value = '{{ csrf_token() }}';
+                form.appendChild(csrfToken);
+                
+                // Submit the form
+                document.body.appendChild(form);
+                form.submit();
+            }
+            </script>
             @else
             <div style="display: flex; gap: 0.5rem;">
                 <a href="/login" class="btn-login">Login</a>
@@ -210,8 +245,25 @@
                 </select>
                 <img src="/images/chevron.png" alt="Dropdown Icon" class="dropdown-icon">
             </div>
-            <div class="input-group input-group-textarea">
-                <textarea placeholder="Describe Your Issue" required></textarea>
+            <div class="appointment-row">
+                <div class="appointment-input">
+                    <span class="icon">⏰</span>
+                    <select id="jadwal" name="jadwal" required>
+                        <option value="">Service Time</option>
+                    </select>
+                </div>
+                <div class="appointment-input">
+                    <span class="icon">ℹ️</span>
+                    <input type="text" id="keluhan" name="keluhan" placeholder="Describe Your Issue">
+                </div>
+                <button type="submit" class="btn-modern"
+                @guest disabled style="background:#ccc;cursor:not-allowed;" @endguest>
+                @guest
+                    You must login/signup
+                @else
+                    Book Now
+                @endguest
+                </button>
             </div>
             @auth
                 <button class="btn" type="submit">Book Now</button>
@@ -235,7 +287,7 @@
                     <h4>Motul Oil</h4>
                     <p>Sparepart</p>
                     <div class="price">Rp350.000</div>
-                    <a href="https://wa.me/6285708150434?text=Hello%2C%20I%20am%20interested%20in%20Motul%20Oil%20from%20Mifta%20Motor%20Sport" target="_blank" class="btn wa-btn">Contact Now</a>
+                    <button class="btn">Buy Now</button>
                 </div>
             </div>
             <div class="collection-card">
@@ -243,7 +295,7 @@
                     <h4>Ohlins Suspension Shocks</h4>
                     <p>Motor Part</p>
                     <div class="price">Rp28.900.000</div>
-                    <a href="https://wa.me/6285708150434?text=Hello%2C%20I%20am%20interested%20in%20Ohlins%20Suspension%20Shocks%20from%20Mifta%20Motor%20Sport" target="_blank" class="btn wa-btn">Contact Now</a>
+                    <button class="btn">Buy Now</button>
                 </div>
             </div>
             <div class="collection-card">
@@ -251,7 +303,7 @@
                     <h4>Kawasaki H2R</h4>
                     <p>Motor Sport</p>
                     <div class="price">Rp750.000.000</div>
-                    <a href="https://wa.me/6285708150434?text=Hello%2C%20I%20am%20interested%20in%20Kawasaki%20H2R%20from%20Mifta%20Motor%20Sport" target="_blank" class="btn wa-btn">Contact Now</a>
+                    <button class="btn">Buy Now</button>
                 </div>
             </div>
         </div>
@@ -335,21 +387,91 @@
             <a href="#"><span style="font-family:Arial;">&#xf0e1;</span></a>
         </div>
     </footer>
-    <script>
-    // Toggle dropdown on click user/profile (only if authenticated)
-    document.addEventListener('DOMContentLoaded', function() {
-        const headerUser = document.getElementById('headerUser');
-        const dropdownMenu = document.getElementById('dropdownMenu');
-        if(headerUser && dropdownMenu) {
-            headerUser.addEventListener('click', function(e) {
-                e.stopPropagation();
-                dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
+            <script>
+    document.addEventListener("DOMContentLoaded", function () {
+    const dateInput = document.getElementById('tanggal');
+    const cabangInput = document.getElementById('id_cabang');
+    const jadwalSelect = document.getElementById('jadwal');
+    const slotError = document.getElementById('slot-error');
+
+    // Fetch cabang
+    fetch('/service-cabang')
+        .then(res => res.json())
+        .then(data => {
+            const select = document.getElementById('id_cabang');
+            select.innerHTML = '<option value="">Service Location</option>';
+            if (!data || data.length === 0) {
+                select.innerHTML += '<option value="">(Cabang tidak tersedia)</option>';
+                document.getElementById('jadwal').innerHTML = '<option value="">Service Time</option>';
+                document.getElementById('slot-error').style.display = 'block';
+                return;
+            }
+            data.forEach(cabang => {
+                const opt = document.createElement('option');
+                opt.value = cabang.id_cabang;
+                opt.textContent = cabang.nama_cabang;
+                select.appendChild(opt);
             });
-            document.addEventListener('click', function() {
-                dropdownMenu.style.display = 'none';
+        })
+        .catch(err => {
+            console.error('Gagal fetch cabang:', err);
+            document.getElementById('slot-error').style.display = 'block';
+        });
+
+    // Fetch tipe service
+    fetch('/service-types')
+        .then(res => res.json())
+        .then(data => {
+            const select = document.getElementById('id_tipe_service');
+            select.innerHTML = '<option value="">Service Type</option>';
+            data.forEach(type => {
+                const opt = document.createElement('option');
+                opt.value = type.id_tipe_service;
+                opt.textContent = type.nama_service;
+                select.appendChild(opt);
             });
+        })
+        .catch(err => console.error('Gagal fetch tipe service:', err));
+
+    function updateSlot() {
+        const date = dateInput.value;
+        const cabang = cabangInput.value;
+        if (!date || !cabang) {
+            jadwalSelect.innerHTML = '<option value="">Service Time</option>';
+            slotError.style.display = 'none';
+            return;
         }
-    });
+
+        fetch(`/validate-slot?date=${date}&id_cabang=${cabang}`)
+            .then(res => res.json())
+            .then(data => {
+                jadwalSelect.innerHTML = '<option value="">Service Time</option>';
+                let available = false;
+                const reasonMap = {
+                    'full': 'Penuh',
+                    'passed': 'Sudah Lewat'
+                };
+                data.forEach(slot => {
+                    const opt = document.createElement('option');
+                    let reasonLabel = slot.reason ? (reasonMap[slot.reason] || slot.reason) : '';
+                    opt.value = slot.time;
+                    opt.textContent = `${slot.time}${reasonLabel ? ` (${reasonLabel})` : ''}`;
+                    opt.disabled = !slot.available;
+                    if (slot.available) available = true;
+                    jadwalSelect.appendChild(opt);
+                });
+                slotError.style.display = available ? 'none' : 'block';
+            })
+            .catch(err => {
+                console.error('Gagal fetch slot:', err);
+                jadwalSelect.innerHTML = '<option value="">Service Time</option>';
+                slotError.style.display = 'block';
+            });
+    }
+
+    dateInput.addEventListener('change', updateSlot);
+    cabangInput.addEventListener('change', updateSlot);
+});
 </script>
     </body>
 </html>

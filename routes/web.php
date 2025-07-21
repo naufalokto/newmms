@@ -36,7 +36,9 @@ Route::get('/admin/berita', function () {
     return view('admin-berita'); 
 })->middleware(['auth', 'role:admin']);
 Route::get('/admin/produk', [ProdukController::class, 'index'])->middleware(['auth', 'role:admin']); 
-Route::get('/admin/booking', [ServiceController::class, 'indexBycabang'])->middleware(['auth', 'role:admin']);
+Route::get('/admin/booking', function () {
+    return view('admin-booking-service'); 
+})->middleware(['auth', 'role:admin']);
 Route::get('/admin/produk', [ProdukController::class, 'index'])
     ->middleware(['auth', 'role:admin']);
 
