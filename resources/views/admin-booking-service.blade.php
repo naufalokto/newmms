@@ -41,7 +41,9 @@
             
             <div class="logout-section">
                 <a href="/logout" class="logout-btn">
+                <a href="/logout" class="logout-btn">
                     <span>Log Out</span>
+                </a>
                 </a>
             </div>
         </div>
@@ -67,7 +69,7 @@
                 <div class="stats-section">
                     <div class="stat-card">
                         <div class="stat-content">
-                            <div class="stat-label">Total Bookings</div>
+                            <div class="stat-label">Total Products</div>
                             <div class="stat-value">{{ $services->count() ?? 0 }}</div>
                         </div>
                         <div class="stat-icon blue">📦</div>
