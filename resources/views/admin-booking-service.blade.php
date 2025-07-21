@@ -70,7 +70,6 @@
                     <div class="stat-card">
                         <div class="stat-content">
                             <div class="stat-label">Total Bookings</div>
-                            <div class="stat-label">Total Bookings</div>
                             <div class="stat-value">{{ $services->count() ?? 0 }}</div>
                         </div>
                         <div class="stat-icon blue">📅</div>
@@ -343,7 +342,7 @@
                     const startTime = new Date(startedAt);
                     const now = new Date();
                     const elapsed = now - startTime;
-                    const tenSeconds = 60 * 1000; // 10 seconds in milliseconds
+                    const tenSeconds = 10 * 1000; // 10 seconds in milliseconds
                     const remaining = tenSeconds - elapsed;
                     
                     const timerElement = serviceRow.querySelector('.timer-display');
