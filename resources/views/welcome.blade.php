@@ -20,62 +20,54 @@
         .appointment-title-underline-svg {
             margin-top: 0;
         }
-        .modal-popup {
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.18);
-            z-index: 9999;
+        .appointment-form-modern {
+            background: #FFE4C6;
+            padding: 2rem 1rem;
+            border-radius: 0.5rem;
+            max-width: 100%;
+            margin: 0 auto;
+        }
+        .appointment-row {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 1.2rem;
+            flex-wrap: wrap;
+        }
+        .appointment-input {
             display: flex;
             align-items: center;
-            justify-content: center;
-            animation: fadeIn 0.2s;
-        }
-        .modal-popup-content {
             background: #fff;
-            border-radius: 1rem;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.18);
-            padding: 2.2rem 2.5rem 1.7rem 2.5rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-width: 320px;
-            max-width: 90vw;
+            border-radius: 0.4rem;
+            padding: 0.5rem 1rem;
+            flex: 1 1 220px;
+            min-width: 220px;
             position: relative;
-            border: 2px solid #FE8400;
         }
-        .modal-popup-title {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 1.35rem;
-            font-weight: 700;
-            color: #141414;
-            margin-bottom: 0.5rem;
-            text-align: center;
+        .appointment-input .icon {
+            margin-right: 0.7rem;
+            display: flex;
+            align-items: center;
         }
-        .modal-popup-close {
-            position: absolute;
-            top: 1.1rem;
-            right: 1.5rem;
-            font-size: 2rem;
-            color: #FE8400;
-            cursor: pointer;
-            font-weight: bold;
-            background: none;
+        .appointment-input input,
+        .appointment-input select {
             border: none;
             outline: none;
+            background: transparent;
+            font-size: 1rem;
+            width: 100%;
+            padding: 0.4rem 0;
         }
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        .wa-btn {
-            display: inline-block;
-            background: #25D366;
+        .btn-modern {
+            background: #FE8400;
             color: #fff;
-            font-weight: 600;
-            padding: 0.9rem 2rem;
-            border-radius: 0.5rem;
+            border: none;
+            border-radius: 0.4rem;
+            padding: 0.8rem 2.2rem;
             font-size: 1.1rem;
-            text-decoration: none;
+            font-weight: 600;
+            cursor: pointer;
+            align-self: stretch;
+            margin-left: 1rem;
             transition: background 0.2s;
         }
         .btn-modern:hover {
@@ -93,14 +85,70 @@
             }
         }
     </style>
+    <style>
+    .testimonial-scroll-btn {
+        background: #fff;
+        border: 1px solid #FE8400;
+        color: #FE8400;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        font-size: 1.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 2;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        opacity: 0.8;
+        transition: background 0.2s;
+    }
+    .testimonial-scroll-btn:hover {
+        background: #FE8400;
+        color: #fff;
+    }
+    .testimonial-scroll-left { left: 0; }
+    .testimonial-scroll-right { right: 0; }
+    .testimonial-container { position: relative; }
+    </style>
+    <style>
+    .testimonial-container {
+        overflow-x: auto;
+        white-space: nowrap;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+    .testimonial-cards-wrapper {
+        display: flex;
+        gap: 2rem;
+    }
+    .testimonial-card-custom {
+        min-width: 340px;
+        max-width: 340px;
+        display: inline-block;
+        background: #fff;
+        border-radius: 0.5rem;
+        box-shadow: 0px 5px 20px 0px rgba(0,0,0,0.07);
+        padding: 3rem 2rem;
+        text-align: center;
+        white-space: normal !important;
+        overflow: hidden;
+        word-break: break-word;
+    }
+    .testimonial-card-custom p {
+        white-space: normal !important;
+        word-break: break-word;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 100%;
+        margin-bottom: 1.5rem;
+    }
+    </style>
     </head>
     <body>
-    @if(session('success'))
-        <div style="position: fixed; top: 20px; right: 20px; background: #10B981; color: white; padding: 1rem; border-radius: 8px; z-index: 10000; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
-            {{ session('success') }}
-            <button onclick="this.parentElement.remove()" style="background: none; border: none; color: white; margin-left: 10px; cursor: pointer;">×</button>
-        </div>
-    @endif
     <header>
         <div class="header-left">
             <div class="logo">
@@ -112,21 +160,24 @@
                 <a href="#services">Service</a>
                 <a href="#product">Product</a>
                 <a href="#testimonial">Testimonial</a>
-                <a href="/customer/dashboard">Customer Page</a>
+                <a href="/customer/dashboard">Customer Dashboard</a>
             </nav>
             @auth
             <div class="account-dropdown" style="position:relative;">
-                <button class="btn-login" style="background:#FE8400;color:#fff;border:none;padding:0.5em 1.2em;border-radius:0.4em;cursor:pointer;">
+                <button class="btn-login" id="accountDropdownBtn" style="background:#FE8400;color:#fff;border:none;padding:0.5em 1.2em;border-radius:0.4em;cursor:pointer;">
                     {{ Auth::user()->nama ?? Auth::user()->username }} &#x25BC;
                 </button>
-                <div class="dropdown-content" style="display:none;position:absolute;right:0;top:2.8em;background:#fff;border:1px solid #eee;border-radius:0.4em;box-shadow:0 2px 8px rgba(0,0,0,0.08);min-width:120px;z-index:9999;margin-top:0.5em;">
-                    <button onclick="performLogout()" style="background:none;border:none;padding:0.7em 1.2em;width:100%;text-align:left;cursor:pointer;color:#333;">Logout</button>
+                <div class="dropdown-content" id="accountDropdownMenu" style="display:none;position:absolute;right:0;top:2.8em;background:#fff;border:1px solid #eee;border-radius:0.4em;box-shadow:0 2px 8px rgba(0,0,0,0.08);min-width:120px;z-index:9999;margin-top:0.5em;">
+                    <form method="POST" action="{{ route('logout') }}" style="margin:0;">
+                        @csrf
+                        <button type="submit" style="background:none;border:none;padding:0.7em 1.2em;width:100%;text-align:left;cursor:pointer;color:#333;">Logout</button>
+                    </form>
                 </div>
             </div>
             <script>
             document.addEventListener('DOMContentLoaded', function() {
-                var btn = document.querySelector('.account-dropdown .btn-login');
-                var dropdown = document.querySelector('.account-dropdown .dropdown-content');
+                var btn = document.getElementById('accountDropdownBtn');
+                var dropdown = document.getElementById('accountDropdownMenu');
                 if(btn && dropdown) {
                     btn.addEventListener('click', function(e) {
                         e.preventDefault();
@@ -139,29 +190,11 @@
                     });
                 }
             });
-
-            function performLogout() {
-                // Create a form dynamically
-                var form = document.createElement('form');
-                form.method = 'POST';
-                form.action = '{{ route("logout") }}';
-                
-                // Add CSRF token
-                var csrfToken = document.createElement('input');
-                csrfToken.type = 'hidden';
-                csrfToken.name = '_token';
-                csrfToken.value = '{{ csrf_token() }}';
-                form.appendChild(csrfToken);
-                
-                // Submit the form
-                document.body.appendChild(form);
-                form.submit();
-            }
             </script>
             @else
             <div style="display: flex; gap: 0.5rem;">
                 <a href="/login" class="btn-login">Login</a>
-                <a href="/register" class="btn-register">Register</a>
+                <a href="/signup" class="btn-register">Register</a>
             </div>
             @endauth
         </div>
@@ -225,25 +258,27 @@
         <div class="section-divider"></div>
     </div>
     <div class="appointment-section" id="appointment" style="background: #FFE4C6;">
-        <form class="appointment-form">
-            <div class="input-group">
-                <input type="date" placeholder="Service Date" required>
-            </div>
-            <div class="input-group">
-                <select required>
-                    <option value="">Service Location</option>
-                    <option>Pakis</option>
-                    <option>Sulfat</option>
-                </select>
-                <img src="/images/chevron.png" alt="Dropdown Icon" class="dropdown-icon">
-            </div>
-            <div class="input-group">
-                <select required>
-                    <option value="">Service Type</option>
-                    <option>Service Daily</option>
-                    <option>Other</option>
-                </select>
-                <img src="/images/chevron.png" alt="Dropdown Icon" class="dropdown-icon">
+        <form method="POST" action="{{ route('service.store') }}" class="appointment-form-modern">
+            @csrf
+            <div class="appointment-row">
+                <div class="appointment-input">
+                    <span class="icon">📅</span>
+                    <input type="date" id="tanggal" name="tanggal" placeholder="Service Date" required>
+                </div>
+                <div class="appointment-input">
+                    <span class="icon">📍</span>
+                    <select id="id_cabang" name="id_cabang" required>
+                        <option value="">Service Location</option>
+                        <!-- Option diisi JS -->
+                    </select>
+                </div>
+                <div class="appointment-input">
+                    <span class="icon">🛠️</span>
+                    <select id="id_tipe_service" name="id_tipe_service" required>
+                        <option value="">Service Type</option>
+                        <!-- Option diisi JS -->
+                    </select>
+                </div>
             </div>
             <div class="appointment-row">
                 <div class="appointment-input">
@@ -256,19 +291,11 @@
                     <span class="icon">ℹ️</span>
                     <input type="text" id="keluhan" name="keluhan" placeholder="Describe Your Issue">
                 </div>
-                <button type="submit" class="btn-modern"
-                @guest disabled style="background:#ccc;cursor:not-allowed;" @endguest>
-                @guest
-                    You must login/signup
-                @else
-                    Book Now
-                @endguest
-                </button>
+                <button type="submit" class="btn-modern">Book Now</button>
             </div>
+            <div id="slot-error" style="color:#d00; margin-top:0.5rem; display:none;">Tidak ada slot tersedia untuk tanggal & cabang ini.</div>
             @auth
-                <button class="btn" type="submit">Book Now</button>
-            @else
-                <a href="/login" class="btn" style="display:inline-block; text-align:center;">You must login/signup</a>
+                <input type="hidden" name="id_pengguna" value="{{ Auth::user()->id_pengguna }}">
             @endauth
         </form>
     </div>
@@ -282,32 +309,27 @@
             </span>
         </div>
         <div class="collections">
-            <div class="collection-card">
-                <div class="info">
-                    <h4>Motul Oil</h4>
-                    <p>Sparepart</p>
-                    <div class="price">Rp350.000</div>
-                    <button class="btn">Buy Now</button>
+            @if($products->count() > 0)
+                @foreach($products as $product)
+                <div class="collection-card">
+                    <div class="card">
+                        <div class="card-image">
+                            <img src="{{ asset('storage/' . $product->gambar) }}" alt="{{ $product->nama_produk }}" style="width:100%;height:180px;object-fit:cover;border-radius:0.5rem 0.5rem 0 0;">
+                        </div>
+                        <div class="card-content" style="padding:1rem;">
+                            <h3 style="font-size:1.1rem;font-weight:700;margin-bottom:0.5rem;">{{ $product->nama_produk }}</h3>
+                            <p class="price" style="color:#FE8400;font-weight:600;margin-bottom:0.5rem;">Rp {{ number_format($product->harga, 0, ',', '.') }}</p>
+                            <p class="description" style="font-size:0.97rem;color:#575757;">{{ $product->deskripsi }}</p>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="collection-card">
-                <div class="info">
-                    <h4>Ohlins Suspension Shocks</h4>
-                    <p>Motor Part</p>
-                    <div class="price">Rp28.900.000</div>
-                    <button class="btn">Buy Now</button>
+                @endforeach
+            @else
+                <div class="no-products-message">
+                    <p>No products available at the moment.</p>
                 </div>
-            </div>
-            <div class="collection-card">
-                <div class="info">
-                    <h4>Kawasaki H2R</h4>
-                    <p>Motor Sport</p>
-                    <div class="price">Rp750.000.000</div>
-                    <button class="btn">Buy Now</button>
-                </div>
-            </div>
+            @endif
         </div>
-        <button class="see-more-btn">See More</button>
     </div>
     <!-- Testimonial Section sesuai Figma -->
     <div class="testimonial-section" id="testimonial">
@@ -319,21 +341,38 @@
                 </svg>
             </span>
         </div>
-        <div class="testimonial-cards-row">
-            <button class="testimonial-nav-btn">&#8592;</button>
-            <div style="display: flex; gap: 2rem;">
-                <div class="testimonial-card-custom">
-                    <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Sophia Lane" class="testimonial-avatar">
-                    <h4 style="font-family: 'Montserrat', sans-serif; font-size: 1.1rem; font-weight: 600; color: #141414; margin-bottom: 0.5rem;">Sophia Lane</h4>
-                    <p style="font-size: 1rem; color: #575757; text-align: center;">The service at Mifta Motor Sport was quick and professional. My bike feels smoother than ever.</p>
-                </div>
-                <div class="testimonial-card-custom">
-                    <img src="https://randomuser.me/api/portraits/men/46.jpg" alt="Dylan Scott" class="testimonial-avatar">
-                    <h4 style="font-family: 'Montserrat', sans-serif; font-size: 1.1rem; font-weight: 600; color: #141414; margin-bottom: 0.5rem;">Dylan Scott</h4>
-                    <p style="font-size: 1rem; color: #575757; text-align: center;">I found my dream bike at Mifta Motor Sport. The staff were helpful, and the whole process was easy.</p>
-                </div>
+        <div class="testimonial-container" style="overflow-x:auto;white-space:nowrap;scrollbar-width:none;-ms-overflow-style:none;position:relative;">
+            <div class="testimonial-cards-wrapper" id="testimonialWrapper" style="display:flex;gap:2rem;">
+                @if($testimonials->count() > 0)
+                    @foreach($testimonials as $testimonial)
+                    <div class="testimonial-card-custom" style="min-width:340px;max-width:340px;display:inline-block;">
+                        <div class="testimonial-avatar" style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#FE8400,#ff9900);display:flex;align-items:center;justify-content:center;margin-bottom:1.5rem;font-size:2rem;color:white;font-weight:bold;">
+                            {{ strtoupper(substr($testimonial->pengguna->nama ?? 'U', 0, 1)) }}
+                        </div>
+                        <h4 style="font-family: 'Montserrat', sans-serif; font-size: 1.1rem; font-weight: 600; color: #141414; margin-bottom: 0.5rem;">{{ $testimonial->pengguna->nama ?? 'Anonymous' }}</h4>
+                        <p style="font-size: 1rem; color: #575757; text-align: center;">"{{ $testimonial->isi_testimoni }}"</p>
+                        <div class="testimonial-rating" style="display:flex;justify-content:center;gap:0.25rem;margin-top:0.5rem;">
+                            @for($i = 1; $i <= 5; $i++)
+                                <span class="star" style="color:#FFD700;font-size:1.2rem;">{{ $i <= $testimonial->rating_bintang ? '★' : '☆' }}</span>
+                            @endfor
+                        </div>
+                    </div>
+                    @endforeach
+                @else
+                    <div class="testimonial-card-custom">
+                        <div class="testimonial-avatar">N</div>
+                        <h4 style="font-family: 'Montserrat', sans-serif; font-size: 1.1rem; font-weight: 600; color: #141414; margin-bottom: 0.5rem;">No testimonials yet</h4>
+                        <p style="font-size: 1rem; color: #575757; text-align: center;">"Excellent service! My bike runs perfectly now."</p>
+                        <div class="testimonial-rating" style="display:flex;justify-content:center;gap:0.25rem;margin-top:0.5rem;">
+                            <span class="star" style="color:#FFD700;font-size:1.2rem;">★</span>
+                            <span class="star" style="color:#FFD700;font-size:1.2rem;">★</span>
+                            <span class="star" style="color:#FFD700;font-size:1.2rem;">★</span>
+                            <span class="star" style="color:#FFD700;font-size:1.2rem;">★</span>
+                            <span class="star" style="color:#FFD700;font-size:1.2rem;">★</span>
+                        </div>
+                    </div>
+                @endif
             </div>
-            <button class="testimonial-nav-btn">&#8594;</button>
         </div>
     </div>
     <div class="stats-section">
@@ -348,29 +387,6 @@
         <div class="stat">
             <div class="number">750+</div>
             <div class="label">Rental Locations</div>
-        </div>
-    </div>
-    <!-- Help Section sesuai Figma -->
-    <div class="help-section-bg" id="help">
-        <div class="help-bg-half"></div>
-        <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 2.5rem; position: relative; z-index:2;">
-            <h2 class="help-title-custom">Need Help from Mifta Motor Sport?</h2>
-            <span class="help-underline">
-                <svg width="100%" height="2" viewBox="0 0 352 2" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <rect width="352" height="2" rx="1" fill="#FE8400"/>
-                </svg>
-            </span>
-        </div>
-        <div class="help-container-custom">
-            <form class="contact-form" style="box-shadow:none; border-radius:1.5rem;">
-                <input type="text" placeholder="Your Name*" required>
-                <input type="text" placeholder="Your Phone Number*" required>
-                <textarea placeholder="Your Message" required></textarea>
-                <button class="btn" type="submit">Send A Message</button>
-            </form>
-            <div class="contact-image">
-                <img src="/images/contact.jpg" alt="Contact" style="border-radius:1.5rem; width:320px; max-width:100%; object-fit:cover;">
-            </div>
         </div>
     </div>
     <footer>
@@ -400,22 +416,12 @@
         .then(data => {
             const select = document.getElementById('id_cabang');
             select.innerHTML = '<option value="">Service Location</option>';
-            if (!data || data.length === 0) {
-                select.innerHTML += '<option value="">(Cabang tidak tersedia)</option>';
-                document.getElementById('jadwal').innerHTML = '<option value="">Service Time</option>';
-                document.getElementById('slot-error').style.display = 'block';
-                return;
-            }
             data.forEach(cabang => {
                 const opt = document.createElement('option');
                 opt.value = cabang.id_cabang;
                 opt.textContent = cabang.nama_cabang;
                 select.appendChild(opt);
             });
-        })
-        .catch(err => {
-            console.error('Gagal fetch cabang:', err);
-            document.getElementById('slot-error').style.display = 'block';
         });
 
     // Fetch tipe service
@@ -430,42 +436,27 @@
                 opt.textContent = type.nama_service;
                 select.appendChild(opt);
             });
-        })
-        .catch(err => console.error('Gagal fetch tipe service:', err));
+        });
 
     function updateSlot() {
         const date = dateInput.value;
         const cabang = cabangInput.value;
-        if (!date || !cabang) {
-            jadwalSelect.innerHTML = '<option value="">Service Time</option>';
-            slotError.style.display = 'none';
-            return;
-        }
+        if (!date || !cabang) return;
 
         fetch(`/validate-slot?date=${date}&id_cabang=${cabang}`)
             .then(res => res.json())
             .then(data => {
                 jadwalSelect.innerHTML = '<option value="">Service Time</option>';
                 let available = false;
-                const reasonMap = {
-                    'full': 'Penuh',
-                    'passed': 'Sudah Lewat'
-                };
                 data.forEach(slot => {
                     const opt = document.createElement('option');
-                    let reasonLabel = slot.reason ? (reasonMap[slot.reason] || slot.reason) : '';
                     opt.value = slot.time;
-                    opt.textContent = `${slot.time}${reasonLabel ? ` (${reasonLabel})` : ''}`;
+                    opt.textContent = `${slot.time} ${!slot.available ? `(${slot.reason})` : ''}`;
                     opt.disabled = !slot.available;
                     if (slot.available) available = true;
                     jadwalSelect.appendChild(opt);
                 });
                 slotError.style.display = available ? 'none' : 'block';
-            })
-            .catch(err => {
-                console.error('Gagal fetch slot:', err);
-                jadwalSelect.innerHTML = '<option value="">Service Time</option>';
-                slotError.style.display = 'block';
             });
     }
 
@@ -473,5 +464,35 @@
     cabangInput.addEventListener('change', updateSlot);
 });
 </script>
+    <script>
+    // Testimonial auto-scroll kanan-kiri bolak-balik + tombol manual
+    document.addEventListener('DOMContentLoaded', function() {
+        const wrapper = document.getElementById('testimonialWrapper');
+        if (!wrapper) return;
+        let direction = 1; // 1 = kanan, -1 = kiri
+        let scrollStep = 1;
+        let interval = null;
+        function startAutoScroll() {
+            if (interval) clearInterval(interval);
+            interval = setInterval(() => {
+                const maxScroll = wrapper.scrollWidth - wrapper.clientWidth;
+                if (direction === 1 && wrapper.scrollLeft >= maxScroll) {
+                    direction = -1;
+                } else if (direction === -1 && wrapper.scrollLeft <= 0) {
+                    direction = 1;
+                }
+                wrapper.scrollLeft += scrollStep * direction;
+            }, 20);
+        }
+        startAutoScroll();
+        // Pause on hover
+        wrapper.addEventListener('mouseenter', () => { if (interval) clearInterval(interval); });
+        wrapper.addEventListener('mouseleave', startAutoScroll);
+        // Responsive: update scroll on resize
+        window.addEventListener('resize', () => {
+            // No-op, but could update card width if dynamic
+        });
+    });
+    </script>
     </body>
 </html>
