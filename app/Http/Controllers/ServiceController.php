@@ -181,7 +181,7 @@ class ServiceController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'Cancelled successfully'
+            'message' => 'Sukses membatalkan booking'
         ]);
     }
 
@@ -217,7 +217,7 @@ class ServiceController extends Controller
             
             if ($servicesInProgress > 0) {
                 return response()->json([
-                    'error' => 'Cannot start a new service. There is already a service in progress. Please wait for it to complete.'
+                    'error' => 'Tidak bisa menggunakan layanan. Layanan sedang dalam proses.'
                 ], 400);
             }
 
@@ -227,7 +227,7 @@ class ServiceController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'Service started successfully. Will auto-complete in 5 seconds.'
+            'message' => 'Service dimulai maka akan otomatis selesai dalam 10 detik.',
         ]);
     } catch (Exception $e) {
         return response()->json(['error' => 'Error starting service'], 500);
