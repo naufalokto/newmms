@@ -39,9 +39,10 @@
             </nav>
             
             <div class="logout-section">
-                <a href="/logout" class="logout-btn">
+                <button onclick="performLogout()" class="logout-btn" style="background: none; border: none; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; color: inherit; text-decoration: none; width: 100%; padding: 0.75rem 1rem; border-radius: 0.5rem; transition: background-color 0.2s;">
+                    <span class="nav-icon">🚪</span>
                     <span>Log Out</span>
-                </a>
+                </button>
             </div>
         </div>
 
@@ -468,6 +469,25 @@
                 closeViewModal();
             }
         });
+
+        // Logout function
+        function performLogout() {
+            // Create a form dynamically
+            var form = document.createElement('form');
+            form.method = 'POST';
+            form.action = '{{ route("logout") }}';
+            
+            // Add CSRF token
+            var csrfToken = document.createElement('input');
+            csrfToken.type = 'hidden';
+            csrfToken.name = '_token';
+            csrfToken.value = '{{ csrf_token() }}';
+            form.appendChild(csrfToken);
+            
+            // Submit the form
+            document.body.appendChild(form);
+            form.submit();
+        }
     </script>
 </body>
 </html>
