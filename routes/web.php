@@ -12,9 +12,7 @@ use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\CustomerDashboardController;
 use App\Models\Service;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [App\Http\Controllers\WelcomeController::class, 'index']);
 
 // Login & Register
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
@@ -30,13 +28,9 @@ Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])
 
 // FIXED: Admin Views - Use controllers instead of closures
 Route::get('/admin/testimoni', [TestimoniController::class, 'index'])->middleware(['auth', 'role:admin']);
-Route::get('/admin/berita', function () {
-    return view('admin-berita'); 
-})->middleware(['auth', 'role:admin']);
+Route::get('/admin/berita', [BeritaController::class, 'index'])->middleware(['auth', 'role:admin']);
 Route::get('/admin/produk', [ProdukController::class, 'index'])->middleware(['auth', 'role:admin']); 
-Route::get('/admin/booking', function () {
-    return view('admin-booking-service'); 
-})->middleware(['auth', 'role:admin']);
+Route::get('/admin/booking', [ServiceController::class, 'adminBooking'])->middleware(['auth', 'role:admin']);
 Route::get('/admin/produk', [ProdukController::class, 'index'])
     ->middleware(['auth', 'role:admin']);
 
@@ -98,6 +92,7 @@ Route::get('/customer/testimoni', function () {
 
 // Berita
 Route::get('/berita', [BeritaController::class, 'getBerita']);
+Route::get('/berita/{id}', [BeritaController::class, 'getBeritaById']);
 Route::post('/berita', [BeritaController::class, 'postBerita']);
 Route::put('/berita/{id}', [BeritaController::class, 'editBerita']);
 Route::delete('/berita/{id}', [BeritaController::class, 'deleteBerita']);

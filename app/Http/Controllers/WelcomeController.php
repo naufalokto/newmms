@@ -1,0 +1,17 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Produk;
+use App\Models\Testimoni;
+use Illuminate\Http\Request;
+
+class WelcomeController extends Controller
+{
+    public function index()
+    {
+        $products = Produk::all();
+        $testimonials = Testimoni::with('pengguna')->get();
+        return view('welcome', compact('products', 'testimonials'));
+    }
+} 
