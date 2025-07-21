@@ -14,7 +14,7 @@ return new class extends Migration
         // Berita
         if (!Schema::hasTable('berita')) {
             Schema::create('berita', function (Blueprint $table) {
-                $table->id('id_berita');
+                $table->integer('id_berita')->primary()->autoIncrement();
                 $table->string('judul_berita', 255);
                 $table->text('deskripsi');
                 $table->string('foto', 255)->nullable();
@@ -26,9 +26,9 @@ return new class extends Migration
         // Testimoni
         if (!Schema::hasTable('testimoni')) {
             Schema::create('testimoni', function (Blueprint $table) {
-                $table->id('id_testimoni');
+                $table->integer('id_testimoni')->primary()->autoIncrement();
                 $table->unsignedBigInteger('id_pengguna');
-                $table->unsignedBigInteger('id_service');
+                $table->integer('id_service');
                 $table->text('isi_testimoni');
                 $table->string('menyoroti', 5)->default('false');
                 $table->integer('rating_bintang');
@@ -36,7 +36,7 @@ return new class extends Migration
                 $table->foreign('id_service')->references('id_service')->on('service')->onDelete('cascade');
                 // Constraint CHECK akan ditambah setelah create
             });
-            // SQLite doesn't support CHECK constraints, so we'll handle validation in the model
+            \DB::statement('ALTER TABLE testimoni ADD CONSTRAINT rating_bintang_check CHECK (rating_bintang >= 1 AND rating_bintang <= 5)');
         }
     }
 
@@ -45,8 +45,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('testimoni', function (Blueprint $table) {
-            $table->dropColumn('rating_bintang');
-        });
+        Schema::dropIfExists('testimoni');
+        Schema::dropIfExists('berita');
     }
 };

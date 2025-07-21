@@ -34,7 +34,7 @@ class FinishCommand extends Command
 
             $services = Service::where('status', 'pros')
                 ->whereNotNull('started_at')
-                ->where('started_at', '<=', $now->subSeconds(60)) 
+                ->where('started_at', '<=', $now->subSeconds(60)) // Changed to 10 seconds
                 ->get();
                 
             Log::info('[Scheduler] Ditemukan ' . $services->count() . ' service untuk diubah');
