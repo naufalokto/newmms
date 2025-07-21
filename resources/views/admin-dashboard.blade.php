@@ -42,7 +42,7 @@
                 <a href="/logout" class="logout-btn">
                     <span class="nav-icon">🚪</span>
                     <span>Log Out</span>
-                </a>
+                </button>
             </div>
         </div>
         
@@ -426,6 +426,25 @@
                     alert('Error deleting product');
                 });
             }
+        }
+
+        // Logout function
+        function performLogout() {
+            // Create a form dynamically
+            var form = document.createElement('form');
+            form.method = 'POST';
+            form.action = '{{ route("logout") }}';
+            
+            // Add CSRF token
+            var csrfToken = document.createElement('input');
+            csrfToken.type = 'hidden';
+            csrfToken.name = '_token';
+            csrfToken.value = '{{ csrf_token() }}';
+            form.appendChild(csrfToken);
+            
+            // Submit the form
+            document.body.appendChild(form);
+            form.submit();
         }
     </script>
 </body>

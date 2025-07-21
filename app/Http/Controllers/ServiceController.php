@@ -81,11 +81,23 @@ class ServiceController extends Controller
             'jadwal' => 'required|date_format:H:i',
         ]);
 
-        $existing = Service::where('id_pengguna', $request->id_pengguna)
-        ->whereDate('tanggal', $request->tanggal)
-        ->exists();
+        // Cari id_tipe_service jika yang dikirim string nama
+        $idTipeService = $request->id_tipe_service;
+        if (!is_numeric($idTipeService)) {
+            $type = \App\Models\TypeService::where('nama_service', $idTipeService)->first();
+            if ($type) {
+                $idTipeService = $type->id_tipe_service;
+            } else {
+                return redirect()->back()->withErrors(['id_tipe_service' => 'Tipe service tidak valid.'])->withInput();
+            }
+        }
 
-         if ($existing) {
+        $existing = Service::where('id_pengguna', $request->id_pengguna)
+            ->whereDate('tanggal', $request->tanggal)
+            ->whereIn('status', ['pen', 'fin'])
+            ->exists();
+
+        if ($existing) {
             return redirect()->back()
                 ->withErrors(['tanggal' => 'Kamu sudah melakukan booking di tanggal tersebut.'])
                 ->withInput();
@@ -93,7 +105,7 @@ class ServiceController extends Controller
 
         $service = new Service();
         $service->id_pengguna = $request->id_pengguna;
-        $service->id_tipe_service = $request->id_tipe_service;
+        $service->id_tipe_service = $idTipeService;
         $service->id_cabang = $request->id_cabang;
         $service->tanggal = $request->tanggal;
         $service->keluhan = $request->keluhan;
@@ -105,14 +117,21 @@ class ServiceController extends Controller
 
 
         //route sementara
-        return redirect()->route('service.history')->with('success', 'Service berhasil ditambahkan');
+        return redirect()->route('customer.dashboard')->with('success', 'Service successfully added');
 
     }
 
     public function getServiceTypes()
     {
         $types = TypeService::all();
+        $types = TypeService::all();
         return response()->json($types);
+    }
+
+    public function getServiceCabang()
+    {
+        $cabangs = Cabang::all();
+        return response()->json($cabangs);
     }
 
     public function indexByUser()
