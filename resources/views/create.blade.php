@@ -103,9 +103,9 @@
                 <label for="id_tipe_service">Tipe Service</label>
                 <select id="id_tipe_service" name="id_tipe_service" required>
                     <option value="">Pilih Tipe</option>
-                    @foreach ($types as $type)
-                        <option value="{{ $type->id_tipe_service }}">{{ $type->nama_service }}</option>
-                    @endforeach
+                    <option value="daily">Daily</option>
+                    <option value="racing1">Racing 1</option>
+                    <option value="racing2">Racing 2</option>
                 </select>
             </div>
 
@@ -119,6 +119,10 @@
                 <label for="jadwal">Jam Service</label>
                 <select id="jadwal" name="jadwal" required>
                     <option value="">Pilih Slot</option>
+                    <option value="09:00">09:00</option>
+                    <option value="11:00">11:00</option>
+                    <option value="13:00">13:00</option>
+                    <option value="15:00">15:00</option>
                 </select>
                 <div id="slot-error" style="color:#d00; margin-top:0.5rem; display:none;">Tidak ada slot tersedia untuk tanggal & cabang ini.</div>
             </div>
@@ -138,30 +142,7 @@
             const jadwalSelect = document.getElementById('jadwal');
             const slotError = document.getElementById('slot-error');
 
-            function updateSlot() {
-                const date = dateInput.value;
-                const cabang = cabangInput.value;
-                if (!date || !cabang) return;
-
-                fetch(`/validate-slot?date=${date}&id_cabang=${cabang}`)
-                    .then(res => res.json())
-                    .then(data => {
-                        jadwalSelect.innerHTML = '<option value="">Pilih Slot</option>';
-                        let available = false;
-                        data.forEach(slot => {
-                            const opt = document.createElement('option');
-                            opt.value = slot.time;
-                            opt.textContent = `${slot.time} ${!slot.available ? `(${slot.reason})` : ''}`;
-                            opt.disabled = !slot.available;
-                            if (slot.available) available = true;
-                            jadwalSelect.appendChild(opt);
-                        });
-                        slotError.style.display = available ? 'none' : 'block';
-                    });
-            }
-
-            dateInput.addEventListener('change', updateSlot);
-            cabangInput.addEventListener('change', updateSlot);
+            // Hapus pengisian dinamis via JS/fetch
         });
     </script>
 </body>
