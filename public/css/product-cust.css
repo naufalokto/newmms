@@ -20,6 +20,19 @@ body {
     z-index: 10;
     padding: 0;
 }
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding-left: 40px;
+}
+
+.btn-back:hover {
+    background: #e67600 !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(254, 132, 0, 0.3);
+}
 .header-logo-wrap {
     flex: 0 0 180px;
     display: flex;

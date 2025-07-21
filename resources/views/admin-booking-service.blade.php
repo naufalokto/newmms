@@ -70,6 +70,7 @@
                     <div class="stat-card">
                         <div class="stat-content">
                             <div class="stat-label">Total Bookings</div>
+                            <div class="stat-label">Total Bookings</div>
                             <div class="stat-value">{{ $services->count() ?? 0 }}</div>
                         </div>
                         <div class="stat-icon blue">📅</div>
@@ -139,7 +140,7 @@
                         <div class="empty-state">
                             <p>No bookings yet</p>
                         </div>
-                        <div class="stat-icon orange">⚠️</div>
+                        @endforelse
                     </div>
                 </div>
 
