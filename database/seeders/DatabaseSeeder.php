@@ -14,6 +14,9 @@ class DatabaseSeeder extends Seeder
         $this->call([
             CabangSeeder::class,
             TypeServiceSeeder::class,
+             ServiceSeeder::class, // Tambahkan ServiceSeeder
+            TestimoniSeeder::class, // Tambahkan TestimoniSeeder
+            ProdukSeeder::class, // Tambahkan ProdukSeeder
             PenggunaSeeder::class, // jika ada
         ]);
         // Tambahkan dummy produk secara manual
