@@ -17,12 +17,6 @@ class PenggunaAdmin extends Model
         'id_cabang',
     ];
 
-    /**
-     * Get the pengguna associated with the PenggunaAdmin.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-
     public function pengguna()
     {
         return $this->belongsTo(Pengguna::class, 'id_pengguna', 'id_pengguna');
