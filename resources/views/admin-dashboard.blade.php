@@ -41,7 +41,7 @@
             <div class="logout-section">
                 <a href="/logout" class="logout-btn">
                     <span>Log Out</span>
-                </a>
+                </button>
             </div>
         </div>
         
@@ -427,6 +427,25 @@
                     alert('Error menghapus produk');
                 });
             }
+        }
+
+        // Logout function
+        function performLogout() {
+            // Create a form dynamically
+            var form = document.createElement('form');
+            form.method = 'POST';
+            form.action = '{{ route("logout") }}';
+            
+            // Add CSRF token
+            var csrfToken = document.createElement('input');
+            csrfToken.type = 'hidden';
+            csrfToken.name = '_token';
+            csrfToken.value = '{{ csrf_token() }}';
+            form.appendChild(csrfToken);
+            
+            // Submit the form
+            document.body.appendChild(form);
+            form.submit();
         }
     </script>
 </body>

@@ -13,22 +13,20 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('service', function (Blueprint $table) {
-            $table->integer('id_service')->primary()->autoIncrement();
+            $table->id('id_service');
             $table->integer('id_pengguna');
-            $table->integer('id_tipe_service');
+            $table->unsignedBigInteger('id_tipe_service');
             $table->date('tanggal');
-            $table->integer('id_cabang');
+            $table->unsignedBigInteger('id_cabang');
             $table->text('keluhan')->nullable();
             $table->time('jadwal');
             $table->timestamp('started_at')->nullable();
             $table->timestamp('finished_at')->nullable();
-            $table->string('status', 10);
+            $table->enum('status', ['pend', 'pros', 'fin', 'cancel'])->default('pend');
 
             $table->foreign('id_cabang')->references('id_cabang')->on('cabang')->onDelete('cascade');
             $table->foreign('id_tipe_service')->references('id_tipe_service')->on('type_service')->onDelete('cascade');
         });
-    
-        DB::statement("ALTER TABLE service ADD CONSTRAINT service_status_check CHECK (status IN ('pend', 'pros', 'fin', 'cancel'))");
     }
 
     /**
