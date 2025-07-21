@@ -94,7 +94,7 @@
                             <div class="stat-label">Completed</div>
                             <div class="stat-value">{{ $services->where('status', 'fin')->count() ?? 0 }}</div>
                         </div>
-                        <div class="stat-icon orange">⚠️</div>
+                        @endforelse
                     </div>
                 </div>
 

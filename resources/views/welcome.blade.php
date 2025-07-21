@@ -20,64 +20,55 @@
         .appointment-title-underline-svg {
             margin-top: 0;
         }
-        .modal-popup {
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.18);
-            z-index: 9999;
+        .appointment-form-modern {
+            background: #FFE4C6;
+            padding: 2rem 1rem;
+            border-radius: 0.5rem;
+            max-width: 100%;
+            margin: 0 auto;
+        }
+        .appointment-row {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 1.2rem;
+            flex-wrap: wrap;
+        }
+        .appointment-input {
             display: flex;
             align-items: center;
-            justify-content: center;
-            animation: fadeIn 0.2s;
-        }
-        .modal-popup-content {
             background: #fff;
-            border-radius: 1rem;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.18);
-            padding: 2.2rem 2.5rem 1.7rem 2.5rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-width: 320px;
-            max-width: 90vw;
+            border-radius: 0.4rem;
+            padding: 0.5rem 1rem;
+            flex: 1 1 220px;
+            min-width: 220px;
             position: relative;
-            border: 2px solid #FE8400;
         }
-        .modal-popup-title {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 1.35rem;
-            font-weight: 700;
-            color: #141414;
-            margin-bottom: 0.5rem;
-            text-align: center;
+        .appointment-input .icon {
+            margin-right: 0.7rem;
+            display: flex;
+            align-items: center;
         }
-        .modal-popup-close {
-            position: absolute;
-            top: 1.1rem;
-            right: 1.5rem;
-            font-size: 2rem;
-            color: #FE8400;
-            cursor: pointer;
-            font-weight: bold;
-            background: none;
+        .appointment-input input,
+        .appointment-input select {
             border: none;
             outline: none;
+            background: transparent;
+            font-size: 1rem;
+            width: 100%;
+            padding: 0.4rem 0;
         }
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        .wa-btn {
-            display: inline-block;
-            background: #25D366;
+        .btn-modern {
+            background: #FE8400;
             color: #fff;
-            font-weight: 600;
-            padding: 0.9rem 2rem;
-            border-radius: 0.5rem;
+            border: none;
+            border-radius: 0.4rem;
+            padding: 0.8rem 2.2rem;
             font-size: 1.1rem;
-            text-decoration: none;
+            font-weight: 600;
+            cursor: pointer;
+            align-self: stretch;
+            margin-left: 1rem;
             transition: background 0.2s;
-            margin-top: 1.2rem;
         }
         .btn-modern:hover {
             background: #ff9900;
@@ -203,7 +194,7 @@
             @else
             <div style="display: flex; gap: 0.5rem;">
                 <a href="/login" class="btn-login">Login</a>
-                <a href="/register" class="btn-register">Register</a>
+                <a href="/signup" class="btn-register">Register</a>
             </div>
             @endauth
         </div>
@@ -267,25 +258,27 @@
         <div class="section-divider"></div>
     </div>
     <div class="appointment-section" id="appointment" style="background: #FFE4C6;">
-        <form class="appointment-form">
-            <div class="input-group">
-                <input type="date" placeholder="Service Date" required>
-            </div>
-            <div class="input-group">
-                <select required>
-                    <option value="">Service Location</option>
-                    <option>Pakis</option>
-                    <option>Sulfat</option>
-                </select>
-                <img src="/images/chevron.png" alt="Dropdown Icon" class="dropdown-icon">
-            </div>
-            <div class="input-group">
-                <select required>
-                    <option value="">Service Type</option>
-                    <option>Service Daily</option>
-                    <option>Other</option>
-                </select>
-                <img src="/images/chevron.png" alt="Dropdown Icon" class="dropdown-icon">
+        <form method="POST" action="{{ route('service.store') }}" class="appointment-form-modern">
+            @csrf
+            <div class="appointment-row">
+                <div class="appointment-input">
+                    <span class="icon">📅</span>
+                    <input type="date" id="tanggal" name="tanggal" placeholder="Service Date" required>
+                </div>
+                <div class="appointment-input">
+                    <span class="icon">📍</span>
+                    <select id="id_cabang" name="id_cabang" required>
+                        <option value="">Service Location</option>
+                        <!-- Option diisi JS -->
+                    </select>
+                </div>
+                <div class="appointment-input">
+                    <span class="icon">🛠️</span>
+                    <select id="id_tipe_service" name="id_tipe_service" required>
+                        <option value="">Service Type</option>
+                        <!-- Option diisi JS -->
+                    </select>
+                </div>
             </div>
             <div class="appointment-row">
                 <div class="appointment-input">
@@ -300,10 +293,9 @@
                 </div>
                 <button type="submit" class="btn-modern">Book Now</button>
             </div>
+            <div id="slot-error" style="color:#d00; margin-top:0.5rem; display:none;">Tidak ada slot tersedia untuk tanggal & cabang ini.</div>
             @auth
-                <button class="btn" type="submit">Book Now</button>
-            @else
-                <a href="/login" class="btn" style="display:inline-block; text-align:center;">You must login/signup</a>
+                <input type="hidden" name="id_pengguna" value="{{ Auth::user()->id_pengguna }}">
             @endauth
         </form>
     </div>

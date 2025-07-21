@@ -93,10 +93,11 @@ class ServiceController extends Controller
         }
 
         $existing = Service::where('id_pengguna', $request->id_pengguna)
-        ->whereDate('tanggal', $request->tanggal)
-        ->exists();
+            ->whereDate('tanggal', $request->tanggal)
+            ->whereIn('status', ['pen', 'fin'])
+            ->exists();
 
-         if ($existing) {
+        if ($existing) {
             return redirect()->back()
                 ->withErrors(['tanggal' => 'Kamu sudah melakukan booking di tanggal tersebut.'])
                 ->withInput();
@@ -116,14 +117,21 @@ class ServiceController extends Controller
 
 
         //route sementara
-        return redirect()->route('service.history')->with('success', 'Service berhasil ditambahkan');
+        return redirect()->route('customer.dashboard')->with('success', 'Service successfully added');
 
     }
 
     public function getServiceTypes()
     {
-        $types = TypeService::whereIn('nama_service', ['daily', 'racing1', 'racing2'])->get();
+        $types = TypeService::all();
+        $types = TypeService::all();
         return response()->json($types);
+    }
+
+    public function getServiceCabang()
+    {
+        $cabangs = Cabang::all();
+        return response()->json($cabangs);
     }
 
     public function indexByUser()
@@ -192,7 +200,7 @@ class ServiceController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'Sukses membatalkan booking'
+            'message' => 'Cancelled successfully'
         ]);
     }
 
@@ -228,7 +236,7 @@ class ServiceController extends Controller
             
             if ($servicesInProgress > 0) {
                 return response()->json([
-                    'error' => 'Tidak bisa menggunakan layanan. Layanan sedang dalam proses.'
+                    'error' => 'Cannot start a new service. There is already a service in progress. Please wait for it to complete.'
                 ], 400);
             }
 
@@ -238,7 +246,7 @@ class ServiceController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'Service dimulai maka akan otomatis selesai dalam 10 detik.',
+            'message' => 'Service started successfully. Will auto-complete in 5 seconds.'
         ]);
     } catch (Exception $e) {
         return response()->json(['error' => 'Error starting service'], 500);
