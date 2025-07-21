@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Exception;
+use App\Models\Service;
 use App\Models\Testimoni;
 use Illuminate\Http\Request;
 
@@ -37,7 +38,7 @@ class TestimoniController extends Controller
             }
 
             // Get the latest service for this user
-            $service = \App\Models\Service::where('id_pengguna', $user->id_pengguna)
+            $service = Service::where('id_pengguna', $user->id_pengguna)
                 ->orderBy('id_service', 'desc')
                 ->first();
 
@@ -97,7 +98,7 @@ class TestimoniController extends Controller
             }
 
             // Check if service exists, if not use a default service
-            $serviceExists = \App\Models\Service::where('id_service', $request->id_service)->exists();
+            $serviceExists = Service::where('id_service', $request->id_service)->exists();
             $id_service = $serviceExists ? $request->id_service : 1; // Default to service ID 1 if not found
 
             $testimoni = new Testimoni();

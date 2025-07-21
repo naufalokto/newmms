@@ -40,7 +40,6 @@
             
             <div class="logout-section">
                 <a href="/logout" class="logout-btn">
-                    <span class="nav-icon">🚪</span>
                     <span>Log Out</span>
                 </a>
             </div>
@@ -152,13 +151,15 @@
                             <img src="https://ui-avatars.com/api/?name={{ Auth::user()->nama }}&background=eeeeee&color=141414&size=128" alt="Profile" class="header-profile">
                             <div class="booking-content">
                                 <div class="booking-name">{{ $service->pengguna->nama ?? 'Anonymous' }}</div>
-                                <div class="booking-service">{{ $service->type_service ?? 'Service' }} - {{ $service->tanggal_booking ?? 'No Date' }}</div>
+                                <div class="booking-service">{{ $service->type_service ?? 'Service' }} - {{ $service->tanggal ?? 'No Date' }}</div>
                                 @switch($service->status)
                                     @case('fin')
                                         <span class="status-badge finished">Finished</span>
                                         @break
                                     @case('pros')
                                         <span class="status-badge ongoing">In Progress</span>
+                                    @case('cancel')
+                                        <span class="status-badge cancelled">Cancelled</span>
                                         @break
                                     @default
                                         <span class="status-badge draft">Pending</span>
@@ -404,7 +405,7 @@
     });
 
         function deleteProduct(id) {
-            if (confirm('Are you sure you want to delete this product?')) {
+            if (confirm('Apakah Anda yakin ingin menghapus produk?')) {
                 fetch(`/admin/api/produk/${id}`, {
                     method: 'DELETE',
                     headers: {
@@ -423,7 +424,7 @@
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    alert('Error deleting product');
+                    alert('Error menghapus produk');
                 });
             }
         }
