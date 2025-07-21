@@ -9,6 +9,14 @@
 </head>
 <body>
     <header class="main-header">
+        <div class="header-left">
+            <a href="/" class="btn-back" style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.5rem 1rem;background:#FE8400;color:#fff;border-radius:0.5rem;text-decoration:none;font-weight:600;font-family:'Poppins',sans-serif;font-size:0.9rem;transition:all 0.2s ease;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M19 12H5M12 19L5 12L12 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Back to Home
+            </a>
+        </div>
         <div class="header-logo-wrap">
             <img src="/images/logo2.png" alt="Logo" class="header-logo">
         </div>
@@ -21,7 +29,7 @@
             <span class="header-username">{{ Auth::user()->nama }}</span>
             <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->nama) }}&background=eeeeee&color=141414&size=128" alt="Profile" class="header-profile">
             <div class="dropdown-menu" id="dropdownMenu" style="display:none;">
-                <a href="/" class="dropdown-item">Logout</a>
+                <button onclick="performLogout()" class="dropdown-item" style="background:none;border:none;padding:0.7em 1.2em;width:100%;text-align:left;cursor:pointer;color:#333;">Logout</button>
             </div>
         </div>
     </header>
@@ -146,6 +154,25 @@
         }
         function closeTestimoniModal() {
             document.getElementById('testimoniModal').style.display = 'none';
+        }
+
+        // Logout function
+        function performLogout() {
+            // Create a form dynamically
+            var form = document.createElement('form');
+            form.method = 'POST';
+            form.action = '{{ route("logout") }}';
+            
+            // Add CSRF token
+            var csrfToken = document.createElement('input');
+            csrfToken.type = 'hidden';
+            csrfToken.name = '_token';
+            csrfToken.value = '{{ csrf_token() }}';
+            form.appendChild(csrfToken);
+            
+            // Submit the form
+            document.body.appendChild(form);
+            form.submit();
         }
         // Star rating interaction
         document.addEventListener('DOMContentLoaded', function() {
