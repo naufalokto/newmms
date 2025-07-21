@@ -80,6 +80,17 @@ class ServiceController extends Controller
             'jadwal' => 'required|date_format:H:i',
         ]);
 
+        // Cari id_tipe_service jika yang dikirim string nama
+        $idTipeService = $request->id_tipe_service;
+        if (!is_numeric($idTipeService)) {
+            $type = \App\Models\TypeService::where('nama_service', $idTipeService)->first();
+            if ($type) {
+                $idTipeService = $type->id_tipe_service;
+            } else {
+                return redirect()->back()->withErrors(['id_tipe_service' => 'Tipe service tidak valid.'])->withInput();
+            }
+        }
+
         $existing = Service::where('id_pengguna', $request->id_pengguna)
             ->whereDate('tanggal', $request->tanggal)
             ->whereIn('status', ['pen', 'fin'])
@@ -93,7 +104,7 @@ class ServiceController extends Controller
 
         $service = new Service();
         $service->id_pengguna = $request->id_pengguna;
-        $service->id_tipe_service = $request->id_tipe_service;
+        $service->id_tipe_service = $idTipeService;
         $service->id_cabang = $request->id_cabang;
         $service->tanggal = $request->tanggal;
         $service->keluhan = $request->keluhan;
@@ -111,7 +122,7 @@ class ServiceController extends Controller
 
     public function getServiceTypes()
     {
-        $types = TypeService::all();
+        $types = TypeService::whereIn('nama_service', ['daily', 'racing1', 'racing2'])->get();
         return response()->json($types);
     }
 
@@ -179,14 +190,31 @@ class ServiceController extends Controller
     $service = Service::findOrFail($id);
 
     if ($service->status !== 'pend') {
-        return back()->with('error', 'Hanya booking dengan status pending yang bisa diproses.');
+        return response()->json([
+            'success' => false,
+            'message' => 'Hanya booking dengan status pending yang bisa diproses.'
+        ]);
     }
 
     $service->status = 'pros';
     $service->started_at = now();
     $service->save();
 
-    return back()->with('success', 'Status berhasil diubah ke process.');
+    return response()->json([
+        'success' => true,
+        'message' => 'Status berhasil diubah ke process.'
+    ]);
 }
+
+    public function adminBooking()
+    {
+        $services = Service::with(['pengguna', 'typeservice', 'cabang'])
+            ->orderBy('tanggal', 'desc')
+            ->get();
+        
+        $produk = \App\Models\Produk::all();
+        
+        return view('admin-booking-service', compact('services', 'produk'));
+    }
 
 }

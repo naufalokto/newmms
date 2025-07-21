@@ -29,7 +29,7 @@
             <span class="header-username">{{ Auth::user()->nama }}</span>
             <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->nama) }}&background=eeeeee&color=141414&size=128" alt="Profile" class="header-profile">
             <div class="dropdown-menu" id="dropdownMenu" style="display:none;">
-                <a href="/" class="dropdown-item">Logout</a>
+                <button onclick="performLogout()" class="dropdown-item" style="background:none;border:none;padding:0.7em 1.2em;width:100%;text-align:left;cursor:pointer;color:#333;">Logout</button>
             </div>
         </div>
     </header>
@@ -154,6 +154,25 @@
         }
         function closeTestimoniModal() {
             document.getElementById('testimoniModal').style.display = 'none';
+        }
+
+        // Logout function
+        function performLogout() {
+            // Create a form dynamically
+            var form = document.createElement('form');
+            form.method = 'POST';
+            form.action = '{{ route("logout") }}';
+            
+            // Add CSRF token
+            var csrfToken = document.createElement('input');
+            csrfToken.type = 'hidden';
+            csrfToken.name = '_token';
+            csrfToken.value = '{{ csrf_token() }}';
+            form.appendChild(csrfToken);
+            
+            // Submit the form
+            document.body.appendChild(form);
+            form.submit();
         }
         // Star rating interaction
         document.addEventListener('DOMContentLoaded', function() {
