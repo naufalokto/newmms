@@ -26,7 +26,7 @@ class AutoCompleteService
                 
                 Log::info("[Scheduler] Service ID {$service->id_service} completed automatically");
             }
-        })->everyMinute()
+        })->everySecond()
           ->withoutOverlapping()
           ->runInBackground();
     }

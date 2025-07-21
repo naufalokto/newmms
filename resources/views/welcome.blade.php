@@ -280,25 +280,6 @@
                     </select>
                 </div>
             </div>
-<<<<<<< HEAD
-            <div class="input-group">
-                <select required>
-                    <option value="">Service Location</option>
-                    <option>Pakis</option>
-                    <option>Sulfat</option>
-                </select>
-                <img src="/images/chevron.png" alt="Dropdown Icon" class="dropdown-icon">
-            </div>
-            <div class="input-group">
-                <select required>
-                    <option value="">Service Type</option>
-                    <option>Service Daily</option>
-                    <option>Other</option>
-                </select>
-                <img src="/images/chevron.png" alt="Dropdown Icon" class="dropdown-icon">
-            </div>
-=======
->>>>>>> 885471175fa0715ebbfa0816a9c109590157b94f
             <div class="appointment-row">
                 <div class="appointment-input">
                     <span class="icon">⏰</span>

@@ -68,11 +68,16 @@ Route::prefix('/admin/api')->middleware(['auth', 'role:admin'])->group(function 
 });
 
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+
 
 // Customer Dashboard
-Route::get('/customer/dashboard', function () {
-    return view('customer-dashboard');
-})->name('customer.dashboard')->middleware('auth','role:cust');
+Route::get('/customer/dashboard', [ServiceController::class, 'indexByUser'])
+    ->name('customer.dashboard')
+    ->middleware('auth', 'role:cust');
+
+Route::get('/service-cabang', [ServiceController::class, 'getServiceCabang']);
+
 
 // Produk routes
 Route::resource('produk', ProdukController::class)->only(['index', 'store', 'create']);
@@ -87,7 +92,7 @@ Route::post('/service', [ServiceController::class, 'store'])->name('service.stor
 Route::get('/validate-slot', [ServiceController::class, 'validateslot']);
 Route::get('/service-types', [ServiceController::class, 'getServiceTypes']);
 Route::get('/service/history', [ServiceController::class, 'indexByUser'])->name('service.history');
-Route::post('/service/{id}/cancel', [ServiceController::class, 'cancel'])->name('service.cancel');
+Route::post('/service/{id}/cancel', [ServiceController::class, 'customerCancel'])->name('service.cancel');
 Route::get('/service/all', [ServiceController::class, 'indexBycabang'])->name('service.all');
 Route::post('/service/{id}/start', [ServiceController::class, 'startService'])->name('service.start');
 

@@ -95,8 +95,6 @@ class ServiceController extends Controller
         $existing = Service::where('id_pengguna', $request->id_pengguna)
         ->whereDate('tanggal', $request->tanggal)
         ->exists();
-=======
->>>>>>> 885471175fa0715ebbfa0816a9c109590157b94f
 
         $existing = Service::where('id_pengguna', $request->id_pengguna)
             ->whereDate('tanggal', $request->tanggal)
@@ -129,12 +127,7 @@ class ServiceController extends Controller
 
     public function getServiceTypes()
     {
-<<<<<<< HEAD
-        $types = TypeService::whereIn('nama_service', ['daily', 'racing1', 'racing2'])->get();
-=======
         $types = TypeService::all();
-        $types = TypeService::all();
->>>>>>> 885471175fa0715ebbfa0816a9c109590157b94f
         return response()->json($types);
     }
 
@@ -152,7 +145,7 @@ class ServiceController extends Controller
             ->orderBy('tanggal', 'desc')
             ->get();
 
-        return view('service.index', compact('services'));
+        return view('customer-dashboard', compact('services'));
     }
 
     
@@ -191,7 +184,7 @@ class ServiceController extends Controller
 
     public function customerCancel($id)
     {
-        $userId = Auth::user()->$id;
+        $userId = Auth::user()->id_pengguna;
 
         $service = Service::where('id_service', $id)
             ->where('id_pengguna', $userId)
@@ -231,6 +224,8 @@ class ServiceController extends Controller
 
         return view('admin-booking-service', compact('services'));
     }
+
+    
 
     public function startService($id)
 {
