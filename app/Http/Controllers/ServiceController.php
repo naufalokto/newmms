@@ -6,6 +6,7 @@ use Exception;
 use Carbon\Carbon;
 use App\Models\Cabang;
 use App\Models\Service;
+use App\Models\Pengguna;
 use App\Models\TypeService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -80,6 +81,21 @@ class ServiceController extends Controller
             'jadwal' => 'required|date_format:H:i',
         ]);
 
+        // Cari id_tipe_service jika yang dikirim string nama
+        $idTipeService = $request->id_tipe_service;
+        if (!is_numeric($idTipeService)) {
+            $type = \App\Models\TypeService::where('nama_service', $idTipeService)->first();
+            if ($type) {
+                $idTipeService = $type->id_tipe_service;
+            } else {
+                return redirect()->back()->withErrors(['id_tipe_service' => 'Tipe service tidak valid.'])->withInput();
+            }
+        }
+
+        $existing = Service::where('id_pengguna', $request->id_pengguna)
+        ->whereDate('tanggal', $request->tanggal)
+        ->exists();
+
         $existing = Service::where('id_pengguna', $request->id_pengguna)
             ->whereDate('tanggal', $request->tanggal)
             ->whereIn('status', ['pen', 'fin'])
@@ -93,7 +109,7 @@ class ServiceController extends Controller
 
         $service = new Service();
         $service->id_pengguna = $request->id_pengguna;
-        $service->id_tipe_service = $request->id_tipe_service;
+        $service->id_tipe_service = $idTipeService;
         $service->id_cabang = $request->id_cabang;
         $service->tanggal = $request->tanggal;
         $service->keluhan = $request->keluhan;
@@ -105,7 +121,7 @@ class ServiceController extends Controller
 
 
         //route sementara
-        return redirect()->route('service.history')->with('success', 'Service berhasil ditambahkan');
+        return redirect()->route('customer.dashboard')->with('success', 'Service successfully added');
 
     }
 
@@ -129,7 +145,7 @@ class ServiceController extends Controller
             ->orderBy('tanggal', 'desc')
             ->get();
 
-        return view('service.index', compact('services'));
+        return view('customer-dashboard', compact('services'));
     }
 
     
@@ -141,7 +157,32 @@ class ServiceController extends Controller
         return view('service.create', compact('cabangs', 'types'));
     }
 
-    public function cancel($id)
+    public function adminCancel($id, $id_pengguna)
+    {
+        $userId = $id_pengguna;
+
+        $service = Service::where('id_service', $id)
+            ->where('id_pengguna', $userId)
+            ->first();
+
+        if (!$service) {
+            return redirect()->back()->with('error', 'Booking tidak ditemukan atau bukan milik Anda.');
+        }
+
+        if ($service->status !== 'pend' && $service->status !== 'pros') {
+            return redirect()->back()->with('error', 'Booking tidak dapat dibatalkan.');
+        }
+
+        $service->status = 'cancel';
+        $service->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Cancelled successfully'
+        ]);
+    }
+
+    public function customerCancel($id)
     {
         $userId = Auth::user()->id_pengguna;
 
@@ -153,40 +194,68 @@ class ServiceController extends Controller
             return redirect()->back()->with('error', 'Booking tidak ditemukan atau bukan milik Anda.');
         }
 
-        if ($service->status !== 'pend') {
-            return redirect()->back()->with('error', 'Hanya booking dengan status "pending" yang bisa dibatalkan.');
+        if ($service->status !== 'pend' && $service->status !== 'pros') {
+            return redirect()->back()->with('error', 'Booking tidak dapat dibatalkan.');
         }
 
         $service->status = 'cancel';
         $service->save();
 
-        return redirect()->route('service.history')->with('success', 'Booking berhasil dibatalkan.');
+        return response()->json([
+            'success' => true,
+            'message' => 'Cancelled successfully'
+        ]);
     }
 
     public function indexBycabang()
     {
         $cabang = Auth::user()->adminDetail?->id_cabang;
 
-        $services = Service::where('id_cabang', $cabang)
-            ->orderBy('tanggal', 'desc')
-            ->get();
+        if (!$cabang) {
+            $services = collect(); // Empty collection if no branch found
+        } else {
+            $services = Service::with(['pengguna', 'typeService', 'cabang'])
+                ->where('id_cabang', $cabang)
+                ->orderBy('tanggal', 'desc')
+                ->get();
+        }
 
-        return view('service.index', compact('services'));
+        
+
+        return view('admin-booking-service', compact('services'));
     }
+
+    
 
     public function startService($id)
 {
-    $service = Service::findOrFail($id);
+    try {
+        $service = Service::findOrFail($id);
 
-    if ($service->status !== 'pend') {
-        return back()->with('error', 'Hanya booking dengan status pending yang bisa diproses.');
+        if ($service->status !== 'pend') {
+            return response()->json(['error' => 'Only pending bookings can be started.'], 400);
+        }
+
+          // Check if there are any services already in progress
+            $servicesInProgress = Service::where('status', 'pros')->count();
+            
+            if ($servicesInProgress > 0) {
+                return response()->json([
+                    'error' => 'Cannot start a new service. There is already a service in progress. Please wait for it to complete.'
+                ], 400);
+            }
+
+        $service->status = 'pros';
+        $service->started_at = now();
+        $service->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Service started successfully. Will auto-complete in 5 seconds.'
+        ]);
+    } catch (Exception $e) {
+        return response()->json(['error' => 'Error starting service'], 500);
     }
-
-    $service->status = 'pros';
-    $service->started_at = now();
-    $service->save();
-
-    return back()->with('success', 'Status berhasil diubah ke process.');
 }
 
 }
