@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -14,40 +15,28 @@ class DatabaseSeeder extends Seeder
         $this->call([
             CabangSeeder::class,
             TypeServiceSeeder::class,
-            PenggunaSeeder::class, // jika ada
+            PenggunaSeeder::class,
+            ServiceSeeder::class, // Tambahkan ServiceSeeder
+            TestimoniSeeder::class, // Tambahkan TestimoniSeeder
+            ProdukSeeder::class, // Tambahkan ProdukSeeder
+<<<<<<< HEAD
+
+=======
+>>>>>>> 885471175fa0715ebbfa0816a9c109590157b94f
         ]);
-        // Tambahkan dummy produk secara manual
-        \App\Models\Produk::create([
-            'nama_produk' => 'Motul Oil',
-            'kategori' => 'Oil',
-            'harga' => 350000,
-            'stok' => 10,
-            'gambar_produk' => null,
-            'deskripsi' => 'High quality engine oil.'
+        \App\Models\Pengguna::create([
+            'nama' => 'Admin Satu',
+            'username' => 'admin1',
+            'password' => Hash::make('admin1password'),
+            'no_hp' => '081234567890',
+            'peran' => 'admin',
         ]);
-        \App\Models\Produk::create([
-            'nama_produk' => 'Ohlins Suspension',
-            'kategori' => 'Second Part',
-            'harga' => 28900000,
-            'stok' => 5,
-            'gambar_produk' => null,
-            'deskripsi' => 'Premium suspension for motorcycles.'
-        ]);
-        \App\Models\Produk::create([
-            'nama_produk' => 'Kawasaki H2R',
-            'kategori' => 'New Part',
-            'harga' => 760000000,
-            'stok' => 2,
-            'gambar_produk' => null,
-            'deskripsi' => 'Superbike for racing.'
-        ]);
-        \App\Models\Produk::create([
-            'nama_produk' => 'MMS T-Shirt',
-            'kategori' => 'Apparel',
-            'harga' => 150000,
-            'stok' => 20,
-            'gambar_produk' => null,
-            'deskripsi' => 'Official MMS apparel.'
+        \App\Models\Pengguna::create([
+            'nama' => 'Admin Dua',
+            'username' => 'admin2',
+            'password' => Hash::make('admin2password'),
+            'no_hp' => '081298765432',
+            'peran' => 'admin',
         ]);
     }
 } 
