@@ -2,13 +2,21 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- viewport: checked responsive -->
     <title>Product Customer - Mifta Motor Sport</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Montserrat:wght@500;700&family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/product-cust.css">
 </head>
 <body>
     <header class="main-header">
+        <div class="header-left">
+            <a href="/" class="btn-back" style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.5rem 1rem;background:#FE8400;color:#fff;border-radius:0.5rem;text-decoration:none;font-weight:600;font-family:'Poppins',sans-serif;font-size:0.9rem;transition:all 0.2s ease;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M19 12H5M12 19L5 12L12 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Back to Home
+            </a>
+        </div>
         <div class="header-logo-wrap">
             <img src="/images/logo2.png" alt="Logo" class="header-logo">
         </div>
@@ -20,8 +28,11 @@
         <div class="header-user" id="headerUser">
             <span class="header-username">{{ Auth::user()->nama }}</span>
             <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->nama) }}&background=eeeeee&color=141414&size=128" alt="Profile" class="header-profile">
-            <div class="dropdown-menu" id="dropdownMenu" style="display:none;">
-                <a href="/" class="dropdown-item">Logout</a>
+            <div id="dropdown-logout" class="dropdown-menu" style="display:none;position:absolute;right:0;top:2.2rem;background:#fff;border:1px solid #eee;border-radius:0.5rem;box-shadow:0 2px 8px rgba(0,0,0,0.08);min-width:120px;">
+                <form method="POST" action="{{ route('logout') }}" style="margin:0;">
+                    @csrf
+                    <button type="submit" class="dropdown-item" style="background:none;border:none;padding:0.7em 1.2em;width:100%;text-align:left;cursor:pointer;color:#333;">Logout</button>
+                </form>
             </div>
         </div>
     </header>
@@ -39,43 +50,33 @@
     <div class="product-content-container">
         <!-- Category Bar -->
         <div class="product-category-bar">
-            <div class="category-rectangle" id="cat-1"><span class="icon-check">&#10003;</span></div><span style="margin-right:2rem;">Oil</span>
-            <div class="category-rectangle" id="cat-2"><span class="icon-check">&#10003;</span></div><span style="margin-right:2rem;">Second Part</span>
-            <div class="category-rectangle" id="cat-3"><span class="icon-check">&#10003;</span></div><span style="margin-right:2rem;">New Part</span>
-            <div class="category-rectangle" id="cat-4"><span class="icon-check">&#10003;</span></div><span>Apparel</span>
+            <div class="category-rectangle active" id="cat-1"><span class="icon-check">&#10003;</span></div><span style="margin-right:2rem;">Oil</span>
+            <div class="category-rectangle active" id="cat-2"><span class="icon-check">&#10003;</span></div><span style="margin-right:2rem;">Second Part</span>
+            <div class="category-rectangle active" id="cat-3"><span class="icon-check">&#10003;</span></div><span style="margin-right:2rem;">New Part</span>
+            <div class="category-rectangle active" id="cat-4"><span class="icon-check">&#10003;</span></div><span style="margin-right:2rem;">Apparel</span>
         </div>
         <!-- Product Card Grid -->
-        <div class="product-card-grid">
-            <!-- Card 1 -->
-            <div class="product-card">
-                <img src="/images/motul-oil.jpg" alt="Motul Oil" class="product-image">
-                <div class="product-info">
-                    <div class="product-title">Motul Oil</div>
-                    <div class="product-category">Sparepart</div>
-                    <div class="product-price">Rp350.000</div>
-                    <button class="product-btn contact">Contact</button>
+        <div class="product-card-grid" id="productCardGrid">
+            @forelse($produk as $item)
+                <div class="product-card" data-kategori="{{ strtolower(str_replace(' ', '-', $item->kategori)) }}">
+                    <img src="{{ $item->gambar_produk ? asset($item->gambar_produk) : 'https://ui-avatars.com/api/?name=' . urlencode($item->nama_produk) . '&background=eeeeee&color=141414&size=200' }}" alt="{{ $item->nama_produk }}" class="product-image">
+                    <div class="product-info">
+                        <div class="product-title">{{ $item->nama_produk }}</div>
+                        <div class="product-category">{{ $item->kategori }}</div>
+                        <div class="product-price">Rp{{ number_format($item->harga, 0, ',', '.') }}</div>
+                        <a class="product-btn contact" target="_blank" href="https://wa.me/6285708150434?text=Halo%2C%20saya%20tertarik%20dengan%20produk%20{{ urlencode($item->nama_produk) }}%20dari%20Mifta%20Motor%20Sport">Contact</a>
+                    </div>
                 </div>
-            </div>
-            <!-- Card 2 -->
-            <div class="product-card">
-                <img src="/images/ohlins-suspension.jpg" alt="Ohlins Suspension Shocks" class="product-image">
-                <div class="product-info">
-                    <div class="product-title">Ohlins Suspension Shocks</div>
-                    <div class="product-category">Motor Part</div>
-                    <div class="product-price">Rp28.900.000</div>
-                    <button class="product-btn buy">Contact</button>
+            @empty
+                <div class="product-card" style="opacity:0.5; pointer-events:none;">
+                    <img src="/images/logo.png" alt="Out of Stock" class="product-image">
+                    <div class="product-info">
+                        <div class="product-title">Out of Stock</div>
+                        <div class="product-category">-</div>
+                        <div class="product-price">-</div>
+                    </div>
                 </div>
-            </div>
-            <!-- Card 3 -->
-            <div class="product-card">
-                <img src="/images/kawasaki-h2r.jpg" alt="Kawasaki H2R" class="product-image">
-                <div class="product-info">
-                    <div class="product-title">Kawasaki H2R</div>
-                    <div class="product-category">Motor Sport</div>
-                    <div class="product-price">Rp760.000.000</div>
-                    <button class="product-btn buy">Contact</button>
-                </div>
-            </div>
+            @endforelse
         </div>
     </div>
     <!-- Testimoni Modal Pop Up (copy dari dashboard, pastikan class dan id sama) -->
@@ -100,7 +101,7 @@
     <script>
         // Toggle dropdown on click user/profile
         const headerUser = document.getElementById('headerUser');
-        const dropdownMenu = document.getElementById('dropdownMenu');
+        const dropdownMenu = document.getElementById('dropdown-logout');
         headerUser.addEventListener('click', function(e) {
             e.stopPropagation();
             dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
@@ -110,14 +111,45 @@
             dropdownMenu.style.display = 'none';
         });
 
-        // Interaktif kategori: hanya satu yang aktif
+        // Interaktif kategori: multi-select (bisa centang semua, minimal satu harus aktif)
         const rectangles = document.querySelectorAll('.category-rectangle');
-        rectangles.forEach(rect => {
+        const productCards = document.querySelectorAll('.product-card[data-kategori]');
+        const kategoriMap = [
+            {id: 'cat-1', kategori: 'oil'},
+            {id: 'cat-2', kategori: 'second-part'},
+            {id: 'cat-3', kategori: 'new-part'},
+            {id: 'cat-4', kategori: 'apparel'}
+        ];
+        rectangles.forEach((rect, idx) => {
             rect.addEventListener('click', function() {
-                rectangles.forEach(r => r.classList.remove('active'));
-                this.classList.add('active');
+                const activeCount = Array.from(rectangles).filter(r => r.classList.contains('active')).length;
+                if (this.classList.contains('active') && activeCount === 1) {
+                    return;
+                }
+                this.classList.toggle('active');
+                filterProducts();
             });
         });
+        function filterProducts() {
+            // Ambil kategori yang aktif
+            const activeKategori = kategoriMap.filter((k, i) => rectangles[i].classList.contains('active')).map(k => k.kategori);
+            let anyVisible = false;
+            productCards.forEach(card => {
+                if (activeKategori.includes(card.getAttribute('data-kategori'))) {
+                    card.style.display = '';
+                    anyVisible = true;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+            // Tampilkan Out of Stock jika tidak ada produk yang tampil
+            const outOfStockCard = document.querySelector('.product-card:not([data-kategori])');
+            if (outOfStockCard) {
+                outOfStockCard.style.display = anyVisible ? 'none' : '';
+            }
+        }
+        // Jalankan filter pertama kali
+        filterProducts();
 
         // Modal Testimoni
         function openTestimoniModal() {
@@ -126,6 +158,7 @@
         function closeTestimoniModal() {
             document.getElementById('testimoniModal').style.display = 'none';
         }
+
         // Star rating interaction
         document.addEventListener('DOMContentLoaded', function() {
             const stars = document.querySelectorAll('.star-rating .star');

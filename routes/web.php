@@ -11,9 +11,16 @@ use App\Http\Controllers\TestimoniController;
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\CustomerDashboardController;
 use App\Models\Service;
+use App\Models\Produk;
+use App\Models\Testimoni;
+use App\Models\Berita;
 
 Route::get('/', function () {
-    return view('welcome');
+    $products = Produk::all();
+    $testimonials = Testimoni::with('pengguna')->get();
+    $news = Berita::all();
+    $services = Service::all();
+    return view('welcome', compact('products', 'testimonials', 'news', 'services'));
 });
 
 // Login & Register
@@ -56,11 +63,12 @@ Route::prefix('/admin/api')->middleware(['auth', 'role:admin'])->group(function 
     Route::put('/service/{id}', [ServiceController::class, 'updateService']);
 });
 
-Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 // Customer Dashboard
 Route::get('/customer/dashboard', function () {
-    return view('customer-dashboard');
+    $services = Service::all();
+    return view('customer-dashboard', compact('services'));
 })->name('customer.dashboard')->middleware('auth','role:cust');
 
 // Produk routes
@@ -69,7 +77,8 @@ Route::resource('produk', ProdukController::class)->only(['index', 'store', 'cre
 // Halaman produk customer
 Route::get('/customer/product', [ProdukController::class, 'index'])->name('customer.product')->middleware('auth');
 Route::get('/product-customer', function () {
-    return view('product-customer');
+    $produk = Produk::all();
+    return view('product-customer', compact('produk'));
 })->name('product.customer');
 
 // Booking Service

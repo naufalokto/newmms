@@ -39,9 +39,10 @@
             </nav>
             
             <div class="logout-section">
-                <a href="/logout" class="logout-btn">
-                    <span>Log Out</span>
-                </a>
+                <form action="{{ route('logout') }}" method="POST" style="display:inline;">
+                    @csrf
+                    <button type="submit" class="logout-btn" style="background:none;border:none;cursor:pointer;color:inherit;width:100%;padding:0.75rem 1rem;text-align:left;">Logout</button>
+                </form>
             </div>
         </div>
 
