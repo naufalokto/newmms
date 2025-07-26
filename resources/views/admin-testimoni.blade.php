@@ -151,7 +151,7 @@
                         <div class="empty-icon">📝</div>
                         <h3>No testimonials found</h3>
                         <p>There are no testimonials to display at the moment.</p>
-                        <button class="btn btn-primary" onclick="showAddModal()">Add First Testimonial</button>
+                        <button class="btn hope-button-soft" onclick="showAddModal()">Hope we have some!</button>
                     </div>
                     @endforelse
                 </div>

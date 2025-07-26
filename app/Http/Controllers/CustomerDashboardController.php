@@ -19,4 +19,6 @@ class CustomerDashboardController extends Controller
 
         return view('customer-dashboard', compact('services'));
     }
+
+    
 } 
