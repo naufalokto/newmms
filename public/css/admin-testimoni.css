@@ -772,3 +772,8 @@
     transform: translateY(-1px) scale(1.05);
     box-shadow: 0 5px 18px rgba(240, 147, 251, 0.4);
 }
+
+.user-profile {
+    font-weight: 600;
+    color: #333;
+}

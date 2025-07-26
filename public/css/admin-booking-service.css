@@ -6,6 +6,11 @@
     margin-bottom: 30px;
 }
 
+.user-profile {
+    font-weight: 600;
+    color: #333;
+}
+
 .stat-card {
     background: white;
     padding: 20px;

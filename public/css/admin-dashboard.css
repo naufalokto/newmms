@@ -637,3 +637,8 @@ body {
         max-width: 100vw !important;
     }
 }
+
+.user-profile {
+    font-weight: 600;
+    color: #333;
+}
