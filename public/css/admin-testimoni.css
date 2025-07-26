@@ -712,7 +712,7 @@
     border-radius: 25px;
     font-size: 14px;
     font-weight: 600;
-    cursor: pointer;
+    cursor: wait;
     transition: all 0.3s ease;
     box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
     position: relative;
@@ -758,7 +758,7 @@
     border-radius: 20px;
     font-size: 14px;
     font-weight: 500;
-    cursor: pointer;
+    cursor: not-allowed;
     transition: all 0.3s ease;
     box-shadow: 0 3px 12px rgba(240, 147, 251, 0.3);
 }
